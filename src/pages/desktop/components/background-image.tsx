@@ -1,7 +1,8 @@
 import React from 'react'
+import { BackgroundImageType } from '../type'
 
 export interface BackgroundImageProps {
-  type: `wall-${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8}`
+  type: BackgroundImageType
   image?: string
 }
 const defaultImages = {
@@ -21,10 +22,9 @@ const BackgroundImage: React.FC<BackgroundImageProps> = ({ type, image }) => {
         backgroundImage: `url(${image ? image : defaultImages[type]})`,
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
-        backgroundPositionX: 'center',
-        zIndex: -10
+        backgroundPositionX: 'center'
       }}
-      className="absolute top-0 right-0 overflow-hidden h-full w-full"
+      className="absolute top-0 right-0 overflow-hidden h-full w-full -z-10"
     ></div>
   )
 }

@@ -1,4 +1,4 @@
-import { createContext, createElement, useContext, useMemo } from 'react'
+import React, { createContext, createElement, useContext, useMemo } from 'react'
 import useMethods, { CreateMethods, WrappedMethods } from '../useMethods'
 import { Key } from '@/typings/tools'
 
@@ -42,6 +42,19 @@ const createMethodsContext = <
     return providerFactory(memoContext, children)
   }
 
+  const withProvider = <P>(
+    WrapperComponent: React.ElementType<P>,
+    options?: { initialValue?: S }
+  ) => {
+    return function ProviderWrapper(props) {
+      return React.createElement(
+        MethodsProvider,
+        options,
+        React.createElement(WrapperComponent, props)
+      )
+    } as React.FC<P>
+  }
+
   function useMethodsContext() {
     const stateAndMethods = useContext(context)
     if (stateAndMethods === null) {
@@ -52,7 +65,7 @@ const createMethodsContext = <
     return stateAndMethods
   }
 
-  return [useMethodsContext, MethodsProvider, context] as const
+  return [useMethodsContext, MethodsProvider, withProvider, context] as const
 }
 export type { MethodsContextValue }
 export default createMethodsContext
