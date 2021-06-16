@@ -19,5 +19,5 @@ export const constantsRoutes: RouteConfigProps[] = convertRoutes([
     path: '/login',
     exact: true,
     component: Login
-  }
+  },
 ])
