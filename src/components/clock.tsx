@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react'
 import classnames from 'classnames'
 import useInterval from '@/hooks/common/useInterval'
 
-interface ClockProps {
+export interface ClockProps {
   className?: string
   hour12?: boolean
   delay?: number

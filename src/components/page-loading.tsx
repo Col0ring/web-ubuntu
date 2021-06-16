@@ -1,7 +1,7 @@
 import React from 'react'
 import Dot from './dot'
 
-interface PageLoadingProps {
+export interface PageLoadingProps {
   tips?: string
   loading?: boolean
 }
