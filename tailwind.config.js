@@ -33,9 +33,10 @@ module.exports = {
         'ubt-gedit-blue': '#50B6C6',
         'ubt-gedit-dark': '#003B70'
       },
-      borderColor: {
+      borderColor: (theme) => ({
+        ...theme('colors'),
         'ubb-orange': '#E95420'
-      },
+      }),
       minWidth: {
         0: '0',
         '1/4': '25%',
