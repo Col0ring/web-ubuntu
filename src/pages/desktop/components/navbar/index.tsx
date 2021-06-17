@@ -7,9 +7,12 @@ import Slider, { SliderProps } from '@/components/slider'
 import Status from './status'
 import StatusMenu from './status-menu'
 import { StatusIconConfig, StatusMenuConfig } from '../../type'
+import { useAuthContext } from '@/auth/provider'
 
 const Navbar: React.FC = () => {
   const [statusMenuVisible, setStatusMenuVisible] = useState(false)
+
+  const [, authMethods] = useAuthContext()
 
   const [settingStatus, settingMethods] = useSettingContext()
 
@@ -137,11 +140,13 @@ const Navbar: React.FC = () => {
               <Arrow direction="right" />
             </div>
           ),
-          onClick: () => {}
+          onClick: () => {
+            authMethods.logout()
+          }
         }
       ]
     ],
-    [sound, brightness, onSoundChange, onBrightnessChange]
+    [sound, brightness, onSoundChange, onBrightnessChange, authMethods]
   )
 
   return (
