@@ -87,29 +87,6 @@
   border-radius: 5px;
 }
 
-/* SideBarApp Scale image onClick */
-.scalable-app-icon {
-  visibility: hidden;
-}
-
-.scalable-app-icon.scale {
-  animation: scaleAppImage 400ms 1 forwards;
-}
-
-@keyframes scaleAppImage {
-  from {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 1;
-    visibility: visible;
-  }
-
-  to {
-    transform: translate(-50%, -50%) scale(3);
-    opacity: 0;
-    visibility: hidden;
-  }
-}
-
 /* Context Menu */
 .context-menu-bg {
   background-color: rgb(43, 43, 43);

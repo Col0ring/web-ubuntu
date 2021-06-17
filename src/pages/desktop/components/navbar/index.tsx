@@ -150,7 +150,7 @@ const Navbar: React.FC = () => {
   )
 
   return (
-    <div className="absolute top-0 right-0 w-screen shadow-md flex flex-nowrap justify-between items-center bg-ub-grey text-ubt-grey text-sm select-none z-50">
+    <div className="absolute top-0 left-0 w-full shadow-md flex flex-nowrap justify-between items-center bg-ub-grey text-ubt-grey text-sm select-none z-50">
       <ClickUnderline>Activities</ClickUnderline>
       <ClickUnderline className="text-xs md:text-sm">
         <Clock />

@@ -1,4 +1,5 @@
 import createMethodsContext from '@/hooks/common/factory/createMethodsContext'
+import apps from '@/apps'
 import { BackgroundImageType, DesktopContextValue } from './type'
 
 const [useDesktopContext, DesktopProvider, withDesktopProvider] =
@@ -9,7 +10,12 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
       }
     }),
     {
-      backgroundImage: 'wall-2'
+      backgroundImage: 'wall-2',
+      openApps: [],
+      desktopApps: [],
+      sidebarApps: [],
+      minimizedApps: [],
+      apps
     } as DesktopContextValue
   )
 

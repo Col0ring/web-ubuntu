@@ -25,7 +25,7 @@ const Slider: React.FC<SliderProps> = ({
     (e) => {
       onChange?.(+e.target.value, e)
     },
-    []
+    [onChange]
   )
 
   return (

@@ -9,9 +9,7 @@ const Status: React.FC<StatusProps> = ({ icons }) => {
   return (
     <div className="flex justify-center items-center">
       {icons.map(({ name, icon }) => (
-        <span key={name} className="mx-1.5">
-          <img src={icon} alt={name} className="inline" />
-        </span>
+        <img className="mx-1.5" key={name} src={icon} alt={name} />
       ))}
       <span className="mx-1">
         <Arrow direction="down" />

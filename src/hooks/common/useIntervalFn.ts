@@ -10,7 +10,7 @@ enum IntervalStatus {
 }
 
 interface UseIntervalFnReturn<T extends NormalFunction> {
-  currentStatus: () => IntervalStatus
+  currentStatus: () => 'free' | 'pending' | 'cancelled' | 'calling'
   cancel: () => void
   run: (...args: Parameters<T>) => void
 }

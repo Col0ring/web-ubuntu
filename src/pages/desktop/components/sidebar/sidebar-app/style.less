@@ -1,0 +1,16 @@
+/* SideBarApp Scale image onClick */
+.scalable-app-icon {
+  animation: scaleAppImage 400ms 1 forwards;
+}
+
+@keyframes scaleAppImage {
+  from {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+
+  to {
+    transform: translate(-50%, -50%) scale(3);
+    opacity: 0;
+  }
+}
