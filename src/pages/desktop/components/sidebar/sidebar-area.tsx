@@ -1,7 +1,18 @@
+import useHover from '@/hooks/common/useHover'
 import React, { useRef } from 'react'
 
-const SidebarArea: React.FC = () => {
+export interface SidebarAreaProps {
+  onEnter?: () => void
+  onLeave?: () => void
+}
+
+const SidebarArea: React.FC<SidebarAreaProps> = ({ onEnter, onLeave }) => {
   const SidebarAreaRef = useRef<HTMLDivElement | null>(null)
+
+  useHover(SidebarAreaRef, {
+    onEnter,
+    onLeave
+  })
 
   return (
     <div
