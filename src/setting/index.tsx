@@ -11,9 +11,10 @@ const Setting: React.FC = ({ children }) => {
   useEffect(() => {
     // at least 0.25 brightness
     ubuntu.current!.style.filter = `brightness(${
-      (3 / 400) * settingState.brightness + 0.25
+      (3 / 400) * settingState.config.brightness + 0.25
     })`
-  }, [settingState.brightness])
+    // TODO: sound
+  }, [settingState.config.brightness])
   return (
     <div ref={ubuntu} id="web-ubuntu">
       {children}

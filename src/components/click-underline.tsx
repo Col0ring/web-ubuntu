@@ -3,12 +3,14 @@ import classnames from 'classnames'
 export interface ClickUnderlineProps {
   className?: string
   color?: string
+  onClick?: React.MouseEventHandler<HTMLDivElement>
 }
 
 const ClickUnderline: React.FC<ClickUnderlineProps> = ({
   className,
   children,
-  color
+  color,
+  onClick
 }) => {
   const clickUnderlineClassName = classnames(
     'pl-2 pr-2 outline-none transition duration-100 ease-in-out border-b-2 border-transparent focus:border-ubb-orange py-1',
@@ -22,6 +24,7 @@ const ClickUnderline: React.FC<ClickUnderlineProps> = ({
         borderColor: color
       }}
       className={clickUnderlineClassName}
+      onClick={onClick}
     >
       {children}
     </div>

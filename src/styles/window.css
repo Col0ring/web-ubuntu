@@ -6,14 +6,7 @@
 }
 
 /* Top NavBar styling */
-
-.top-arrow-up {
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-bottom: 5px solid #333333;
-}
-
-.animateShow {
+.animate-show {
   animation: transformDownShow 200ms 1 forwards;
 }
 

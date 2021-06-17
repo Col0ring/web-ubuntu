@@ -1,6 +1,6 @@
 import createMethodsContext from '@/hooks/common/factory/createMethodsContext'
 import { SettingContextValue } from './type'
-import { getBrightness } from './util'
+import { getBrightness, getSound, setBrightness, setSound } from './util'
 
 const [useSettingContext, SettingProvider] = createMethodsContext(
   (state) => ({
@@ -8,12 +8,20 @@ const [useSettingContext, SettingProvider] = createMethodsContext(
       return { ...state, ubuntu }
     },
     setBrightness(brightness: number) {
-      return { ...state, brightness }
+      setBrightness(brightness)
+      return { ...state, config: { ...state.config, brightness } }
+    },
+    setSound(sound: number) {
+      setSound(sound)
+      return { ...state, config: { ...state.config, sound } }
     }
   }),
   {
     ubuntu: { current: null },
-    brightness: getBrightness()
+    config: {
+      brightness: getBrightness(),
+      sound: getSound()
+    }
   } as SettingContextValue
 )
 

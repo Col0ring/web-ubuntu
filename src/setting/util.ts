@@ -1,13 +1,18 @@
-const brightnessKey = 'web-ubuntu-auth-key'
+const brightnessKey = 'web-ubuntu-brightness-key'
+const soundKey = 'web-ubuntu-sound-key'
 
-export function setBrightness(token: string) {
-  localStorage.setItem(brightnessKey, token)
+export function setBrightness(brightness: number) {
+  localStorage.setItem(brightnessKey, `${brightness}`)
 }
 
 export function getBrightness() {
   return +(localStorage.getItem(brightnessKey) || 100)
 }
 
-export function removeBrightness() {
-  localStorage.removeItem(brightnessKey)
+export function setSound(sound: number) {
+  localStorage.setItem(soundKey, `${sound}`)
+}
+
+export function getSound() {
+  return +(localStorage.getItem(soundKey) || 100)
 }

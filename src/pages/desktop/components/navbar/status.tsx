@@ -1,8 +1,8 @@
 import React from 'react'
 import Arrow from '@/components/arrow'
-import { StatusIcon } from '../../type'
+import { StatusIconConfig } from '../../type'
 export interface StatusProps {
-  icons: StatusIcon[]
+  icons: StatusIconConfig[]
 }
 
 const Status: React.FC<StatusProps> = ({ icons }) => {
