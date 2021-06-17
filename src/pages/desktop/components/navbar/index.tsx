@@ -2,6 +2,7 @@ import React from 'react'
 import Clock from '@/components/clock'
 import ClickUnderline from '@/components/click-underline'
 import Status from './status'
+import StatusMenu from './status-menu'
 import { StatusIcon } from '../../type'
 
 const statusIcon: StatusIcon[] = [
@@ -22,11 +23,13 @@ const statusIcon: StatusIcon[] = [
 const Navbar: React.FC = () => {
   return (
     <div className="absolute top-0 right-0 w-screen shadow-md flex flex-nowrap justify-between items-center bg-ub-grey text-ubt-grey text-sm select-none z-50">
-      <ClickUnderline>
+      <ClickUnderline>Activities</ClickUnderline>
+      <ClickUnderline className="text-xs md:text-sm">
         <Clock />
       </ClickUnderline>
-      <ClickUnderline>
+      <ClickUnderline className="relative">
         <Status icons={statusIcon} />
+        <StatusMenu />
       </ClickUnderline>
     </div>
   )

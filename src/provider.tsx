@@ -1,12 +1,14 @@
 import React from 'react'
 import { RouterProvider } from './router/provider'
 import { AuthProvider } from './auth/provider'
-
+import { SettingProvider } from './setting/provider'
 const AppProvider: React.FC = ({ children }) => {
   return (
-    <AuthProvider>
-      <RouterProvider>{children}</RouterProvider>
-    </AuthProvider>
+    <SettingProvider>
+      <AuthProvider>
+        <RouterProvider>{children}</RouterProvider>
+      </AuthProvider>
+    </SettingProvider>
   )
 }
 

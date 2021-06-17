@@ -29,38 +29,7 @@
   }
 }
 
-input[type='range'].ubuntu-slider {
-  outline: none;
-  -webkit-appearance: none;
-  background: linear-gradient(
-    to right,
-    rgba(175, 175, 175, 0.3) 0%,
-    rgba(175, 175, 175, 0.3) 100%
-  );
-  background-position: center;
-  background-size: 99% 3px;
-  background-repeat: no-repeat;
-  /* width: 65%; */
-  height: 6px;
-  border-radius: 50%;
-}
-
-input[type='range'].ubuntu-slider::-webkit-slider-thumb {
-  -webkit-box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.2);
-  box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.2);
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  -webkit-appearance: none;
-  background-color: #fff;
-  pointer-events: none;
-  border-radius: 50%;
-  width: 12px;
-  height: 12px;
-  position: relative;
-}
-
 /* Window's styling */
-
 .window-y-border {
   height: calc(100% - 10px);
   width: calc(100% + 10px);
