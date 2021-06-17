@@ -11,7 +11,7 @@ const ClickUnderline: React.FC<ClickUnderlineProps> = ({
   color
 }) => {
   const clickUnderlineClassName = classnames(
-    'pl-2 pr-2 text-xs md:text-sm outline-none transition duration-100 ease-in-out border-b-2 border-transparent focus:border-ubb-orange py-1',
+    'pl-2 pr-2 outline-none transition duration-100 ease-in-out border-b-2 border-transparent focus:border-ubb-orange py-1',
     className
   )
   return (
