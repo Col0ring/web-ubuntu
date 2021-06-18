@@ -1,6 +1,7 @@
 import React from 'react'
 import BackgroundImage from './components/background-image'
 import { useDesktopContext, withDesktopProvider } from './provider'
+import AllAppsScreen from './screens/all-apps-screen'
 import Navbar from './components/navbar'
 import Sidebar from './components/sidebar'
 
@@ -11,6 +12,7 @@ const Desktop: React.FC = () => {
       <BackgroundImage type={desktopState.backgroundImage} />
       <Navbar />
       <Sidebar />
+      {desktopState.allAppsScreen && <AllAppsScreen />}
     </div>
   )
 }

@@ -1,10 +1,10 @@
 import React from 'react'
 import Tooltip from '@/components/tooltip'
-export interface AllAppsButton {
+export interface AllAppsButtonProps {
   onClick?: React.MouseEventHandler<HTMLDivElement>
 }
 
-const AllAppsButton: React.FC<AllAppsButton> = ({ onClick }) => {
+const AllAppsButton: React.FC<AllAppsButtonProps> = ({ onClick }) => {
   return (
     <div className="absolute bottom-0">
       <Tooltip title="Show Applications">

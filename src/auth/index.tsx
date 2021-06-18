@@ -49,6 +49,7 @@ const Auth: React.FC = ({ children }) => {
     if (noLoginList.includes(pathname)) {
       return <Redirect to="/desktop" />
     }
+
     // 验证 token
     if (!authState.user) {
       return (

@@ -10,9 +10,16 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
       chooseBackgroundImage(type: BackgroundImageType) {
         return { ...state, backgroundImage: type }
       },
-      openNewApp(id: string, app: AppConfig) {
+      setAllAppsScreen(visible: boolean) {
+        return { ...state, allAppsScreen: visible }
+      },
+      openApp(id: string, app: AppConfig) {
+        if (state.openApps[id]) {
+          return { ...state, focusAppId: id }
+        }
         return {
           ...state,
+          focusAppId: id,
           openApps: {
             ...state.openApps,
             [id]: app
@@ -22,10 +29,11 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
     }),
     {
       backgroundImage: 'wall-2',
+      allAppsScreen: false,
+      focusAppId: '',
       openApps: {},
-      desktopApps: {},
-      sidebarApps: {},
       minimizedApps: {},
+      frequentApps: [],
       apps
     } as DesktopContextValue
   )

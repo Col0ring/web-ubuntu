@@ -16,9 +16,10 @@ export interface StatusMenuConfig extends StatusMenuItemProps {
 export type Apps = Record<string, AppConfig>
 export interface DesktopContextValue {
   backgroundImage: BackgroundImageType
+  allAppsScreen: boolean
+  focusAppId: string
   openApps: Apps
-  sidebarApps: Apps
-  desktopApps: Apps
   minimizedApps: Apps
+  frequentApps: AppConfig[]
   apps: AppConfig[]
 }

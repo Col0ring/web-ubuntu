@@ -3,10 +3,11 @@ import classnames from 'classnames'
 import SidebarApp, { SidebarAppProps } from './sidebar-app'
 import { useDesktopContext } from '../../provider'
 import SidebarArea from './sidebar-area'
-import AllAppsButton from './all-apps-button'
+import AllAppsButton, { AllAppsButtonProps } from './all-apps-button'
 
 const Sidebar: React.FC = () => {
-  const [{ apps, openApps }, desktopMethods] = useDesktopContext()
+  const [{ apps, openApps, allAppsScreen }, desktopMethods] =
+    useDesktopContext()
   const sidebarClassName = classnames(
     'select-none absolute transform duration-300 z-40 left-0 top-0 h-full pt-7 w-auto flex flex-col justify-start items-center border-black border-opacity-60 bg-black bg-opacity-50',
     {
@@ -16,10 +17,15 @@ const Sidebar: React.FC = () => {
 
   const onAppClick: Required<SidebarAppProps>['onClick'] = useCallback(
     (id, app) => {
-      desktopMethods.openNewApp(id, app)
+      desktopMethods.openApp(id, app)
     },
     [desktopMethods]
   )
+
+  const onAllAppButtonClick: Required<AllAppsButtonProps>['onClick'] =
+    useCallback(() => {
+      desktopMethods.setAllAppsScreen(!allAppsScreen)
+    }, [allAppsScreen])
 
   return (
     <>
@@ -35,7 +41,7 @@ const Sidebar: React.FC = () => {
               app={app}
             />
           ))}
-        <AllAppsButton />
+        <AllAppsButton onClick={onAllAppButtonClick} />
       </div>
     </>
   )
