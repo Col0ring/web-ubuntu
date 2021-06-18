@@ -13,11 +13,12 @@ export interface StatusMenuConfig extends StatusMenuItemProps {
   render?: () => React.ReactNode
 }
 
+export type Apps = Record<string, AppConfig>
 export interface DesktopContextValue {
   backgroundImage: BackgroundImageType
-  openApps: AppConfig[]
-  sidebarApps: AppConfig[]
-  desktopApps: AppConfig[]
-  minimizedApps: AppConfig[]
+  openApps: Apps
+  sidebarApps: Apps
+  desktopApps: Apps
+  minimizedApps: Apps
   apps: AppConfig[]
 }

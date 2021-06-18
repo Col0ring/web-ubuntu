@@ -1,16 +1,24 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import classnames from 'classnames'
-import SidebarApp from './sidebar-app'
+import SidebarApp, { SidebarAppProps } from './sidebar-app'
 import { useDesktopContext } from '../../provider'
 import SidebarArea from './sidebar-area'
+import AllAppsButton from './all-apps-button'
 
 const Sidebar: React.FC = () => {
-  const [{ apps }] = useDesktopContext()
+  const [{ apps, openApps }, desktopMethods] = useDesktopContext()
   const sidebarClassName = classnames(
     'select-none absolute transform duration-300 z-40 left-0 top-0 h-full pt-7 w-auto flex flex-col justify-start items-center border-black border-opacity-60 bg-black bg-opacity-50',
     {
       '-translate-x-full': false
     }
+  )
+
+  const onAppClick: Required<SidebarAppProps>['onClick'] = useCallback(
+    (id, app) => {
+      desktopMethods.openNewApp(id, app)
+    },
+    [desktopMethods]
   )
 
   return (
@@ -20,9 +28,14 @@ const Sidebar: React.FC = () => {
         {apps
           .filter((app) => app.favorite)
           .map((app) => (
-            <SidebarApp key={app.id} app={app} />
+            <SidebarApp
+              isOpen={!!openApps[app.id]}
+              onClick={onAppClick}
+              key={app.id}
+              app={app}
+            />
           ))}
-        {/* <AllApps showApps={props.showAllApps} /> */}
+        <AllAppsButton />
       </div>
     </>
   )
