@@ -7,6 +7,7 @@ export interface UbuntuConfig {
   sound: number
 }
 export interface SettingContextValue {
+  title: string
   ubuntu: React.MutableRefObject<HTMLDivElement | null>
   config: UbuntuConfig
 }

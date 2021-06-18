@@ -2,6 +2,7 @@ import React, { useEffect, useMemo } from 'react'
 import { BrowserRouter, useLocation } from 'react-router-dom'
 import { matchRoutes, renderRoutes } from 'react-router-config'
 import { useRouterContext } from './provider'
+import { useSettingContext } from '@/setting/provider'
 
 const AppRouter: React.FC = ({ children }) => {
   return (
@@ -21,13 +22,18 @@ const AppRoutes: React.FC = () => {
 }
 
 const RouterHelper: React.FC = () => {
-  const [state, methods] = useRouterContext()
-  const { routes } = state
+  const [routerState, RouterMethods] = useRouterContext()
+  const [, settingMethods] = useSettingContext()
+  const { routes } = routerState
   const { pathname } = useLocation()
   useEffect(() => {
-    const matchedRoutes = matchRoutes(routes, pathname)
-    methods.set(matchedRoutes.map((route) => route.route))
-  }, [pathname, methods])
+    const matchedRoutes = matchRoutes(routes, pathname).map(
+      (route) => route.route
+    )
+    RouterMethods.setMatchedRoutes(matchedRoutes)
+    const title = matchedRoutes[matchedRoutes.length - 1]?.title
+    title && settingMethods.setTitle(title)
+  }, [pathname, routes, RouterMethods])
   return null
 }
 

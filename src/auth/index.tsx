@@ -21,7 +21,7 @@ const Auth: React.FC = ({ children }) => {
   const { isLogin } = authState
   useEffect(() => {
     if (isLogin) {
-      routerMethods.push(accessRoutes)
+      routerMethods.pushRoutes(accessRoutes)
     } else {
       routerMethods.reset()
     }

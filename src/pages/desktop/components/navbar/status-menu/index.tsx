@@ -50,12 +50,14 @@ const StatusMenu: React.FC<StatusMenuProps> = ({
       {/* menus */}
       {menus.map((subMenus, index) => {
         return (
-          <>
+          <React.Fragment key={index}>
             {subMenus.map(({ render, ...props }) => (
-              <StatusMenuItem {...props}>{render?.()}</StatusMenuItem>
+              <StatusMenuItem key={props.image} {...props}>
+                {render?.()}
+              </StatusMenuItem>
             ))}
             {index !== menus.length - 1 && <Separator />}
-          </>
+          </React.Fragment>
         )
       })}
     </div>

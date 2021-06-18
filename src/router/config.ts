@@ -5,6 +5,7 @@ import { convertRoutes } from './util'
 
 export const accessRoutes: RouteConfigProps[] = convertRoutes([
   {
+    title: 'desktop',
     path: '/desktop',
     exact: true,
     component: Desktop
@@ -16,8 +17,9 @@ export const accessRoutes: RouteConfigProps[] = convertRoutes([
 
 export const constantsRoutes: RouteConfigProps[] = convertRoutes([
   {
+    title: 'login',
     path: '/login',
     exact: true,
     component: Login
-  },
+  }
 ])

@@ -14,9 +14,13 @@ const [useSettingContext, SettingProvider] = createMethodsContext(
     setSound(sound: number) {
       setSound(sound)
       return { ...state, config: { ...state.config, sound } }
+    },
+    setTitle(title: string) {
+      return { ...state, title: 'Web Ubuntu - ' + title }
     }
   }),
   {
+    title: 'Web Ubuntu',
     ubuntu: { current: null },
     config: {
       brightness: getBrightness(),

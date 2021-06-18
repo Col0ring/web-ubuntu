@@ -4,7 +4,7 @@ import { constantsRoutes } from './config'
 
 const [useRouterContext, RouterProvider] = createMethodsContext(
   (state) => ({
-    push(routes: RouteConfigProps | RouteConfigProps[]) {
+    pushRoutes(routes: RouteConfigProps | RouteConfigProps[]) {
       return {
         ...state,
         routes: [
@@ -13,7 +13,7 @@ const [useRouterContext, RouterProvider] = createMethodsContext(
         ]
       }
     },
-    set(matchedRoutes: RouteConfigProps[]) {
+    setMatchedRoutes(matchedRoutes: RouteConfigProps[]) {
       return { ...state, matchedRoutes }
     },
     reset() {
