@@ -2,28 +2,24 @@ import React, { useRef } from 'react'
 import classnames from 'classnames'
 import useHover from '@/hooks/common/useHover'
 
-type Direction = 'top' | 'left' | 'bottom' | 'right'
+type XDirection = 'left' | 'right'
+type YDirection = 'top' | 'bottom'
 
 export interface TooltipProps {
   className?: string
   title?: string
-  direction?:
-    | Direction
-    | `${Exclude<Direction, 'left' | 'right'>} ${Exclude<
-        Direction,
-        'top' | 'bottom'
-      >}`
+  direction?: XDirection | YDirection | `${YDirection} ${XDirection}`
 }
 
 const directions: Record<Required<TooltipProps>['direction'], string> = {
-  top: '',
-  bottom: '',
-  left: '',
-  right: 'top-1.5 left-full',
-  'top left': '',
-  'top right': '',
-  'bottom left': '',
-  'bottom right': ''
+  top: 'mb-1.5 bottom-full left-1/2 transform  -translate-x-1/2',
+  bottom: 'mt-1.5 top-full left-1/2 transform  -translate-x-1/2',
+  left: 'mr-1.5 top-1/2 transform -translate-y-1/2 right-full',
+  right: 'ml-1.5 top-1/2 transform -translate-y-1/2 left-full',
+  'top left': 'mb-0.5 right-full mr-0.5 bottom-full',
+  'top right': 'mb-0.5 left-full ml-0.5 bottom-full',
+  'bottom left': 'mt-0.5 right-full mr-0.5 top-full',
+  'bottom right': 'mt-0.5 left-full ml-0.5 top-full'
 }
 
 const Tooltip: React.FC<TooltipProps> = ({
@@ -36,7 +32,7 @@ const Tooltip: React.FC<TooltipProps> = ({
   const isHover = useHover(tooltipRef)
   const tooltipClassName = classnames('relative', className)
   const titleClassName = classnames(
-    'whitespace-nowrap py-0.5 px-1.5 absolute  ml-3 m-1 text-ubt-grey text-opacity-90 text-sm bg-ub-grey bg-opacity-70 border-gray-400 border border-opacity-40 rounded-md',
+    'whitespace-nowrap py-0.5 px-1.5 absolute  text-ubt-grey text-opacity-90 text-sm bg-ub-grey bg-opacity-70 border-gray-400 border border-opacity-40 rounded-md',
     directions[direction]
   )
   return (
