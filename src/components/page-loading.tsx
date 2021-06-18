@@ -16,7 +16,7 @@ const PageLoading: React.FC<PageLoadingProps> = ({
       {loading && (
         <div
           style={{ zIndex: 10000 }}
-          className="fixed top-0 left-0 w-screen h-screen bg-black flex flex-col items-center justify-center"
+          className="fixed top-0 left-0 w-full h-full bg-black flex flex-col items-center justify-center"
         >
           <img
             className="animate-spin w-20"

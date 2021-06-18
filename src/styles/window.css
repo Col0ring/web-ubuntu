@@ -39,6 +39,13 @@
   filter: brightness(90%);
 }
 
+html,
+body,
+#root {
+  width: fit-content;
+  height: fit-content;
+}
+
 .root,
 #root,
 #docs-root {
