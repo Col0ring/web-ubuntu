@@ -18,6 +18,10 @@ const DesktopApp: React.FC<DesktopAppProps> = (props) => {
     width: 0,
     height: 0
   })
+  const [offset, setOffset] = useState({
+    left: 0,
+    top: 0
+  })
   const [position, setPosition] = useState({
     left: 0,
     top: 0
@@ -52,11 +56,20 @@ const DesktopApp: React.FC<DesktopAppProps> = (props) => {
   useEventListener(draggableRef, 'click', () => {
     setIsFocus(true)
   })
-
+  const onDragStart: Required<DraggableProps>['onDragStart'] = useCallback(
+    (data: AppConfig, e) => {
+      const { left, top } = (e.target as HTMLDivElement).getBoundingClientRect()
+      setOffset({
+        left: e.clientX - left,
+        top: e.clientY - top
+      })
+    },
+    []
+  )
   const onDragEnd: Required<DraggableProps>['onDragEnd'] = useCallback(
     (data: AppConfig, e) => {
-      let left = e.clientX - rect.width / 2
-      let top = e.clientY - rect.height / 2
+      let left = e.clientX - offset.left
+      let top = e.clientY - offset.top
       if (left < 0) {
         left = 0
       }
@@ -76,7 +89,7 @@ const DesktopApp: React.FC<DesktopAppProps> = (props) => {
         top
       })
     },
-    [setPosition, rect]
+    [setPosition, rect, offset]
   )
 
   // preventDefault
@@ -100,6 +113,7 @@ const DesktopApp: React.FC<DesktopAppProps> = (props) => {
       className={draggableClassName}
       data={props.app}
       onDragEnd={onDragEnd}
+      onDragStart={onDragStart}
     >
       <App {...props} />
     </Draggable>
