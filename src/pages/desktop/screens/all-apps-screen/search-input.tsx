@@ -32,7 +32,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
         src="/images/logos/search.png"
       />
       <input
-        className="w-3/4 p-1 bg-transparent focus:outline-none"
+        className="w-full p-1 bg-transparent focus:outline-none"
         placeholder={placeholder}
         value={hasDefaultValue ? undefined : value}
         onChange={onInputChange}

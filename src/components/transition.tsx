@@ -14,7 +14,7 @@ const Transition: React.FC<TransitionProps> = ({
   children,
   visible = false,
   exist = false,
-  duration = 500,
+  duration,
   leaveClassName = '',
   enterClassName = ''
 }) => {

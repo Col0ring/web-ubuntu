@@ -4,7 +4,8 @@ import Tabs, { TabsProps } from '@/components/tabs'
 import App, { AppProps } from '@/components/app'
 import SearchInput from './search-input'
 import { useDesktopContext } from '../../provider'
-
+import Transition from '@/components/transition'
+import './style.less'
 const tabs: TabsProps['tabs'] = [
   {
     name: 'Frequent'
@@ -25,7 +26,7 @@ const AllAppsScreen: React.FC = () => {
     },
     [setActive]
   )
-  const onAppOpen: Required<AppProps>['onDoubleClick'] = useCallback(
+  const onAppOpen: Required<AppProps>['onOpen'] = useCallback(
     (id, app) => {
       // TODO: app z-index
       desktopMethods.openApp(id, app)
@@ -35,41 +36,46 @@ const AllAppsScreen: React.FC = () => {
   )
 
   const allAppScreenClassName = classnames(
-    'absolute h-full w-full left-0 top-0 z-30 justify-center border-black border-opacity-60 bg-black bg-opacity-70',
-    {
-      hidden: !allAppsScreen
-    }
+    'all-apps-screen absolute h-full w-full left-0 top-0 z-30 justify-center border-black border-opacity-60 bg-black bg-opacity-70'
   )
   return (
-    <div style={{ paddingRight: 52 }} className={allAppScreenClassName}>
-      <div style={{ paddingTop: 30 }} className="relative w-full h-full">
-        <div className="flex p-5 align-center justify-center">
-          <SearchInput placeholder="Type to Search..." />
-        </div>
-        {/* apps */}
-        <div className="flex flex-wrap">
-          {active === 'Frequent'
-            ? frequentApps.map((app) => (
-                <App key={app.id} onDoubleClick={onAppOpen} app={app} />
-              ))
-            : apps.map((app) => (
-                <App key={app.id} onDoubleClick={onAppOpen} app={app} />
-              ))}
-        </div>
+    <Transition
+      duration={200}
+      enterClassName="all-apps-screen-show"
+      leaveClassName="all-apps-screen-leave"
+      exist
+      visible={allAppsScreen}
+    >
+      <div style={{ paddingRight: 52 }} className={allAppScreenClassName}>
+        <div style={{ paddingTop: 30 }} className="relative w-full h-full">
+          <div className="flex p-5 align-center justify-center">
+            <SearchInput placeholder="Type to Search..." />
+          </div>
+          {/* apps */}
+          <div className="flex flex-wrap">
+            {active === 'Frequent'
+              ? frequentApps.map((app) => (
+                  <App key={app.id} onOpen={onAppOpen} app={app} />
+                ))
+              : apps.map((app) => (
+                  <App key={app.id} onOpen={onAppOpen} app={app} />
+                ))}
+          </div>
 
-        <div className="flex items-center p-2 justify-center absolute left-0 bottom-0 mb-15 w-full">
-          <div className="w-1/2">
-            <Tabs
-              active={active}
-              onItemClick={onTabItemClick}
-              fontSize={16}
-              stretch
-              tabs={tabs}
-            />
+          <div className="flex items-center p-2 justify-center absolute left-0 bottom-0 mb-15 w-full">
+            <div className="w-1/2">
+              <Tabs
+                active={active}
+                onItemClick={onTabItemClick}
+                fontSize={16}
+                stretch
+                tabs={tabs}
+              />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </Transition>
   )
 }
 

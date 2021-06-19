@@ -13,7 +13,7 @@ const LockScreen: React.FC = () => {
   return (
     <Transition
       visible={lockScreen}
-      duration={500}
+      duration={200}
       enterClassName="lock-screen-show"
       leaveClassName="lock-screen-leave"
     >
