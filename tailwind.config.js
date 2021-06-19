@@ -60,7 +60,9 @@ module.exports = {
     })
   },
   variants: {
-    extend: {}
+    extend: {
+      zIndex: ['hover']
+    }
   },
   plugins: []
 }

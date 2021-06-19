@@ -20,8 +20,8 @@ const apps: AppConfig[] = [
     meta: {}
   },
   {
-    id: 'about-obj9527',
-    title: 'About Obj9527',
+    id: 'about-col0ring',
+    title: 'About Col0ring',
     icon: './themes/Yaru/system/user-home.png',
     disabled: false,
     favorite: true,
