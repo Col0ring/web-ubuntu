@@ -34,7 +34,7 @@ const AllAppsScreen: React.FC = () => {
 
   return (
     <div
-      style={{ paddingLeft: 52 }}
+      style={{ paddingRight: 52 }}
       className="absolute h-full w-full left-0 top-0 z-30 justify-center border-black border-opacity-60 bg-black bg-opacity-70"
     >
       <div style={{ paddingTop: 30 }} className="relative w-full h-full">

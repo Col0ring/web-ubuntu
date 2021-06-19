@@ -41,7 +41,7 @@ const SidebarApp: React.FC<SidebarAppProps> = ({
     }, [onClick, app.id, app, isMinimized, isOpen])
 
   return (
-    <Tooltip className="m-1" title={app.title}>
+    <Tooltip className="m-1" title={app.title} direction="left">
       <div
         // to focus
         tabIndex={0}

@@ -9,7 +9,7 @@ const Sidebar: React.FC = () => {
   const [{ apps, openApps, allAppsScreen }, desktopMethods] =
     useDesktopContext()
   const sidebarClassName = classnames(
-    'select-none absolute transform duration-300 z-40 left-0 top-0 h-full pt-7 w-auto flex flex-col justify-start items-center border-black border-opacity-60 bg-black bg-opacity-50',
+    'select-none absolute transform duration-300 z-40 right-0 top-0 h-full pt-7 w-auto flex flex-col justify-start items-center border-black border-opacity-60 bg-black bg-opacity-50',
     {
       '-translate-x-full': false
     }
