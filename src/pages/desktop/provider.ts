@@ -1,17 +1,20 @@
 import createMethodsContext from '@/hooks/common/factory/createMethodsContext'
 import apps from '@/apps'
 import { AppConfig } from '@/typings/app'
-
-import { BackgroundImageType, DesktopContextValue } from './type'
+import { DesktopContextValue } from './type'
+import { defaultImages } from './config'
 
 const [useDesktopContext, DesktopProvider, withDesktopProvider] =
   createMethodsContext(
     (state) => ({
-      chooseBackgroundImage(type: BackgroundImageType) {
-        return { ...state, backgroundImage: type }
+      chooseBackgroundImage(image: string) {
+        return { ...state, backgroundImage: image }
       },
       setAllAppsScreen(visible: boolean) {
         return { ...state, allAppsScreen: visible }
+      },
+      setLockScreen(visible: boolean) {
+        return { ...state, lockScreen: visible }
       },
       openApp(id: string, app: AppConfig) {
         if (state.openApps[id]) {
@@ -28,8 +31,10 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
       }
     }),
     {
-      backgroundImage: 'wall-2',
+      backgroundImage: defaultImages['wall-2'],
+      backgroundImages: defaultImages,
       allAppsScreen: false,
+      lockScreen: false,
       focusAppId: '',
       openApps: {},
       minimizedApps: {},

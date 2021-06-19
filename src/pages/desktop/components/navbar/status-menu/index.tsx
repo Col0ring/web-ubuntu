@@ -1,11 +1,10 @@
 import React, { useRef } from 'react'
 import classnames from 'classnames'
-import { useSettingContext } from '@/setting/provider'
 import useClickAway, { EventType } from '@/hooks/common/useClickAway'
 import StatusMenuItem from './status-menu-item'
 import { StatusMenuConfig } from '../../../type'
-import './style.less'
 import Separator from './separator'
+import './style.less'
 
 export interface StatusMenuProps {
   menus: StatusMenuConfig[][]
@@ -21,11 +20,7 @@ const StatusMenu: React.FC<StatusMenuProps> = ({
   animate = true,
   animateDuration = 200
 }) => {
-  const [settingStatus, settingMethods] = useSettingContext()
   const statusMenuRef = useRef<HTMLDivElement | null>(null)
-  const {
-    config: { sound, brightness }
-  } = settingStatus
 
   const statusMenuClassName = classnames(
     'absolute bg-ub-cool-grey rounded-md py-4 top-9 right-3 shadow border-black border border-opacity-20',

@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react'
+import classnames from 'classnames'
 import Tabs, { TabsProps } from '@/components/tabs'
 import App, { AppProps } from '@/components/app'
 import SearchInput from './search-input'
@@ -15,7 +16,8 @@ const tabs: TabsProps['tabs'] = [
 
 const AllAppsScreen: React.FC = () => {
   // TODO: frequentApps sort
-  const [{ apps, frequentApps }, desktopMethods] = useDesktopContext()
+  const [{ apps, allAppsScreen, frequentApps }, desktopMethods] =
+    useDesktopContext()
   const [active, setActive] = useState<'All' | 'Frequent'>('All')
   const onTabItemClick: Required<TabsProps>['onItemClick'] = useCallback(
     (name) => {
@@ -32,11 +34,14 @@ const AllAppsScreen: React.FC = () => {
     [desktopMethods]
   )
 
+  const allAppScreenClassName = classnames(
+    'absolute h-full w-full left-0 top-0 z-30 justify-center border-black border-opacity-60 bg-black bg-opacity-70',
+    {
+      hidden: !allAppsScreen
+    }
+  )
   return (
-    <div
-      style={{ paddingRight: 52 }}
-      className="absolute h-full w-full left-0 top-0 z-30 justify-center border-black border-opacity-60 bg-black bg-opacity-70"
-    >
+    <div style={{ paddingRight: 52 }} className={allAppScreenClassName}>
       <div style={{ paddingTop: 30 }} className="relative w-full h-full">
         <div className="flex p-5 align-center justify-center">
           <SearchInput placeholder="Type to Search..." />
