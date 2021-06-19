@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
 import classnames from 'classnames'
 import Draggable, { DraggableProps } from '@/components/draggable'
 import App, { AppProps } from '@/components/app'
@@ -85,10 +85,18 @@ const DesktopApp: React.FC<DesktopAppProps> = (props) => {
     e.preventDefault()
   })
 
+  const draggleStyle: React.CSSProperties = useMemo(
+    () => ({
+      left: (position.left / window.innerWidth) * 100 + '%',
+      top: (position.top / window.innerHeight) * 100 + '%'
+    }),
+    [position]
+  )
+
   return (
     <Draggable
       ref={draggableRef}
-      style={{ left: position.left, top: position.top }}
+      style={draggleStyle}
       className={draggableClassName}
       data={props.app}
       onDragEnd={onDragEnd}
