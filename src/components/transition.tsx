@@ -45,10 +45,9 @@ const Transition: React.FC<TransitionProps> = ({
       return exist || visible || show
         ? React.cloneElement(children, {
             ...props,
-            style: {
-              ...(props.style ? props.style : {}),
+            style: Object.assign({}, props.style, {
               transitionDuration: duration + 'ms'
-            } as React.CSSProperties,
+            } as React.CSSProperties),
             className: transitionClassName
           })
         : null
