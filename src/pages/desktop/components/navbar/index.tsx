@@ -161,14 +161,11 @@ const Navbar: React.FC = () => {
       </ClickUnderline>
       <ClickUnderline className="relative" onClick={onStatusClick}>
         <Status icons={statusIcon} />
-        {statusMenuVisible && (
-          <StatusMenu
-            menus={statusMenus}
-            animate
-            animateDuration={200}
-            onClickAway={onStatusMenuVisibleClickAway}
-          />
-        )}
+        <StatusMenu
+          visible={statusMenuVisible}
+          menus={statusMenus}
+          onClickAway={onStatusMenuVisibleClickAway}
+        />
       </ClickUnderline>
     </div>
   )

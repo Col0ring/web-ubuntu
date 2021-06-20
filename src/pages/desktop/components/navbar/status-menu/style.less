@@ -1,5 +1,18 @@
-.top-arrow-up {
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-bottom: 10px solid #333333;
+.status-menu {
+  transform: translateY(-10px);
+  opacity: 0;
+  .top-arrow-up {
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid #333333;
+  }
+
+  &.status-menu-show {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+  &.status-menu-leave {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
 }
