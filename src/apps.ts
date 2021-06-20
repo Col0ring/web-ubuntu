@@ -7,8 +7,7 @@ const apps: AppConfig[] = [
     icon: './themes/Yaru/apps/firefox.svg',
     disabled: false,
     favorite: true,
-    shortcut: true,
-    meta: {}
+    shortcut: true
   },
   {
     id: 'todo-ist',
@@ -16,8 +15,7 @@ const apps: AppConfig[] = [
     icon: './themes/Yaru/apps/todoist.png',
     disabled: false,
     favorite: true,
-    shortcut: false,
-    meta: {}
+    shortcut: false
   },
   {
     id: 'about-col0ring',
@@ -25,8 +23,7 @@ const apps: AppConfig[] = [
     icon: './themes/Yaru/system/user-home.png',
     disabled: false,
     favorite: true,
-    shortcut: true,
-    meta: {}
+    shortcut: true
   },
   {
     id: 'vscode',
@@ -34,8 +31,7 @@ const apps: AppConfig[] = [
     icon: './themes/Yaru/apps/vscode.png',
     disabled: false,
     favorite: true,
-    shortcut: false,
-    meta: {}
+    shortcut: false
   },
   {
     id: 'terminal',
@@ -43,17 +39,15 @@ const apps: AppConfig[] = [
     icon: './themes/Yaru/apps/bash.png',
     disabled: false,
     favorite: true,
-    shortcut: false,
-    meta: {}
+    shortcut: false
   },
   {
     id: 'music',
     title: 'Music',
     icon: './themes/Yaru/apps/vue-aplayer-round.png',
     disabled: false,
-    favorite: true,
-    shortcut: false,
-    meta: {}
+    favorite: false,
+    shortcut: false
   },
   {
     id: 'settings',
@@ -61,8 +55,7 @@ const apps: AppConfig[] = [
     icon: './themes/Yaru/apps/gnome-control-center.png',
     disabled: false,
     favorite: true,
-    shortcut: false,
-    meta: {}
+    shortcut: false
   },
   {
     id: 'trash',
@@ -70,8 +63,7 @@ const apps: AppConfig[] = [
     icon: './themes/Yaru/system/user-trash-full.png',
     disabled: false,
     favorite: true,
-    shortcut: false,
-    meta: {}
+    shortcut: false
   },
   {
     id: 'gedit',
@@ -79,8 +71,7 @@ const apps: AppConfig[] = [
     icon: './themes/Yaru/apps/gedit.png',
     disabled: false,
     favorite: false,
-    shortcut: true,
-    meta: {}
+    shortcut: true
   }
 ]
 export default apps

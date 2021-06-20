@@ -19,10 +19,11 @@ const Transition: React.FC<TransitionProps> = ({
   enterClassName = ''
 }) => {
   const [show, setShow] = useState(visible)
-  const { run } = useTimeoutFn((visible: boolean) => {
+  const { run, cancel } = useTimeoutFn((visible: boolean) => {
     setShow(visible)
   }, duration)
   useEffect(() => {
+    cancel()
     if (visible) {
       setShow(visible)
     } else {

@@ -8,3 +8,8 @@ export const defaultImages = {
   'wall-7': '/images/wallpapers/wall-7.png',
   'wall-8': '/images/wallpapers/wall-8.jpg'
 }
+
+export const defaultAppRect = {
+  width: 500,
+  height: 600
+}

@@ -1,5 +1,3 @@
-import { Key } from './tools'
-
 export interface AppConfig {
   id: string
   title: string
@@ -8,5 +6,12 @@ export interface AppConfig {
   favorite?: boolean
   // 快捷方式
   shortcut?: boolean
-  meta?: Record<Key, any>
+  [prop: string]: any
+}
+
+export interface OpenedAppConfig extends AppConfig {
+  rect: {
+    width: number
+    height: number
+  }
 }

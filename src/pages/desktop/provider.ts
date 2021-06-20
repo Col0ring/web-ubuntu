@@ -2,7 +2,7 @@ import createMethodsContext from '@/hooks/common/factory/createMethodsContext'
 import apps from '@/apps'
 import { AppConfig } from '@/typings/app'
 import { DesktopContextValue } from './type'
-import { defaultImages } from './config'
+import { defaultAppRect, defaultImages } from './config'
 
 const [useDesktopContext, DesktopProvider, withDesktopProvider] =
   createMethodsContext(
@@ -17,14 +17,36 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
         return { ...state, lockScreen: visible }
       },
       openApp(id: string, app: AppConfig) {
-        if (state.openApps[id]) {
+        if (state.openedApps[id]) {
           return { ...state, focusAppId: id }
         }
         return {
           ...state,
           focusAppId: id,
-          openApps: {
-            ...state.openApps,
+          openedApps: {
+            ...state.openedApps,
+            [id]: {
+              ...app,
+              rect: { ...defaultAppRect }
+            }
+          }
+        }
+      },
+      closeApp(id: string) {
+        return {
+          ...state,
+          focusAppId: state.focusAppId === id ? '' : state.focusAppId,
+          openedApps: {
+            ...state.openedApps,
+            [id]: null
+          }
+        }
+      },
+      minimizeApp(id: string, app: AppConfig) {
+        return {
+          ...state,
+          minimizedApps: {
+            ...state.minimizedApps,
             [id]: app
           }
         }
@@ -36,7 +58,7 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
       allAppsScreen: false,
       lockScreen: false,
       focusAppId: '',
-      openApps: {},
+      openedApps: {},
       minimizedApps: {},
       frequentApps: [],
       apps
