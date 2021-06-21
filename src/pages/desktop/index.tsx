@@ -22,9 +22,17 @@ const Desktop: React.FC = () => {
       <Navbar />
       <Sidebar />
       <AppWindow
-        style={{
-          width: 600,
-          height: 500
+        app={{
+          id: 'firefox',
+          title: 'Firefox Browser',
+          icon: './themes/Yaru/apps/firefox.svg',
+          disabled: false,
+          favorite: true,
+          shortcut: true,
+          rect: {
+            width: 1,
+            height: 1
+          }
         }}
       />
       <AllAppsScreen />
