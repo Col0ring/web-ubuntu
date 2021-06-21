@@ -2,6 +2,7 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import useAuthContext from '@/hooks/useAuthContext'
 
 const baseURL = '/mock'
+// retry refactor
 const service = axios.create({
   timeout: 26000,
   baseURL

@@ -2,7 +2,7 @@ import createMethodsContext from '@/hooks/common/factory/createMethodsContext'
 import apps from '@/apps'
 import { AppConfig } from '@/typings/app'
 import { DesktopContextValue } from './type'
-import { defaultAppRect, defaultImages } from './config'
+import { defaultWindowRect, defaultImages } from './config'
 
 const [useDesktopContext, DesktopProvider, withDesktopProvider] =
   createMethodsContext(
@@ -27,7 +27,7 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
             ...state.openedApps,
             [id]: {
               ...app,
-              rect: { ...defaultAppRect }
+              rect: { ...defaultWindowRect }
             }
           }
         }

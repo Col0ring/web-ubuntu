@@ -7,6 +7,7 @@ import useClickAway from '@/hooks/common/useClickAway'
 import useEventListener from '@/hooks/common/useEventListener'
 import useDomRect from '@/hooks/common/useDomRect'
 import useUpdateEffect from '@/hooks/common/useUpdateEffect'
+import { defaultDesktop } from '../config'
 
 export interface DesktopAppProps extends AppProps {}
 
@@ -58,7 +59,9 @@ const DesktopApp: React.FC<DesktopAppProps> = (props) => {
   })
   const onDragStart: Required<DraggableProps>['onDragStart'] = useCallback(
     (data: AppConfig, e) => {
-      const { left, top } = (e.target as HTMLDivElement).getBoundingClientRect()
+      const { left, top } = (
+        e.currentTarget as HTMLDivElement
+      ).getBoundingClientRect()
       setOffset({
         left: e.clientX - left,
         top: e.clientY - top
@@ -81,8 +84,8 @@ const DesktopApp: React.FC<DesktopAppProps> = (props) => {
         top = window.innerHeight - rect.width
       }
 
-      if (top < 0) {
-        top = 0
+      if (top < defaultDesktop.navbar) {
+        top = defaultDesktop.navbar
       }
       setPosition({
         left,

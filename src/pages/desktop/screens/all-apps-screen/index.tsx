@@ -1,11 +1,12 @@
 import React, { useCallback, useState } from 'react'
 import classnames from 'classnames'
 import Tabs, { TabsProps } from '@/components/tabs'
+import Transition from '@/components/transition'
 import App, { AppProps } from '@/components/app'
 import SearchInput from './search-input'
 import { useDesktopContext } from '../../provider'
-import Transition from '@/components/transition'
 import './style.less'
+import { defaultDesktop } from '../../config'
 const tabs: TabsProps['tabs'] = [
   {
     name: 'Frequent'
@@ -46,8 +47,14 @@ const AllAppsScreen: React.FC = () => {
       exist
       visible={allAppsScreen}
     >
-      <div style={{ paddingRight: 52 }} className={allAppScreenClassName}>
-        <div style={{ paddingTop: 30 }} className="relative w-full h-full">
+      <div
+        style={{ paddingRight: defaultDesktop.sidebar }}
+        className={allAppScreenClassName}
+      >
+        <div
+          style={{ paddingTop: defaultDesktop.navbar }}
+          className="relative w-full h-full"
+        >
           <div className="flex p-5 align-center justify-center">
             <SearchInput placeholder="Type to Search..." />
           </div>

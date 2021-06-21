@@ -9,7 +9,17 @@ export const defaultImages = {
   'wall-8': '/images/wallpapers/wall-8.jpg'
 }
 
-export const defaultAppRect = {
+export const defaultWindowRect = {
   width: 500,
   height: 600
+}
+
+export const defaultDesktop = {
+  navbar: 30,
+  sidebar: 52
+}
+
+export const dataTarget = {
+  editButtons: 'edit-buttons',
+  toolbar: 'toolbar'
 }

@@ -4,8 +4,9 @@ import { useDesktopContext, withDesktopProvider } from './provider'
 import AllAppsScreen from './screens/all-apps-screen'
 import Navbar from './components/navbar'
 import Sidebar from './components/sidebar'
-import DesktopApp from './desktop-app'
+import DesktopApp from './components/desktop-app'
 import LockScreen from './screens/lock-screen'
+import AppWindow from './components/app-window'
 
 const Desktop: React.FC = () => {
   const [desktopState] = useDesktopContext()
@@ -20,6 +21,12 @@ const Desktop: React.FC = () => {
         ))}
       <Navbar />
       <Sidebar />
+      <AppWindow
+        style={{
+          width: 600,
+          height: 500
+        }}
+      />
       <AllAppsScreen />
       <LockScreen />
     </div>
