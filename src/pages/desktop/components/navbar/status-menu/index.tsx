@@ -31,6 +31,7 @@ const StatusMenu: React.FC<StatusMenuProps> = ({
       enterClassName="status-menu-show"
       leaveClassName="status-menu-leave"
       duration={200}
+      nodeRef={statusMenuRef}
       visible={visible}
     >
       <div ref={statusMenuRef} className={statusMenuClassName}>

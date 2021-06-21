@@ -1,24 +1,32 @@
 import useHover from '@/hooks/common/useHover'
 import React, { useRef } from 'react'
+import { defaultDesktop } from '../../config'
 
 export interface SidebarAreaProps {
   onEnter?: () => void
   onLeave?: () => void
 }
 
-const SidebarArea: React.FC<SidebarAreaProps> = ({ onEnter, onLeave }) => {
-  const SidebarAreaRef = useRef<HTMLDivElement | null>(null)
+const SidebarArea: React.FC<SidebarAreaProps> = ({
+  onEnter,
+  onLeave,
+  children
+}) => {
+  const sidebarAreaRef = useRef<HTMLDivElement | null>(null)
 
-  useHover(SidebarAreaRef, {
+  useHover(sidebarAreaRef, {
     onEnter,
     onLeave
   })
 
   return (
     <div
-      ref={SidebarAreaRef}
-      className="w-1 h-full absolute top-0 left-0 bg-transparent z-50 opacity-0"
-    ></div>
+      ref={sidebarAreaRef}
+      style={{ width: defaultDesktop.sidebar }}
+      className="h-full absolute top-0 right-0  z-40"
+    >
+      {children}
+    </div>
   )
 }
 

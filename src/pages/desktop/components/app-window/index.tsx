@@ -8,6 +8,7 @@ import Vscode from '../../apps/vscode'
 import { defaultWindowRect, dataTarget, defaultDesktop } from '../../config'
 import { OpenedAppConfig } from '@/typings/app'
 import './style.less'
+import { useDesktopContext } from '../../provider'
 
 export interface AppWindowProps {
   app: OpenedAppConfig
@@ -22,6 +23,7 @@ const AppWindow: React.FC<AppWindowProps> = ({
   isMinimized,
   isFocus
 }) => {
+  const [, desktopMethods] = useDesktopContext()
   const [position, setPosition] = useState({
     left: app.position.left || 0,
     top: app.position.top || 0
@@ -60,6 +62,11 @@ const AppWindow: React.FC<AppWindowProps> = ({
         if (left < 0) {
           left = 1
         }
+        if (left >= window.innerWidth - width - defaultDesktop.sidebar) {
+          desktopMethods.setSidebar(false)
+        } else {
+          desktopMethods.setSidebar(true)
+        }
         if (left > window.innerWidth - width) {
           left = window.innerWidth - width
         }
@@ -77,7 +84,7 @@ const AppWindow: React.FC<AppWindowProps> = ({
         })
       }
     }),
-    [setPosition]
+    [setPosition, defaultDesktop]
   )
   const appWindowStyle = useMemo(() => {
     const width = app.rect.width || defaultWindowRect.width
@@ -105,7 +112,9 @@ const AppWindow: React.FC<AppWindowProps> = ({
       {...movableProps}
     >
       <Toolbar title="About Col0ring" />
-      <MainView>{/* <Vscode /> */}</MainView>
+      <MainView>
+        <Vscode />
+      </MainView>
     </Movable>
   )
 }

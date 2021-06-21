@@ -16,6 +16,7 @@ export type Apps = Record<string, AppConfig | null>
 export type OpenedApps = Record<string, OpenedAppConfig | null>
 
 export interface DesktopContextValue {
+  sidebar: boolean
   backgroundImage: string
   backgroundImages: Record<string, string>
   allAppsScreen: boolean

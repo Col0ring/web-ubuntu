@@ -10,6 +10,9 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
       chooseBackgroundImage(image: string) {
         return { ...state, backgroundImage: image }
       },
+      setSidebar(visible: boolean) {
+        return { ...state, sidebar: visible }
+      },
       setAllAppsScreen(visible: boolean) {
         return { ...state, allAppsScreen: visible }
       },
@@ -61,6 +64,7 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
       backgroundImages: defaultImages,
       allAppsScreen: false,
       lockScreen: false,
+      sidebar: true,
       focusAppId: '',
       openedApps: {},
       minimizedApps: {},
