@@ -81,7 +81,7 @@ const DesktopApp: React.FC<DesktopAppProps> = (props) => {
       }
 
       if (top > window.innerHeight - rect.height) {
-        top = window.innerHeight - rect.width
+        top = window.innerHeight - rect.height
       }
 
       if (top < defaultDesktop.navbar) {

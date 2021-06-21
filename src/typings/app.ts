@@ -11,7 +11,11 @@ export interface AppConfig {
 
 export interface OpenedAppConfig extends AppConfig {
   rect: {
-    width: number
-    height: number
+    width: number | string
+    height: number | string
+  }
+  position: {
+    left: number | string
+    top: number | string
   }
 }

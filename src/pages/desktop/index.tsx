@@ -30,8 +30,12 @@ const Desktop: React.FC = () => {
           favorite: true,
           shortcut: true,
           rect: {
-            width: 1,
-            height: 1
+            width: 0,
+            height: 0
+          },
+          position: {
+            left: 0,
+            top: 0
           }
         }}
       />

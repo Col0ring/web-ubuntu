@@ -10,8 +10,8 @@ export const defaultImages = {
 }
 
 export const defaultWindowRect = {
-  width: 500,
-  height: 600
+  width: '85%',
+  height: '80%'
 }
 
 export const defaultDesktop = {

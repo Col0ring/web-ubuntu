@@ -27,7 +27,11 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
             ...state.openedApps,
             [id]: {
               ...app,
-              rect: { ...defaultWindowRect }
+              rect: { ...defaultWindowRect },
+              position: {
+                left: 0,
+                top: 0
+              }
             }
           }
         }
