@@ -11,6 +11,7 @@ import { OpenedAppConfig } from '@/typings/app'
 import './style.less'
 import { useDesktopContext } from '../../provider'
 import { Percentage } from '@/typings/tools'
+import useTimeoutValue from '@/hooks/common/useTimeoutValue'
 
 export interface AppWindowProps {
   app: OpenedAppConfig
@@ -30,6 +31,8 @@ const AppWindow: React.FC<AppWindowProps> = ({
     left: app.position.left || 0,
     top: app.position.top || 0
   })
+
+  const isMaximizedTimeout = useTimeoutValue(isMaximized, 300)
 
   const appWindowRef = useRef<HTMLDivElement | null>(null)
   const appWindowClassName = classnames(
@@ -154,7 +157,7 @@ const AppWindow: React.FC<AppWindowProps> = ({
   return (
     <Transition
       nodeRef={appWindowRef}
-      duration={isMaximized ? 300 : 0}
+      duration={isMaximized || isMaximizedTimeout ? 300 : 0}
       visible={true}
       exist
     >
