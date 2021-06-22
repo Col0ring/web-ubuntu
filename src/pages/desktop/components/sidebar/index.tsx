@@ -5,15 +5,14 @@ import { obj2arr } from '@/utils/tool'
 import { AppConfig } from '@/typings/app'
 import SidebarApp, { SidebarAppProps } from './sidebar-app'
 import { useDesktopContext } from '../../provider'
-import SidebarArea from './sidebar-area'
+import SidebarArea, { SidebarAreaProps } from './sidebar-area'
 import AllAppsButton, { AllAppsButtonProps } from './all-apps-button'
 import './style.less'
+import { defaultDesktop } from '../../config'
 
 const Sidebar: React.FC = () => {
-  const [
-    { apps, openedApps, minimizedApps, allAppsScreen, sidebar },
-    desktopMethods
-  ] = useDesktopContext()
+  const [{ apps, openedApps, minimizedApps, allAppsScreen }, desktopMethods] =
+    useDesktopContext()
   const [forceSidebarRender, setForceSidebarRender] = useState(false)
   const sidebarClassName = classnames(
     'desktop-sidebar select-none h-full pt-7 flex flex-col justify-start items-center border-black border-opacity-60 bg-black bg-opacity-50'
@@ -34,14 +33,40 @@ const Sidebar: React.FC = () => {
     useCallback(() => {
       desktopMethods.setAllAppsScreen(!allAppsScreen)
     }, [allAppsScreen])
+
+  const sidebarAreaMethods: Required<SidebarAreaProps> = useMemo(
+    () => ({
+      onEnter: () => {
+        setForceSidebarRender(true)
+      },
+      onLeave: () => {
+        setForceSidebarRender(false)
+      }
+    }),
+    [setForceSidebarRender]
+  )
+
+  const sidebar = useMemo(() => {
+    return obj2arr(openedApps).every((app) => {
+      if (!app || minimizedApps[app.id]) {
+        return true
+      }
+      const width =
+        typeof app.rect.width === 'number'
+          ? app.rect.width
+          : (window.innerWidth * Number.parseFloat(`${app.rect.width}`)) / 100
+      const left =
+        typeof app.position.left === 'number'
+          ? app.rect.width
+          : (window.innerWidth * Number.parseFloat(`${app.position.left}`)) /
+            100
+      return left < window.innerWidth - width - defaultDesktop.sidebar
+    })
+  }, [openedApps, minimizedApps])
   return (
     <SidebarArea
-      onEnter={() => {
-        setForceSidebarRender(true)
-      }}
-      onLeave={() => {
-        setForceSidebarRender(false)
-      }}
+      // if the window is maximized,can not enter
+      {...sidebarAreaMethods}
     >
       <Transition
         duration={500}

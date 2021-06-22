@@ -1,3 +1,5 @@
+import { Percentage } from '@/typings/tools'
+
 export const defaultImages = {
   'wall-1': '/images/wallpapers/wall-1.jpg',
   'wall-2': '/images/wallpapers/wall-2.png',
@@ -9,7 +11,10 @@ export const defaultImages = {
   'wall-8': '/images/wallpapers/wall-8.jpg'
 }
 
-export const defaultWindowRect = {
+export const defaultWindowRect: {
+  width: Percentage
+  height: Percentage
+} = {
   width: '85%',
   height: '80%'
 }

@@ -15,12 +15,11 @@ const Transition: React.FC<TransitionProps> = ({
   children,
   visible = false,
   exist = false,
-  duration = 20,
+  duration,
   leaveClassName = '',
   enterClassName = '',
   nodeRef
 }) => {
-  duration = duration < 20 ? 20 : duration
   const [show, setShow] = useState(visible)
   const { run, cancel } = useTimeoutFn((visible: boolean) => {
     setShow(visible)
@@ -43,7 +42,9 @@ const Transition: React.FC<TransitionProps> = ({
       const props = children.props
       const transitionClassName = classnames(
         props.className,
-        'transition-all',
+        {
+          'transition-all': !!duration
+        },
         {
           hidden: exist && !(visible || show),
           [enterClassName]: show,

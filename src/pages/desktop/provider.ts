@@ -1,6 +1,6 @@
 import createMethodsContext from '@/hooks/common/factory/createMethodsContext'
 import apps from '@/apps'
-import { AppConfig } from '@/typings/app'
+import { AppConfig, OpenedAppConfig } from '@/typings/app'
 import { DesktopContextValue } from './type'
 import { defaultWindowRect, defaultImages } from './config'
 
@@ -21,7 +21,14 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
       },
       openApp(id: string, app: AppConfig) {
         if (state.openedApps[id]) {
-          return { ...state, focusAppId: id }
+          return {
+            ...state,
+            minimizedApps: {
+              ...state.minimizedApps,
+              [id]: null
+            },
+            focusAppId: id
+          }
         }
         return {
           ...state,
@@ -39,6 +46,15 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
           }
         }
       },
+      updateOpenedApp(id: string, app: OpenedAppConfig) {
+        return {
+          ...state,
+          openedApps: {
+            ...state.openedApps,
+            [id]: app
+          }
+        }
+      },
       closeApp(id: string) {
         return {
           ...state,
@@ -46,16 +62,53 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
           openedApps: {
             ...state.openedApps,
             [id]: null
+          },
+          maximizedApps: {
+            ...state.maximizedApps,
+            [id]: null
+          },
+          minimizedApps: {
+            ...state.minimizedApps,
+            [id]: null
           }
         }
       },
       minimizeApp(id: string, app: AppConfig) {
+        if (state.minimizedApps[id]) {
+          return {
+            ...state,
+            minimizedApps: {
+              ...state.maximizedApps,
+              [id]: null
+            }
+          }
+        }
         return {
           ...state,
           minimizedApps: {
             ...state.minimizedApps,
             [id]: app
           }
+        }
+      },
+      maximizeApp(id: string, app: AppConfig) {
+        if (state.maximizedApps[id]) {
+          return {
+            ...state,
+            maximizedApps: {
+              ...state.maximizedApps,
+              [id]: null
+            },
+            focusAppId: id
+          }
+        }
+        return {
+          ...state,
+          maximizedApps: {
+            ...state.maximizedApps,
+            [id]: app
+          },
+          focusAppId: id
         }
       }
     }),
@@ -64,10 +117,10 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
       backgroundImages: defaultImages,
       allAppsScreen: false,
       lockScreen: false,
-      sidebar: true,
       focusAppId: '',
       openedApps: {},
       minimizedApps: {},
+      maximizedApps: {},
       frequentApps: [],
       apps
     } as DesktopContextValue

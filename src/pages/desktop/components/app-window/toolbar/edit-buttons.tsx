@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react'
 import classnames from 'classnames'
 import { dataTarget } from '../../../../desktop/config'
+import { stopPropagation } from '@/utils/tool'
 export interface EditButtonsProps {
   className?: string
   onMinimize?: React.MouseEventHandler<HTMLButtonElement>
@@ -30,7 +31,11 @@ const EditButtons: React.FC<EditButtonsProps> = ({
     'flex justify-center items-center'
   )
   return (
-    <div data-target={dataTarget.editButtons} className={editButtonsClassName}>
+    <div
+      onClick={stopPropagation}
+      data-target={dataTarget.editButtons}
+      className={editButtonsClassName}
+    >
       <button
         className="focus:outline-none cursor-default mx-1.5 bg-white bg-opacity-0 hover:bg-opacity-10 rounded-full flex justify-center h-5 w-5 items-center"
         onClick={onMinimize}

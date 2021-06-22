@@ -16,7 +16,6 @@ export type Apps = Record<string, AppConfig | null>
 export type OpenedApps = Record<string, OpenedAppConfig | null>
 
 export interface DesktopContextValue {
-  sidebar: boolean
   backgroundImage: string
   backgroundImages: Record<string, string>
   allAppsScreen: boolean
@@ -24,6 +23,7 @@ export interface DesktopContextValue {
   focusAppId: string
   openedApps: OpenedApps
   minimizedApps: Apps
+  maximizedApps: Apps
   frequentApps: AppConfig[]
   apps: AppConfig[]
 }

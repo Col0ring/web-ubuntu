@@ -1,3 +1,5 @@
+import { Percentage } from './tools'
+
 export interface AppConfig {
   id: string
   title: string
@@ -11,11 +13,11 @@ export interface AppConfig {
 
 export interface OpenedAppConfig extends AppConfig {
   rect: {
-    width: number | string
-    height: number | string
+    width: number | Percentage
+    height: number | Percentage
   }
   position: {
-    left: number | string
-    top: number | string
+    left: number | Percentage
+    top: number | Percentage
   }
 }

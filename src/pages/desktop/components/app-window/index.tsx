@@ -1,14 +1,16 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useEffect, useRef, useState } from 'react'
 import classnames from 'classnames'
 import { getParentNode } from '@/utils/tool'
-import Toolbar from './toolbar'
+import Toolbar, { ToolbarProps } from './toolbar'
 import MainView from './main-view'
+import Transition from '@/components/transition'
 import Movable, { MovableProps } from '@/components/movable'
 import Vscode from '../../apps/vscode'
 import { defaultWindowRect, dataTarget, defaultDesktop } from '../../config'
 import { OpenedAppConfig } from '@/typings/app'
 import './style.less'
 import { useDesktopContext } from '../../provider'
+import { Percentage } from '@/typings/tools'
 
 export interface AppWindowProps {
   app: OpenedAppConfig
@@ -29,12 +31,13 @@ const AppWindow: React.FC<AppWindowProps> = ({
     top: app.position.top || 0
   })
 
+  const appWindowRef = useRef<HTMLDivElement | null>(null)
   const appWindowClassName = classnames(
     'm-auto overflow-hidden max-w-full min-w-1/4 min-h-1/4  absolute window-shadow border-black border-opacity-40 border border-t-0 flex flex-col bg-ub-window-title',
-    isMaximized ? 'duration-300 rounded-none' : 'rounded-lg rounded-b-none',
-    isFocus ? 'z-30' : 'z-20 not-focus',
+    isMaximized ? 'z-50 rounded-none' : 'rounded-lg rounded-b-none',
+    isFocus ? 'z-50' : 'z-20 not-focus',
     {
-      'opacity-0 invisible duration-200': isMinimized
+      hidden: isMinimized
     }
   )
 
@@ -62,11 +65,7 @@ const AppWindow: React.FC<AppWindowProps> = ({
         if (left < 0) {
           left = 1
         }
-        if (left >= window.innerWidth - width - defaultDesktop.sidebar) {
-          desktopMethods.setSidebar(false)
-        } else {
-          desktopMethods.setSidebar(true)
-        }
+
         if (left > window.innerWidth - width) {
           left = window.innerWidth - width
         }
@@ -82,40 +81,93 @@ const AppWindow: React.FC<AppWindowProps> = ({
           left,
           top
         })
+      },
+      onClick: () => {
+        desktopMethods.openApp(app.id, app)
       }
     }),
-    [setPosition, defaultDesktop]
+    [setPosition, defaultDesktop, app, desktopMethods]
   )
-  const appWindowStyle = useMemo(() => {
-    const width = app.rect.width || defaultWindowRect.width
-    const height = app.rect.height || defaultWindowRect.height
+  const appWindowStyle: React.CSSProperties = useMemo(() => {
+    const width = isMaximized
+      ? '100%'
+      : app.rect.width || defaultWindowRect.width
+    const height = isMaximized
+      ? '100%'
+      : app.rect.height || defaultWindowRect.height
+    const left = isMaximized
+      ? 0
+      : typeof position.left === 'number'
+      ? (position.left / window.innerWidth) * 100 + '%'
+      : position.left
+    const right = position.left ? undefined : '0%'
+    const top = isMaximized
+      ? 0
+      : typeof position.top === 'number'
+      ? (position.top / window.innerHeight) * 100 + '%'
+      : position.top
+    const bottom = position.top ? undefined : '0%'
     return {
       width,
       height,
-      left:
-        typeof position.left === 'number'
-          ? (position.left / window.innerWidth) * 100 + '%'
-          : position.left,
-      right: position.left ? undefined : 0,
-      top:
-        typeof position.top === 'number'
-          ? (position.top / window.innerHeight) * 100 + '%'
-          : position.top,
-      bottom: position.top ? undefined : 0
+      left,
+      top,
+      right,
+      bottom
     }
-  }, [position, app])
+  }, [position, isMaximized, app.rect.width, app.rect.height, desktopMethods])
+
+  useEffect(() => {
+    if (!isMaximized) {
+      desktopMethods.updateOpenedApp(app.id, {
+        ...app,
+        rect: {
+          width: appWindowStyle.width as Percentage,
+          height: appWindowStyle.height as Percentage
+        },
+        position: {
+          left: appWindowStyle.left as Percentage,
+          top: appWindowStyle.top as Percentage
+        }
+      })
+    }
+  }, [appWindowStyle, isMaximized])
+
+  const ToolbarMethods: Pick<
+    Required<ToolbarProps>,
+    'onMaximize' | 'onClose' | 'onMinimize'
+  > = useMemo(
+    () => ({
+      onClose: () => {
+        desktopMethods.closeApp(app.id)
+      },
+      onMaximize: () => {
+        desktopMethods.maximizeApp(app.id, app)
+      },
+      onMinimize: () => {
+        desktopMethods.minimizeApp(app.id, app)
+      }
+    }),
+    [desktopMethods, app]
+  )
 
   return (
-    <Movable
-      style={appWindowStyle}
-      className={appWindowClassName}
-      {...movableProps}
+    <Transition
+      nodeRef={appWindowRef}
+      duration={isMaximized ? 300 : 0}
+      visible={true}
+      exist
     >
-      <Toolbar title="About Col0ring" />
-      <MainView>
-        <Vscode />
-      </MainView>
-    </Movable>
+      <Movable
+        ref={appWindowRef}
+        style={appWindowStyle}
+        className={appWindowClassName}
+        {...movableProps}
+      >
+        <Toolbar {...ToolbarMethods} title={app.title} />
+        <MainView>{/* <Vscode /> */}</MainView>
+      </Movable>
+    </Transition>
   )
 }
 
