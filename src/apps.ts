@@ -1,3 +1,4 @@
+import VsCode from './pages/desktop/apps/vscode'
 import { AppConfig } from './typings/app'
 
 const apps: AppConfig[] = [
@@ -31,7 +32,8 @@ const apps: AppConfig[] = [
     icon: './themes/Yaru/apps/vscode.png',
     disabled: false,
     favorite: true,
-    shortcut: false
+    shortcut: false,
+    component: VsCode
   },
   {
     id: 'terminal',

@@ -23,10 +23,10 @@ function useDomMove(
   { filterMoving, onMoveStart, onMoving, onMoveEnd }: useDomMoveOptions = {}
 ) {
   const onMoveDown = useCallback((e: MouseEvent) => {
-    onMoveStart?.(e)
     if (filterMoving && !filterMoving(e)) {
       return
     }
+    onMoveStart?.(e)
 
     const {
       width,

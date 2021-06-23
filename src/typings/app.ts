@@ -1,3 +1,4 @@
+import React from 'react'
 import { Percentage } from './tools'
 
 export interface AppConfig {
@@ -8,6 +9,8 @@ export interface AppConfig {
   favorite?: boolean
   // 快捷方式
   shortcut?: boolean
+  render?: () => React.ReactNode
+  component?: React.ComponentType<any> | React.ComponentType
   [prop: string]: any
 }
 

@@ -52,6 +52,7 @@ module.exports = {
         full: '100%'
       },
       zIndex: {
+        60: '60',
         '-10': '-10'
       }
     },
