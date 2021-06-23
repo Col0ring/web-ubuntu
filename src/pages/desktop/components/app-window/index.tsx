@@ -36,14 +36,16 @@ const AppWindow: React.FC<AppWindowProps> = ({
     width: app.rect.width || 0,
     height: app.rect.height || 0
   })
+  const rectRef = useRef(rect)
+  rectRef.current = rect
 
   const isMaximizedTimeout = useTimeoutValue(isMaximized, 300)
 
   const appWindowRef = useRef<HTMLDivElement | null>(null)
   const appWindowClassName = classnames(
-    'm-auto overflow-hidden max-w-full min-w-1/4 min-h-1/4  absolute window-shadow border-black border-opacity-40 border border-t-0 bg-ub-window-title',
+    'm-auto overflow-hidden max-w-full max-h-full absolute window-shadow border-black border-opacity-40 border border-t-0 bg-ub-window-title',
     isMaximized ? 'z-60 rounded-none' : 'rounded-lg rounded-b-none',
-    isFocus ? 'z-50' : 'z-20 not-focus',
+    isFocus ? 'z-30' : 'z-10 not-focus',
     {
       hidden: isMinimized
     }
@@ -120,6 +122,8 @@ const AppWindow: React.FC<AppWindowProps> = ({
       top,
       right,
       bottom,
+      minWidth: defaultWindowRect.minWidth,
+      minHeight: defaultWindowRect.minHeight,
       // set the Resizable to be absolute
       position: 'absolute'
     }
@@ -163,12 +167,16 @@ const AppWindow: React.FC<AppWindowProps> = ({
     () =>
       ({
         l: ({ width, offsetX, left }) => {
+          if (width - offsetX < defaultWindowRect.minWidth) {
+            return
+          }
           setRect((rect) => {
             return {
               width: width - offsetX,
               height: rect.height
             }
           })
+
           setPosition((position) => {
             return {
               top: position.top,
@@ -185,12 +193,16 @@ const AppWindow: React.FC<AppWindowProps> = ({
           })
         },
         t: ({ height, offsetY, top }) => {
+          if (height - offsetY < defaultWindowRect.minHeight) {
+            return
+          }
           setRect((rect) => {
             return {
               width: rect.width,
               height: height - offsetY
             }
           })
+
           setPosition((position) => {
             return {
               top,
@@ -207,6 +219,9 @@ const AppWindow: React.FC<AppWindowProps> = ({
           })
         },
         lb: ({ width, left, height, offsetX, offsetY }) => {
+          if (width - offsetX < defaultWindowRect.minWidth) {
+            return
+          }
           setRect({
             width: width - offsetX,
             height: height + offsetY
@@ -225,20 +240,31 @@ const AppWindow: React.FC<AppWindowProps> = ({
           })
         },
         lt: ({ width, height, offsetX, offsetY, top, left }) => {
+          if (
+            height - offsetY < defaultWindowRect.minHeight ||
+            width - offsetX < defaultWindowRect.minWidth
+          ) {
+            return
+          }
           setRect({
             width: width - offsetX,
             height: height - offsetY
           })
+
           setPosition({
             top,
             left
           })
         },
         rt: ({ width, height, offsetX, offsetY, top }) => {
+          if (height - offsetY < defaultWindowRect.minHeight) {
+            return
+          }
           setRect({
             width: width + offsetX,
             height: height - offsetY
           })
+
           setPosition((position) => {
             return {
               top,
@@ -247,7 +273,7 @@ const AppWindow: React.FC<AppWindowProps> = ({
           })
         }
       } as Record<Direction, (ctx: MoveContext) => void>),
-    [setRect, setPosition]
+    [setRect, rect, setPosition]
   )
 
   const resizableProps: ResizableProps = useMemo(

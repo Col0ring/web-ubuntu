@@ -14,9 +14,13 @@ export const defaultImages = {
 export const defaultWindowRect: {
   width: Percentage
   height: Percentage
+  minWidth: number
+  minHeight: number
 } = {
   width: '85%',
-  height: '80%'
+  height: '80%',
+  minWidth: (window.innerWidth * 1) / 4,
+  minHeight: (window.innerHeight * 1) / 4
 }
 
 export const defaultDesktop = {

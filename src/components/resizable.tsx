@@ -57,7 +57,7 @@ const Resizable: React.ForwardRefRenderFunction<
     onMoving: (ctx, e) => {
       onMoving?.(directionRef.current!, ctx, e)
     },
-    onMoveEnd: onMoveEnd
+    onMoveEnd
   })
   return (
     <div ref={ref || nodeRef} className={resizableClassName} style={style}>
