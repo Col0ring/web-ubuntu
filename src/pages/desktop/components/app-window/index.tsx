@@ -5,13 +5,14 @@ import Toolbar, { ToolbarProps } from './toolbar'
 import MainView from './main-view'
 import Transition from '@/components/transition'
 import Movable, { MovableProps } from '@/components/movable'
-import Vscode from '../../apps/vscode'
+import Resizable, { ResizableProps, Direction } from '@/components/resizable'
 import { defaultWindowRect, dataTarget, defaultDesktop } from '../../config'
 import { OpenedAppConfig } from '@/typings/app'
 import './style.less'
 import { useDesktopContext } from '../../provider'
 import { Percentage } from '@/typings/tools'
 import useTimeoutValue from '@/hooks/common/useTimeoutValue'
+import { MoveContext } from '@/hooks/common/useDomMove'
 
 export interface AppWindowProps {
   app: OpenedAppConfig
@@ -31,13 +32,17 @@ const AppWindow: React.FC<AppWindowProps> = ({
     left: app.position.left || 0,
     top: app.position.top || 0
   })
+  const [rect, setRect] = useState({
+    width: app.rect.width || 0,
+    height: app.rect.height || 0
+  })
 
   const isMaximizedTimeout = useTimeoutValue(isMaximized, 300)
 
   const appWindowRef = useRef<HTMLDivElement | null>(null)
   const appWindowClassName = classnames(
-    'm-auto overflow-hidden max-w-full min-w-1/4 min-h-1/4  absolute window-shadow border-black border-opacity-40 border border-t-0 flex flex-col bg-ub-window-title',
-    isMaximized ? 'z-50 rounded-none' : 'rounded-lg rounded-b-none',
+    'm-auto overflow-hidden max-w-full min-w-1/4 min-h-1/4  absolute window-shadow border-black border-opacity-40 border border-t-0 bg-ub-window-title',
+    isMaximized ? 'z-60 rounded-none' : 'rounded-lg rounded-b-none',
     isFocus ? 'z-50' : 'z-20 not-focus',
     {
       hidden: isMinimized
@@ -65,17 +70,17 @@ const AppWindow: React.FC<AppWindowProps> = ({
         )
       },
       onMoving: ({ left, top, width, height }) => {
-        if (left < 0) {
-          left = 1
-        }
+        // if (left < 0) {
+        //   left = 1
+        // }
 
-        if (left > window.innerWidth - width) {
-          left = window.innerWidth - width
-        }
+        // if (left > window.innerWidth - width) {
+        //   left = window.innerWidth - width
+        // }
 
-        if (top > window.innerHeight - height) {
-          top = window.innerHeight - height
-        }
+        // if (top > window.innerHeight - height) {
+        //   top = window.innerHeight - height
+        // }
 
         if (top < defaultDesktop.navbar) {
           top = defaultDesktop.navbar + 1
@@ -92,12 +97,10 @@ const AppWindow: React.FC<AppWindowProps> = ({
     [setPosition, defaultDesktop, app, desktopMethods]
   )
   const appWindowStyle: React.CSSProperties = useMemo(() => {
-    const width = isMaximized
-      ? '100%'
-      : app.rect.width || defaultWindowRect.width
+    const width = isMaximized ? '100%' : rect.width || defaultWindowRect.width
     const height = isMaximized
       ? '100%'
-      : app.rect.height || defaultWindowRect.height
+      : rect.height || defaultWindowRect.height
     const left = isMaximized
       ? 0
       : typeof position.left === 'number'
@@ -116,9 +119,11 @@ const AppWindow: React.FC<AppWindowProps> = ({
       left,
       top,
       right,
-      bottom
+      bottom,
+      // set the Resizable to be absolute
+      position: 'absolute'
     }
-  }, [position, isMaximized, app.rect.width, app.rect.height, desktopMethods])
+  }, [position, isMaximized, rect, desktopMethods])
 
   useEffect(() => {
     if (!isMaximized) {
@@ -154,22 +159,145 @@ const AppWindow: React.FC<AppWindowProps> = ({
     [desktopMethods, app]
   )
 
+  const resizeDirectionMethods = useMemo(
+    () =>
+      ({
+        l: ({ width, offsetX, left }) => {
+          setRect((rect) => {
+            return {
+              width: width - offsetX,
+              height: rect.height
+            }
+          })
+          setPosition((position) => {
+            return {
+              top: position.top,
+              left
+            }
+          })
+        },
+        r: ({ width, offsetX }) => {
+          setRect((rect) => {
+            return {
+              width: width + offsetX,
+              height: rect.height
+            }
+          })
+        },
+        t: ({ height, offsetY, top }) => {
+          setRect((rect) => {
+            return {
+              width: rect.width,
+              height: height - offsetY
+            }
+          })
+          setPosition((position) => {
+            return {
+              top,
+              left: position.left
+            }
+          })
+        },
+        b: ({ height, offsetY }) => {
+          setRect((rect) => {
+            return {
+              width: rect.width,
+              height: height + offsetY
+            }
+          })
+        },
+        lb: ({ width, left, height, offsetX, offsetY }) => {
+          setRect({
+            width: width - offsetX,
+            height: height + offsetY
+          })
+          setPosition((position) => {
+            return {
+              top: position.top,
+              left
+            }
+          })
+        },
+        rb: ({ width, height, offsetX, offsetY }) => {
+          setRect({
+            width: width + offsetX,
+            height: height + offsetY
+          })
+        },
+        lt: ({ width, height, offsetX, offsetY, top, left }) => {
+          setRect({
+            width: width - offsetX,
+            height: height - offsetY
+          })
+          setPosition({
+            top,
+            left
+          })
+        },
+        rt: ({ width, height, offsetX, offsetY, top }) => {
+          setRect({
+            width: width + offsetX,
+            height: height - offsetY
+          })
+          setPosition((position) => {
+            return {
+              top,
+              left: position.left
+            }
+          })
+        }
+      } as Record<Direction, (ctx: MoveContext) => void>),
+    [setRect, setPosition]
+  )
+
+  const resizableProps: ResizableProps = useMemo(
+    () => ({
+      onMoveStart: (e) => {
+        const { left, top } = (
+          e.currentTarget as HTMLElement
+        ).getBoundingClientRect()
+        setPosition((position) => {
+          if (position.left === left && position.top === top) {
+            return position
+          }
+          return {
+            top,
+            left
+          }
+        })
+      },
+      onMoving: (direction, ctx) => {
+        resizeDirectionMethods[direction](ctx)
+      }
+    }),
+    [setRect, setPosition, resizeDirectionMethods]
+  )
+
   return (
     <Transition
       nodeRef={appWindowRef}
+      // minimize animation
       duration={isMaximized || isMaximizedTimeout ? 300 : 0}
       visible={true}
       exist
     >
-      <Movable
+      <Resizable
+        className={appWindowClassName}
         ref={appWindowRef}
         style={appWindowStyle}
-        className={appWindowClassName}
-        {...movableProps}
+        {...resizableProps}
       >
-        <Toolbar {...ToolbarMethods} title={app.title} />
-        <MainView>{/* <Vscode /> */}</MainView>
-      </Movable>
+        <Movable {...movableProps} className="flex flex-col w-full h-full">
+          <Toolbar {...ToolbarMethods} title={app.title} />
+          <MainView>
+            {typeof app.render === 'function'
+              ? app.render()
+              : app.component
+              ? React.createElement(app.component)
+              : null}
+          </MainView>
+        </Movable>
+      </Resizable>
     </Transition>
   )
 }
