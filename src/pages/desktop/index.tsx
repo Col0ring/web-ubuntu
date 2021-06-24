@@ -24,6 +24,7 @@ const Desktop: React.FC = () => {
   return (
     <div className="h-full w-full flex flex-col justify-start content-start flex-wrap  pt-8 bg-transparent relative overflow-hidden overscroll-none">
       <BackgroundImage src={desktopState.backgroundImage} />
+      {/* desktop apps */}
       {desktopState.apps
         .filter((app) => app.shortcut)
         .map((app) => (
@@ -31,6 +32,7 @@ const Desktop: React.FC = () => {
         ))}
       <Navbar />
       <Sidebar />
+      {/* app windows */}
       {openedAppsArr.map((app) => {
         return (
           app && (

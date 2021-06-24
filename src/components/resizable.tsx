@@ -10,6 +10,7 @@ export interface ResizableProps extends React.HTMLAttributes<HTMLDivElement> {
   onMoving?: (direction: Direction, context: MoveContext, e: MouseEvent) => void
   onMoveEnd?: (e: MouseEvent) => void
   children?: React.ReactNode
+  disabled?: boolean
 }
 
 const directionsClassLit = directions.map((direction) => {
@@ -36,7 +37,18 @@ const directionsClassLit = directions.map((direction) => {
 const Resizable: React.ForwardRefRenderFunction<
   HTMLDivElement,
   ResizableProps
-> = ({ children, className, style, onMoving, onMoveEnd, onMoveStart }, ref) => {
+> = (
+  {
+    children,
+    className,
+    style,
+    onMoving,
+    onMoveEnd,
+    onMoveStart,
+    disabled = false
+  },
+  ref
+) => {
   const nodeRef = useRef<HTMLDivElement | null>(null)
   const directionRef = useRef<Direction>()
   const resizableClassName = classnames('relative', className)
@@ -61,15 +73,16 @@ const Resizable: React.ForwardRefRenderFunction<
   })
   return (
     <div ref={ref || nodeRef} className={resizableClassName} style={style}>
-      {directionsClassLit.map(({ direction, className }) => {
-        return (
-          <div
-            key={direction}
-            data-direction={direction}
-            className={className}
-          ></div>
-        )
-      })}
+      {!disabled &&
+        directionsClassLit.map(({ direction, className }) => {
+          return (
+            <div
+              key={direction}
+              data-direction={direction}
+              className={className}
+            ></div>
+          )
+        })}
       {children}
     </div>
   )

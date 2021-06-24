@@ -44,9 +44,9 @@ const DesktopApp: React.FC<DesktopAppProps> = (props) => {
         width: domRect.width,
         height: domRect.height
       })
-      requestAnimationFrame(() => {
-        setIsRender(true)
-      })
+      // to force a repaint,
+      draggableRef.current.scrollTop
+      setIsRender(true)
     }
   }, [domRect])
 
