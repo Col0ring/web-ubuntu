@@ -3,6 +3,8 @@ import { BrowserRouter, useLocation } from 'react-router-dom'
 import { matchRoutes, renderRoutes } from 'react-router-config'
 import { useRouterContext } from './provider'
 import { useSettingContext } from '@/setting/provider'
+import LazyLoad from '@/components/lazy-load'
+import Loading from '@/components/loading'
 
 const AppRouter: React.FC = ({ children }) => {
   return (
@@ -18,7 +20,11 @@ const AppRoutes: React.FC = () => {
   const { routes } = state
   const memoRoutes = useMemo(() => renderRoutes(routes), [routes])
 
-  return memoRoutes
+  return (
+    <LazyLoad fallback={<Loading loading loadingClassName="bg-black" />}>
+      {memoRoutes}
+    </LazyLoad>
+  )
 }
 
 const RouterHelper: React.FC = () => {

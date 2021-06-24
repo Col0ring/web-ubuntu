@@ -5,6 +5,7 @@ import Toolbar, { ToolbarProps } from './toolbar'
 import MainView from './main-view'
 import Transition from '@/components/transition'
 import Movable, { MovableProps } from '@/components/movable'
+import LazyLoad from '@/components/lazy-load'
 import Resizable, { ResizableProps, Direction } from '@/components/resizable'
 import { defaultWindowRect, dataTarget, defaultDesktop } from '../../config'
 import { OpenedAppConfig } from '@/typings/app'
@@ -45,8 +46,10 @@ const AppWindow: React.FC<AppWindowProps> = ({
   const appWindowClassName = classnames(
     'm-auto overflow-hidden max-w-full max-h-full absolute window-shadow border-black border-opacity-40 border border-t-0 bg-ub-window-title',
     isMaximized ? 'z-60 rounded-none' : 'rounded-lg rounded-b-none',
-    isFocus ? 'z-30' : 'z-10 not-focus',
     {
+      'not-focus': !isFocus,
+      'z-10 not-focus': !isFocus && !isMaximized,
+      'z-30': isFocus && !isMaximized,
       hidden: isMinimized
     }
   )
@@ -301,6 +304,7 @@ const AppWindow: React.FC<AppWindowProps> = ({
 
   return (
     <Transition
+      transitionProperty={['width', 'height', 'left', 'top']}
       nodeRef={appWindowRef}
       // minimize animation
       duration={isMaximized || isMaximizedTimeout ? 300 : 0}
@@ -308,6 +312,7 @@ const AppWindow: React.FC<AppWindowProps> = ({
       exist
     >
       <Resizable
+        disabled={isMaximized}
         className={appWindowClassName}
         ref={appWindowRef}
         style={appWindowStyle}
@@ -316,11 +321,13 @@ const AppWindow: React.FC<AppWindowProps> = ({
         <Movable {...movableProps} className="flex flex-col w-full h-full">
           <Toolbar {...ToolbarMethods} title={app.title} />
           <MainView>
-            {typeof app.render === 'function'
-              ? app.render()
-              : app.component
-              ? React.createElement(app.component)
-              : null}
+            <LazyLoad>
+              {typeof app.render === 'function'
+                ? app.render()
+                : app.component
+                ? React.createElement(app.component)
+                : null}
+            </LazyLoad>
           </MainView>
         </Movable>
       </Resizable>

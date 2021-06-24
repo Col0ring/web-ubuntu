@@ -1,6 +1,6 @@
-import VsCode from './pages/desktop/apps/vscode'
+import React from 'react'
 import { AppConfig } from './typings/app'
-
+const VsCode = React.lazy(() => import('@/pages/desktop/apps/vscode'))
 const apps: AppConfig[] = [
   {
     id: 'firefox',

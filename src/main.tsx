@@ -1,9 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { AppRouter, AppRoutes } from '@/router'
-import AppProvider from './provider'
-import Auth from './auth'
-import Setting from './setting'
+import AppProvider from '@/provider'
+import Auth from '@/auth'
+import Setting from '@/setting'
 import '@/styles/index.less'
 
 ReactDOM.render(
