@@ -22,26 +22,33 @@ const KeepAlive: React.FC<KeepAliveProps> = ({
     cacheMethods.cacheScroll(cacheId, e)
   })
   const cacheElement = cacheState[cacheId]
+  const cacheStatus = cacheElement?.status
+  const doms = cacheElement?.doms
 
   useEffect(() => {
     // cache  render
     if (
-      cacheElement &&
-      cacheElement.doms &&
-      cacheElement.status !== CacheStatus.DESTROY
+      doms &&
+      (cacheStatus === CacheStatus.CREATED ||
+        cacheStatus === CacheStatus.ACTIVATED)
     ) {
       cacheMethods.renderCacheDoms(cacheId, {
         scroll,
         parentNode: keepAliveRef.current!
       })
-    } else {
+    } else if (!cacheStatus || cacheStatus === CacheStatus.DESTROY) {
       // first render
       cacheMethods.addCacheElement(cacheId, <>{children}</>)
     }
-  }, [cacheElement, cacheMethods, cacheId, scroll, children])
+  }, [doms, cacheStatus, cacheMethods, cacheId, scroll, children])
+
+  useEffect(() => {
+    cacheElement?.status === CacheStatus.DEACTIVATED &&
+      cacheMethods.activate(cacheId)
+  }, [cacheStatus, cacheId, cacheMethods])
 
   useUnmount(() => {
-    cacheMethods.cacheDoms(cacheId)
+    cacheMethods.deactivate(cacheId)
   })
 
   return (

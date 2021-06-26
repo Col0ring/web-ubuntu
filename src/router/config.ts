@@ -1,4 +1,3 @@
-import Login from '@/pages/login'
 import Desktop from '@/pages/desktop'
 import { RouteConfigProps } from './type'
 import { convertRoutes } from './util'
@@ -8,8 +7,12 @@ export const accessRoutes: RouteConfigProps[] = convertRoutes([
   {
     title: 'desktop',
     path: '/desktop',
+    // if keep alive is turned on, do not use react.lazy
+    keepAlive: {
+      cacheId: 'desktop-page'
+    },
     exact: true,
-    component: React.lazy(() => import('@/pages/desktop'))
+    component: Desktop
   },
   {
     redirect: '/desktop'

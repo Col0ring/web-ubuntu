@@ -8,7 +8,6 @@ import DesktopApp, { DesktopAppProps } from './components/desktop-app'
 import LockScreen from './screens/lock-screen'
 import AppWindow from './components/app-window'
 import { obj2arr } from '@/utils/tool'
-import Example from '@/components/keep-alive/examples'
 
 const Desktop: React.FC = () => {
   const [desktopState, desktopMethods] = useDesktopContext()
@@ -22,6 +21,7 @@ const Desktop: React.FC = () => {
     },
     [desktopMethods]
   )
+
   return (
     <div className="h-full w-full flex flex-col justify-start content-start flex-wrap  pt-8 bg-transparent relative overflow-hidden overscroll-none">
       <BackgroundImage src={desktopState.backgroundImage} />
@@ -50,7 +50,6 @@ const Desktop: React.FC = () => {
 
       <AllAppsScreen />
       <LockScreen />
-      <Example />
     </div>
   )
 }

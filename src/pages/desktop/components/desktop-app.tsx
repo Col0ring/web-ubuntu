@@ -34,20 +34,24 @@ const DesktopApp: React.FC<DesktopAppProps> = (props) => {
   const domRect = useDomRect(draggableRef, [])
 
   useUpdateEffect(() => {
-    if (draggableRef.current) {
-      const domRect = draggableRef.current.getBoundingClientRect()
-      setPosition({
-        left: domRect.left,
-        top: domRect.top
-      })
-      setRect({
-        width: domRect.width,
-        height: domRect.height
-      })
-      // to force a repaint,
-      draggableRef.current.scrollTop
-      setIsRender(true)
-    }
+    requestAnimationFrame(() => {
+      if (draggableRef.current) {
+        const domRect = draggableRef.current.getBoundingClientRect()
+        setPosition({
+          left: domRect.left,
+          top: domRect.top
+        })
+        setRect({
+          width: domRect.width,
+          height: domRect.height
+        })
+        requestAnimationFrame(() => {
+          // to force a repaint,
+          draggableRef.current!.scrollTop
+          setIsRender(true)
+        })
+      }
+    })
   }, [domRect])
 
   useClickAway(draggableRef, () => {

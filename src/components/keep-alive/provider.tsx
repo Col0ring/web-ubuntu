@@ -47,6 +47,7 @@ const [useCacheContext, CacheProvider, withCacheProvider] =
         }
       },
       addCacheDoms(cacheId: string, doms: HTMLElement[]) {
+        // have element
         if (!state[cacheId]) {
           return state
         }
@@ -64,13 +65,11 @@ const [useCacheContext, CacheProvider, withCacheProvider] =
         { scroll, parentNode }: { scroll: boolean; parentNode: HTMLElement }
       ) {
         const cacheElement = state[cacheId]
-        if (cacheElement.status === CacheStatus.ACTIVE) {
-          return state
-        }
         // the cache doms
         const doms = cacheElement.doms
         const scrolls = cacheElement.scrolls
         doms.forEach((dom) => parentNode.appendChild(dom))
+
         if (scroll) {
           parentNode.scrollTo(scrolls.x, scrolls.y)
         }
@@ -82,15 +81,7 @@ const [useCacheContext, CacheProvider, withCacheProvider] =
           }
         }
       },
-      cacheDoms(cacheId: string) {
-        return {
-          ...state,
-          [cacheId]: {
-            ...state[cacheId],
-            status: CacheStatus.Cached
-          }
-        }
-      },
+
       cacheScroll(cacheId: string, e: Event) {
         const target = e.target as HTMLElement
         return {
@@ -101,6 +92,24 @@ const [useCacheContext, CacheProvider, withCacheProvider] =
               x: target.scrollLeft,
               y: target.scrollTop
             }
+          }
+        }
+      },
+      activate(cacheId: string) {
+        return {
+          ...state,
+          [cacheId]: {
+            ...state[cacheId],
+            status: CacheStatus.ACTIVATED
+          }
+        }
+      },
+      deactivate(cacheId: string) {
+        return {
+          ...state,
+          [cacheId]: {
+            ...state[cacheId],
+            status: CacheStatus.DEACTIVATED
           }
         }
       },

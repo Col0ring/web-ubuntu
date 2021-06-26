@@ -49,16 +49,21 @@ const Auth: React.FC = ({ children }) => {
     if (noLoginList.includes(pathname)) {
       return <Redirect to="/desktop" />
     }
+    return (
+      // 这里放 children 是为了先预加载
+      <PageLoading loading={!authState.isLogin && !authState.user}>
+        {children}
+      </PageLoading>
+    )
+    // // 验证 token
+    // if (!authState.user) {
+    //   return (
+    //     // 这里放 children 是为了先预加载
+    //     <PageLoading loading>{children}</PageLoading>
+    //   )
+    // }
 
-    // 验证 token
-    if (!authState.user) {
-      return (
-        // 这里放 children 是为了先预加载
-        <PageLoading loading>{children}</PageLoading>
-      )
-    }
-
-    return <>{children}</>
+    // return <>{children}</>
   } else {
     if (whiteList.includes(pathname)) {
       return <>{children}</>
