@@ -8,6 +8,7 @@ import DesktopApp, { DesktopAppProps } from './components/desktop-app'
 import LockScreen from './screens/lock-screen'
 import AppWindow from './components/app-window'
 import { obj2arr } from '@/utils/tool'
+import Example from '@/components/keep-alive/examples'
 
 const Desktop: React.FC = () => {
   const [desktopState, desktopMethods] = useDesktopContext()
@@ -49,6 +50,7 @@ const Desktop: React.FC = () => {
 
       <AllAppsScreen />
       <LockScreen />
+      <Example />
     </div>
   )
 }
