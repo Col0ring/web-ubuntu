@@ -20,7 +20,7 @@ function safeJsonParse<T extends Record<string | number | symbol, any>>(
   }
 }
 
-// TODO: 解析文件
+// TODO: parse file
 export function parseBody<T>(
   req: Connect.IncomingMessage
 ): Promise<Record<string, any>> {

@@ -3,10 +3,7 @@ import useAsyncFn from '@/hooks/common/useAsyncFn'
 import { reqLogin } from '@/api/user'
 import { useAuthContext } from '@/auth/provider'
 import LoginButton from './components/login-button'
-/**
- *
- * TODO: ShutDown can be keepalive the desktop
- */
+
 const Login: React.FC = () => {
   const [{ loading }, login] = useAsyncFn(reqLogin, [])
   const [, authMethods] = useAuthContext()

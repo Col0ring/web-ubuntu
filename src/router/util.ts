@@ -1,6 +1,7 @@
-import { KeepAlive } from '@/components/keep-alive'
 import React from 'react'
 import { Redirect } from 'react-router-dom'
+import { RouteConfigComponentProps } from 'react-router-config'
+import { KeepAlive } from '@/components/keep-alive'
 import { RouteConfigProps } from './type'
 
 export function convertRoutes(routes: RouteConfigProps[]): RouteConfigProps[] {
@@ -23,7 +24,14 @@ export function convertRoutes(routes: RouteConfigProps[]): RouteConfigProps[] {
             ...route.keepAlive!,
             className: 'w-full h-full'
           },
-          render ? render(props) : React.createElement(component as any, props)
+          render
+            ? render(props)
+            : component
+            ? React.createElement(
+                component as React.ComponentType<RouteConfigComponentProps>,
+                props
+              )
+            : null
         )
       }
     }

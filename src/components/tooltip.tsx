@@ -1,14 +1,12 @@
 import React, { useRef } from 'react'
 import classnames from 'classnames'
 import useHover from '@/hooks/common/useHover'
-
-type XDirection = 'left' | 'right'
-type YDirection = 'top' | 'bottom'
+import { Direction } from '@/typings/tools'
 
 export interface TooltipProps {
   className?: string
   title?: string
-  direction?: XDirection | YDirection | `${YDirection} ${XDirection}`
+  direction?: Direction
 }
 
 const directions: Record<Required<TooltipProps>['direction'], string> = {
