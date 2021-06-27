@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from 'react'
 import { BrowserRouter, useLocation } from 'react-router-dom'
 import { matchRoutes, renderRoutes } from 'react-router-config'
 import { useRouterContext } from './provider'
-import { useSettingContext } from '@/setting/provider'
+import useSettingContext from '@/hooks/useSettingContext'
 import LazyLoad from '@/components/lazy-load'
 
 import Loading from '@/components/loading'
@@ -22,6 +22,7 @@ const AppRoutes: React.FC = () => {
   const memoRoutes = useMemo(() => renderRoutes(routes), [routes])
 
   return (
+    // TODO: keep-alive lazy-load
     <LazyLoad fallback={<Loading loading loadingClassName="bg-black" />}>
       {memoRoutes}
     </LazyLoad>

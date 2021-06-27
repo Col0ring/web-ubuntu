@@ -51,7 +51,7 @@ const Auth: React.FC = ({ children }) => {
     }
     return (
       // 这里放 children 是为了先预加载
-      <PageLoading loading={!authState.isLogin && !authState.user}>
+      <PageLoading loading={!authState.isLogin || !authState.user}>
         {children}
       </PageLoading>
     )

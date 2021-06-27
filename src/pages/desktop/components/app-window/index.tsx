@@ -301,8 +301,8 @@ const AppWindow: React.FC<AppWindowProps> = ({
     }),
     [setRect, setPosition, resizeDirectionMethods]
   )
-
   return (
+    // TODO: close animation
     <Transition
       transitionProperty={['width', 'height', 'left', 'top']}
       nodeRef={appWindowRef}

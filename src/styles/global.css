@@ -12,11 +12,10 @@ body,
   height: fit-content;
 }
 
-.root,
-#root,
-#docs-root {
-  --window-transform-x: 0px;
-  --window-transform-y: 0px;
+.text-cut {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 /* Context Menu */

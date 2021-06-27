@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import Clock from '@/components/clock'
 import ClickUnderline from '@/components/click-underline'
-import { useSettingContext } from '@/setting/provider'
+import useSettingContext from '@/hooks/useSettingContext'
 import Arrow from '@/components/arrow'
 import Slider, { SliderProps } from '@/components/slider'
 import Status from './status'
