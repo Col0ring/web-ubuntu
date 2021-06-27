@@ -11,6 +11,7 @@ import { defaultDesktop } from '../config'
 
 export interface DesktopAppProps extends AppProps {}
 
+// need refactor
 const DesktopApp: React.FC<DesktopAppProps> = (props) => {
   const draggableRef = useRef<HTMLDivElement | null>(null)
   const [isFocus, setIsFocus] = useState(false)

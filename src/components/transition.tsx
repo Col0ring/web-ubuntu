@@ -22,7 +22,7 @@ const Transition: React.FC<TransitionProps> = ({
   enterClassName = '',
   nodeRef
 }) => {
-  const [show, setShow] = useState(visible)
+  const [show, setShow] = useState(false)
   const { run, cancel } = useTimeoutFn((visible: boolean) => {
     setShow(visible)
   }, duration)

@@ -3,6 +3,7 @@ import useAsyncFn from '@/hooks/common/useAsyncFn'
 import { reqLogin } from '@/api/user'
 import { useAuthContext } from '@/auth/provider'
 import LoginButton from './components/login-button'
+import message from '@/components/message'
 
 const Login: React.FC = () => {
   const [{ loading }, login] = useAsyncFn(reqLogin, [])

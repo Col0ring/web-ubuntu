@@ -1,0 +1,29 @@
+.message-container {
+  z-index: 9999;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 50px;
+  margin: 20px;
+  border-radius: 5px;
+  &.message-left {
+    transform: translateX(calc(-100% - 20px));
+    &.message-container-show {
+      transform: translateX(0);
+    }
+    &.message-container-leave {
+      transform: translateX(calc(-100% - 20px));
+    }
+  }
+  &.message-right {
+    transform: translateX(calc(100% + 20px));
+    &.message-container-show {
+      transform: translateX(0);
+    }
+    &.message-container-leave {
+      transform: translateX(calc(100% + 20px));
+    }
+  }
+}

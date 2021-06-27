@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import useAuthContext from '@/hooks/useAuthContext'
+import message from '@/components/message'
 
 const baseURL = '/mock'
 // retry refactor
@@ -21,8 +22,9 @@ function retry(err: any) {
 
 function errorHandler(count: number, msg: string) {
   if (count > 3) {
-    // TODO: message
-    alert(msg)
+    message.error({
+      content: msg
+    })
   }
 }
 let requestInterceptor: number
@@ -78,12 +80,16 @@ export function initService([authState, authMethods]: ReturnType<
       const { status, data } = response
 
       if (status === 400) {
-        alert(data.message)
+        message.error({
+          content: data.message
+        })
         return Promise.reject(error)
       } else if (status === 401) {
         // 失败就 remove token
         authMethods.logout()
-        alert(data.message)
+        message.error({
+          content: data.message
+        })
         return Promise.reject(error)
       }
 
