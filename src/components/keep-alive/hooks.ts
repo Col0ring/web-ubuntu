@@ -14,8 +14,8 @@ export function useActivateEffect(
   const [cacheState] = useCacheContext()
   useEffect(() => {
     Object.values(cacheState).forEach(({ status, cacheId }) => {
-      if (!cacheIds || cacheIds?.includes(cacheId)) {
-        if (status === CacheStatus.ACTIVATED) {
+      if (status === CacheStatus.ACTIVATED) {
+        if (!cacheIds || cacheIds?.includes(cacheId)) {
           fn(cacheId)
         }
       }
@@ -30,8 +30,8 @@ export function useDeactivateEffect(
   const [cacheState] = useCacheContext()
   useEffect(() => {
     Object.values(cacheState).forEach(({ status, cacheId }) => {
-      if (!cacheIds || cacheIds?.includes(cacheId)) {
-        if (status === CacheStatus.DEACTIVATED) {
+      if (status === CacheStatus.DEACTIVATED) {
+        if (!cacheIds || cacheIds?.includes(cacheId)) {
           fn(cacheId)
         }
       }
