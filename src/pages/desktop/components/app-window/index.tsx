@@ -7,7 +7,7 @@ import Transition from '@/components/transition'
 import Movable, { MovableProps } from '@/components/movable'
 import LazyLoad from '@/components/lazy-load'
 import Resizable, { ResizableProps, Direction } from '@/components/resizable'
-import { defaultWindowRect, dataTarget, defaultDesktop } from '../../config'
+import { dataTarget, defaultDesktop } from '../../config'
 import { OpenedAppConfig } from '@/typings/app'
 import './style.less'
 import { useDesktopContext } from '../../provider'
@@ -28,7 +28,11 @@ const AppWindow: React.FC<AppWindowProps> = ({
   isMinimized,
   isFocus
 }) => {
-  const [, desktopMethods] = useDesktopContext()
+  const [desktopState, desktopMethods] = useDesktopContext()
+  const { defaultAppWindow } = desktopState
+  //prevent closure
+  const defaultAppWindowRef = useRef(defaultAppWindow)
+  defaultAppWindowRef.current = defaultAppWindow
   const [position, setPosition] = useState({
     left: app.position.left || 0,
     top: app.position.top || 0
@@ -102,10 +106,8 @@ const AppWindow: React.FC<AppWindowProps> = ({
     [setPosition, defaultDesktop, app, desktopMethods]
   )
   const appWindowStyle: React.CSSProperties = useMemo(() => {
-    const width = isMaximized ? '100%' : rect.width || defaultWindowRect.width
-    const height = isMaximized
-      ? '100%'
-      : rect.height || defaultWindowRect.height
+    const width = isMaximized ? '100%' : rect.width || defaultAppWindow.width
+    const height = isMaximized ? '100%' : rect.height || defaultAppWindow.height
     const left = isMaximized
       ? 0
       : typeof position.left === 'number'
@@ -125,12 +127,12 @@ const AppWindow: React.FC<AppWindowProps> = ({
       top,
       right,
       bottom,
-      minWidth: defaultWindowRect.minWidth,
-      minHeight: defaultWindowRect.minHeight,
+      minWidth: defaultAppWindow.minWidth,
+      minHeight: defaultAppWindow.minHeight,
       // set the Resizable to be absolute
       position: 'absolute'
     }
-  }, [position, isMaximized, rect, desktopMethods])
+  }, [position, isMaximized, rect, desktopMethods, defaultAppWindow])
 
   useEffect(() => {
     if (!isMaximized) {
@@ -166,118 +168,116 @@ const AppWindow: React.FC<AppWindowProps> = ({
     [desktopMethods, app]
   )
 
-  const resizeDirectionMethods = useMemo(
-    () =>
-      ({
-        l: ({ width, offsetX, left }) => {
-          if (width - offsetX < defaultWindowRect.minWidth) {
-            return
-          }
-          setRect((rect) => {
-            return {
-              width: width - offsetX,
-              height: rect.height
-            }
-          })
-
-          setPosition((position) => {
-            return {
-              top: position.top,
-              left
-            }
-          })
-        },
-        r: ({ width, offsetX }) => {
-          setRect((rect) => {
-            return {
-              width: width + offsetX,
-              height: rect.height
-            }
-          })
-        },
-        t: ({ height, offsetY, top }) => {
-          if (height - offsetY < defaultWindowRect.minHeight) {
-            return
-          }
-          setRect((rect) => {
-            return {
-              width: rect.width,
-              height: height - offsetY
-            }
-          })
-
-          setPosition((position) => {
-            return {
-              top,
-              left: position.left
-            }
-          })
-        },
-        b: ({ height, offsetY }) => {
-          setRect((rect) => {
-            return {
-              width: rect.width,
-              height: height + offsetY
-            }
-          })
-        },
-        lb: ({ width, left, height, offsetX, offsetY }) => {
-          if (width - offsetX < defaultWindowRect.minWidth) {
-            return
-          }
-          setRect({
-            width: width - offsetX,
-            height: height + offsetY
-          })
-          setPosition((position) => {
-            return {
-              top: position.top,
-              left
-            }
-          })
-        },
-        rb: ({ width, height, offsetX, offsetY }) => {
-          setRect({
-            width: width + offsetX,
-            height: height + offsetY
-          })
-        },
-        lt: ({ width, height, offsetX, offsetY, top, left }) => {
-          if (
-            height - offsetY < defaultWindowRect.minHeight ||
-            width - offsetX < defaultWindowRect.minWidth
-          ) {
-            return
-          }
-          setRect({
-            width: width - offsetX,
-            height: height - offsetY
-          })
-
-          setPosition({
-            top,
-            left
-          })
-        },
-        rt: ({ width, height, offsetX, offsetY, top }) => {
-          if (height - offsetY < defaultWindowRect.minHeight) {
-            return
-          }
-          setRect({
-            width: width + offsetX,
-            height: height - offsetY
-          })
-
-          setPosition((position) => {
-            return {
-              top,
-              left: position.left
-            }
-          })
+  const resizeDirectionMethods = useMemo(() => {
+    return {
+      l: ({ width, offsetX, left }) => {
+        if (width - offsetX < defaultAppWindowRef.current.minWidth) {
+          return
         }
-      } as Record<Direction, (ctx: MoveContext) => void>),
-    [setRect, rect, setPosition]
-  )
+        setRect((rect) => {
+          return {
+            width: width - offsetX,
+            height: rect.height
+          }
+        })
+
+        setPosition((position) => {
+          return {
+            top: position.top,
+            left
+          }
+        })
+      },
+      r: ({ width, offsetX }) => {
+        setRect((rect) => {
+          return {
+            width: width + offsetX,
+            height: rect.height
+          }
+        })
+      },
+      t: ({ height, offsetY, top }) => {
+        if (height - offsetY < defaultAppWindowRef.current.minHeight) {
+          return
+        }
+        setRect((rect) => {
+          return {
+            width: rect.width,
+            height: height - offsetY
+          }
+        })
+
+        setPosition((position) => {
+          return {
+            top,
+            left: position.left
+          }
+        })
+      },
+      b: ({ height, offsetY }) => {
+        setRect((rect) => {
+          return {
+            width: rect.width,
+            height: height + offsetY
+          }
+        })
+      },
+      lb: ({ width, left, height, offsetX, offsetY }) => {
+        if (width - offsetX < defaultAppWindowRef.current.minWidth) {
+          return
+        }
+        setRect({
+          width: width - offsetX,
+          height: height + offsetY
+        })
+        setPosition((position) => {
+          return {
+            top: position.top,
+            left
+          }
+        })
+      },
+      rb: ({ width, height, offsetX, offsetY }) => {
+        setRect({
+          width: width + offsetX,
+          height: height + offsetY
+        })
+      },
+      lt: ({ width, height, offsetX, offsetY, top, left }) => {
+        if (
+          height - offsetY < defaultAppWindowRef.current.minHeight ||
+          width - offsetX < defaultAppWindowRef.current.minWidth
+        ) {
+          return
+        }
+        setRect({
+          width: width - offsetX,
+          height: height - offsetY
+        })
+
+        setPosition({
+          top,
+          left
+        })
+      },
+      rt: ({ width, height, offsetX, offsetY, top }) => {
+        if (height - offsetY < defaultAppWindowRef.current.minHeight) {
+          return
+        }
+        setRect({
+          width: width + offsetX,
+          height: height - offsetY
+        })
+
+        setPosition((position) => {
+          return {
+            top,
+            left: position.left
+          }
+        })
+      }
+    } as Record<Direction, (ctx: MoveContext) => void>
+  }, [setRect, rect, setPosition])
 
   const resizableProps: ResizableProps = useMemo(
     () => ({
