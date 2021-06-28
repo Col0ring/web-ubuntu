@@ -7,6 +7,7 @@ import useClickAway from '@/hooks/common/useClickAway'
 import useEventListener from '@/hooks/common/useEventListener'
 import useDomRect from '@/hooks/common/useDomRect'
 import useUpdateEffect from '@/hooks/common/useUpdateEffect'
+import Contextmenu from '@/components/contextmenu'
 import { defaultDesktop } from '../config'
 
 export interface DesktopAppProps extends AppProps {}
@@ -114,6 +115,15 @@ const DesktopApp: React.FC<DesktopAppProps> = (props) => {
     [position]
   )
 
+  const menus = useMemo(() => {
+    return [
+      {
+        key: 'hello',
+        title: 'hello'
+      }
+    ]
+  }, [])
+
   return (
     <Draggable
       ref={draggableRef}
@@ -123,7 +133,9 @@ const DesktopApp: React.FC<DesktopAppProps> = (props) => {
       onDragEnd={onDragEnd}
       onDragStart={onDragStart}
     >
-      <App {...props} />
+      <Contextmenu menus={menus}>
+        <App {...props} />
+      </Contextmenu>
     </Draggable>
   )
 }
