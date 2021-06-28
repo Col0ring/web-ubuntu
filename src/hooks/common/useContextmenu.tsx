@@ -4,13 +4,19 @@ import useEventListener from './useEventListener'
 
 export interface useContextOptions {
   onClick?: (e: MouseEvent) => void
+
+  onContextMenu?: (e: MouseEvent) => void
   onClickAway?: (e: MouseEvent) => void
 }
 function useContextmenu(
   ref: React.RefObject<HTMLElement>,
-  { onClick, onClickAway }: useContextOptions = {}
+  { onClick, onContextMenu, onClickAway }: useContextOptions = {}
 ) {
   useEventListener(ref, 'contextmenu', (e) => {
+    e.preventDefault()
+    onContextMenu?.(e)
+  })
+  useEventListener(ref, 'click', (e) => {
     e.preventDefault()
     onClick?.(e)
   })

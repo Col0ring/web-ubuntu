@@ -31,5 +31,6 @@ export const defaultDesktop = {
 
 export const dataTarget = {
   editButtons: 'edit-buttons',
-  toolbar: 'toolbar'
+  toolbar: 'toolbar',
+  desktopApp: 'desktopApp'
 }

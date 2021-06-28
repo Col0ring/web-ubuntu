@@ -9,6 +9,7 @@ import LockScreen from './screens/lock-screen'
 import AppWindow from './components/app-window'
 import { obj2arr } from '@/utils/tool'
 import useEventListener from '@/hooks/common/useEventListener'
+import DesktopContextmenu from './components/desktop-contextmenu'
 
 const Desktop: React.FC = () => {
   const [desktopState, desktopMethods] = useDesktopContext()
@@ -29,7 +30,7 @@ const Desktop: React.FC = () => {
   })
 
   return (
-    <div className="h-full w-full flex flex-col justify-start content-start flex-wrap  pt-8 bg-transparent relative overflow-hidden overscroll-none">
+    <DesktopContextmenu>
       <BackgroundImage src={desktopState.backgroundImage} />
       {/* desktop apps */}
       {desktopState.apps
@@ -56,7 +57,7 @@ const Desktop: React.FC = () => {
 
       <AllAppsScreen />
       <LockScreen />
-    </div>
+    </DesktopContextmenu>
   )
 }
 export default withDesktopProvider(Desktop)

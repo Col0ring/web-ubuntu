@@ -1,12 +1,15 @@
 import React, { useRef, useState } from 'react'
 import classnames from 'classnames'
-import useContextmenu from '@/hooks/common/useContextmenu'
+import useContextmenu, {
+  useContextOptions
+} from '@/hooks/common/useContextmenu'
 import Divider from './divider'
 import './style.less'
 
 export interface MenuItemOptions {
   onClick?: (e: React.MouseEvent) => void
   icon?: React.ReactNode
+  disabled?: boolean
   key: string
   render?: () => React.ReactNode
   title?: React.ReactNode
@@ -15,14 +18,23 @@ export interface MenuItemOptions {
 export interface ContextmenuProps {
   className?: string
   menus: MenuItemOptions[]
+  rewriteVisible?: boolean
+  rewritePosition?: {
+    left: number
+    top: number
+  }
   onItemClick?: (key: string, e: React.MouseEvent) => void
+  contextmenuOptionsRewrite?: useContextOptions
 }
 
 const Contextmenu: React.FC<ContextmenuProps> = ({
   children,
   className,
   menus,
-  onItemClick
+  onItemClick,
+  contextmenuOptionsRewrite,
+  rewriteVisible,
+  rewritePosition
 }) => {
   const [position, setPosition] = useState({
     left: 0,
@@ -32,72 +44,68 @@ const Contextmenu: React.FC<ContextmenuProps> = ({
   const contextmenuRef = useRef<HTMLDivElement | null>(null)
   const contextmenuClassName = classnames('relative', className)
 
-  useContextmenu(contextmenuRef, {
-    onClick(e) {
-      setVisible(true)
-      const { left, top } = (
-        e.currentTarget as HTMLElement
-      ).getBoundingClientRect()
-      setPosition({
-        left: e.clientX - left,
-        top: e.clientY - top
-      })
-    },
-    onClickAway() {
-      setVisible(false)
-    }
-  })
+  useContextmenu(
+    contextmenuRef,
+    contextmenuOptionsRewrite
+      ? contextmenuOptionsRewrite
+      : {
+          onContextMenu(e) {
+            setVisible(true)
+            const { left, top } = (
+              e.currentTarget as HTMLElement
+            ).getBoundingClientRect()
+            setPosition({
+              left: e.clientX - left,
+              top: e.clientY - top
+            })
+          },
+          onClick() {
+            setVisible(false)
+          },
+          onClickAway() {
+            setVisible(false)
+          }
+        }
+  )
 
   return (
     <div ref={contextmenuRef} className={contextmenuClassName}>
       {children}
-      {visible && (
+      {(rewriteVisible || visible) && (
         <div
-          className="w-52 context-menu-bg border text-left font-light border-gray-900 rounded text-white py-4 absolute text-sm"
+          className="context-menu-bg whitespace-nowrap border font-light border-gray-900 rounded text-white py-4 absolute text-sm"
           style={{
             zIndex: 100000,
-            left: position.left,
-            top: position.top
+            left: rewritePosition?.left || position.left,
+            top: rewritePosition?.top || position.top
           }}
         >
-          <div className="w-full py-0.5 hover:bg-ub-warm-grey hover:bg-opacity-20 mb-1.5">
-            <span className="ml-5">New Folder</span>
-          </div>
-          <Divider />
-          <div className="w-full py-0.5 hover:bg-ub-warm-grey hover:bg-opacity-20 mb-1.5 text-gray-400">
-            <span className="ml-5">Paste</span>
-          </div>
-          <Divider />
-          <div className="w-full py-0.5 hover:bg-ub-warm-grey hover:bg-opacity-20 mb-1.5 text-gray-400">
-            <span className="ml-5">Show Desktop in Files</span>
-          </div>
-          <div className="w-full py-0.5 hover:bg-ub-warm-grey hover:bg-opacity-20 mb-1.5">
-            <span className="ml-5">Open in Terminal</span>
-          </div>
-          <Divider />
-          <div className="w-full py-0.5 hover:bg-ub-warm-grey hover:bg-opacity-20 mb-1.5">
-            <span className="ml-5">Change Background...</span>
-          </div>
-          <Divider />
-          <div className="w-full py-0.5 hover:bg-ub-warm-grey hover:bg-opacity-20 mb-1.5 text-gray-400">
-            <span className="ml-5">Display Settings</span>
-          </div>
-          <div className="w-full py-0.5 hover:bg-ub-warm-grey hover:bg-opacity-20 mb-1.5">
-            <span className="ml-5">Settings</span>
-          </div>
-          {menus.map(({ key, title, render, onClick, icon }) => {
-            return (
-              <div
-                key={key}
-                onClick={(e) => {
-                  onClick?.(e)
-                  onItemClick?.(key, e)
-                }}
-              >
-                {render ? render() : <div></div>}
-              </div>
-            )
-          })}
+          {menus.map(
+            ({ key, title, render, onClick, icon, disabled }, index) => {
+              return (
+                <div
+                  key={key}
+                  onClick={(e) => {
+                    onClick?.(e)
+                    onItemClick?.(key, e)
+                  }}
+                >
+                  {render ? (
+                    render()
+                  ) : (
+                    <div
+                      className={`px-6 py-0.5 hover:bg-ub-warm-grey hover:bg-opacity-20 mb-1.5 ${
+                        disabled ? 'text-gray-400' : ''
+                      }`}
+                    >
+                      <span>{title}</span>
+                    </div>
+                  )}
+                  <Divider />
+                </div>
+              )
+            }
+          )}
         </div>
       )}
     </div>
