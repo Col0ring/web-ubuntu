@@ -1,48 +1,17 @@
-.window-y-border {
-  height: calc(100% - 10px);
-  width: calc(100% + 10px);
-  cursor: e-resize;
-}
-
-.window-x-border {
-  height: calc(100% + 10px);
-  width: calc(100% - 10px);
-  cursor: n-resize;
-}
-
-.no-focus {
-  filter: brightness(90%);
-}
-
-.root,
-#root,
-#docs-root {
-  --window-transform-x: 0px;
-  --window-transform-y: 0px;
-}
-
-.window-shadow {
-  box-shadow: 1px 4px 12px 4px rgba(0, 0, 0, 0.2);
-  -webkit-box-shadow: 1px 4px 12px 4px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 1px 4px 12px 4px rgba(0, 0, 0, 0.2);
-}
-
-.closed-window {
-  animation: closeWindow 200ms 1 forwards;
-}
-
-@keyframes closeWindow {
-  0% {
-    opacity: 1;
-    transform: translate(var(--window-transform-x), var(--window-transform-y))
-      scale(1);
-    visibility: visible;
+.app-window {
+  &.window-shadow {
+    box-shadow: 1px 4px 12px 4px rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: 1px 4px 12px 4px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 1px 4px 12px 4px rgba(0, 0, 0, 0.2);
   }
-
-  100% {
+  &.no-focus {
+    filter: brightness(90%);
+  }
+  opacity: 0;
+  &.app-window-show {
+    opacity: 1;
+  }
+  &.app-window-leave {
     opacity: 0;
-    transform: translate(var(--window-transform-x), var(--window-transform-y))
-      scale(0.85);
-    visibility: hidden;
   }
 }

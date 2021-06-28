@@ -9,11 +9,11 @@ import LazyLoad from '@/components/lazy-load'
 import Resizable, { ResizableProps, Direction } from '@/components/resizable'
 import { dataTarget, defaultDesktop } from '../../config'
 import { OpenedAppConfig } from '@/typings/app'
-import './style.less'
 import { useDesktopContext } from '../../provider'
 import { Percentage } from '@/typings/tools'
 import useTimeoutValue from '@/hooks/common/useTimeoutValue'
 import { MoveContext } from '@/hooks/common/useDomMove'
+import './style.less'
 
 export interface AppWindowProps {
   app: OpenedAppConfig
@@ -41,6 +41,7 @@ const AppWindow: React.FC<AppWindowProps> = ({
     width: app.rect.width || 0,
     height: app.rect.height || 0
   })
+  const [visible, setVisible] = useState(true)
   const rectRef = useRef(rect)
   rectRef.current = rect
 
@@ -48,13 +49,13 @@ const AppWindow: React.FC<AppWindowProps> = ({
 
   const appWindowRef = useRef<HTMLDivElement | null>(null)
   const appWindowClassName = classnames(
-    'm-auto overflow-hidden max-w-full max-h-full absolute window-shadow border-black border-opacity-40 border border-t-0 bg-ub-window-title',
+    'm-auto overflow-hidden max-w-full max-h-full absolute window-shadow border-black border-opacity-40 border border-t-0 bg-ub-window-title app-window',
     isMaximized ? 'z-60 rounded-none' : 'rounded-lg rounded-b-none',
     {
       'not-focus': !isFocus,
       'z-10 not-focus': !isFocus && !isMaximized,
-      'z-30': isFocus && !isMaximized,
-      hidden: isMinimized
+      'z-30': isFocus && !isMaximized
+      // hidden: isMinimized
     }
   )
 
@@ -301,14 +302,35 @@ const AppWindow: React.FC<AppWindowProps> = ({
     }),
     [setRect, setPosition, resizeDirectionMethods]
   )
+  useEffect(() => {
+    if (isMinimized) {
+      setVisible(false)
+    } else {
+      setVisible(true)
+    }
+  }, [isMinimized])
+
+  const duration = useMemo(() => {
+    if (isMaximized || isMaximizedTimeout) {
+      return 300
+    }
+    // close animation
+    if (isMinimized) {
+      return 300
+    }
+
+    return 0
+  }, [isMaximized, isMaximizedTimeout, isMinimized])
+
   return (
-    // TODO: close animation
     <Transition
-      transitionProperty={['width', 'height', 'left', 'top']}
+      transitionProperty={['width', 'height', 'left', 'top', 'opacity']}
       nodeRef={appWindowRef}
+      enterClassName="app-window-show"
+      leaveClassName="app-window-leave"
       // minimize animation
-      duration={isMaximized || isMaximizedTimeout ? 300 : 0}
-      visible={true}
+      duration={duration}
+      visible={visible}
       exist
     >
       <Resizable
