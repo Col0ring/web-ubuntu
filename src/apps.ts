@@ -1,6 +1,8 @@
 import React from 'react'
 import { AppConfig } from './typings/app'
 const VsCode = React.lazy(() => import('@/pages/desktop/apps/vscode'))
+const Todoist = React.lazy(() => import('@/pages/desktop/apps/todoist'))
+const Firefox = React.lazy(() => import('@/pages/desktop/apps/firefox'))
 const apps: AppConfig[] = [
   {
     id: 'firefox',
@@ -8,15 +10,17 @@ const apps: AppConfig[] = [
     icon: './themes/Yaru/apps/firefox.svg',
     disabled: false,
     favorite: true,
-    shortcut: true
+    shortcut: true,
+    component: Firefox
   },
   {
-    id: 'todo-ist',
+    id: 'todo-list',
     title: 'Todoist',
     icon: './themes/Yaru/apps/todoist.png',
     disabled: false,
     favorite: true,
-    shortcut: false
+    shortcut: false,
+    component: Todoist
   },
   {
     id: 'about-col0ring',
