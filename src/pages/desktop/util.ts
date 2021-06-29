@@ -1,4 +1,4 @@
-const backgroundImageKey = 'web-ubuntu-brightness-key'
+const backgroundImageKey = 'web-ubuntu-background-key'
 
 export function setBackgroundImage(backgroundImage: string) {
   localStorage.setItem(backgroundImageKey, backgroundImage)

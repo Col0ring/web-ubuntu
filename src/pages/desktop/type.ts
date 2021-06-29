@@ -34,5 +34,6 @@ export interface DesktopContextValue {
   minimizedApps: Apps
   maximizedApps: Apps
   frequentApps: AppConfig[]
+  desktopApps: AppConfig[]
   apps: AppConfig[]
 }

@@ -9,12 +9,14 @@ import useDomRect from '@/hooks/common/useDomRect'
 import useUpdateEffect from '@/hooks/common/useUpdateEffect'
 import Contextmenu, { ContextmenuProps } from '@/components/contextmenu'
 import { dataTarget, defaultDesktop } from '../config'
+import { useDesktopContext } from '../provider'
 
 export interface DesktopAppProps extends AppProps {}
 
 // need refactor
 // desktop z-index like app-window
 const DesktopApp: React.FC<DesktopAppProps> = (props) => {
+  const [, desktopMethods] = useDesktopContext()
   const draggableRef = useRef<HTMLDivElement | null>(null)
   const [isFocus, setIsFocus] = useState(false)
   const [isRender, setIsRender] = useState(false)
@@ -62,6 +64,7 @@ const DesktopApp: React.FC<DesktopAppProps> = (props) => {
   })
 
   useEventListener(draggableRef, 'click', () => {
+    desktopMethods.clickDesktopApp(props.app.id, props.app)
     setIsFocus(true)
   })
   const onDragStart: Required<DraggableProps>['onDragStart'] = useCallback(
@@ -98,8 +101,9 @@ const DesktopApp: React.FC<DesktopAppProps> = (props) => {
         left,
         top
       })
+      desktopMethods.clickDesktopApp(data.id, data)
     },
-    [setPosition, rect, offset]
+    [setPosition, rect, offset, desktopMethods]
   )
 
   // preventDefault

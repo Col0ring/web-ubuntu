@@ -29,11 +29,9 @@ const Desktop: React.FC = () => {
     <DesktopContextmenu>
       <BackgroundImage src={desktopState.backgroundImage} />
       {/* desktop apps */}
-      {desktopState.apps
-        .filter((app) => app.shortcut)
-        .map((app) => (
-          <DesktopApp onOpen={onDesktopAppOpen} app={app} key={app.id} />
-        ))}
+      {desktopState.desktopApps.map((app) => (
+        <DesktopApp onOpen={onDesktopAppOpen} app={app} key={app.id} />
+      ))}
       <Navbar />
       <Sidebar />
       {/* app windows */}

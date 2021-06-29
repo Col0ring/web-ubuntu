@@ -137,6 +137,18 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
           },
           focusAppId: id
         }
+      },
+      clickDesktopApp(id: string, app: AppConfig) {
+        const desktopApp = state.desktopApps.find(
+          (desktopApp) => desktopApp.id === id
+        )!
+        return {
+          ...state,
+          desktopApps: [
+            ...state.desktopApps.filter((desktopApp) => desktopApp.id !== id),
+            desktopApp
+          ]
+        }
       }
     }),
     {
@@ -156,6 +168,7 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
       minimizedApps: {},
       maximizedApps: {},
       frequentApps: [],
+      desktopApps: apps.filter((app) => app.shortcut),
       apps
     } as DesktopContextValue
   )
