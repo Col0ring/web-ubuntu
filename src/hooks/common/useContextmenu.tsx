@@ -2,7 +2,7 @@ import React from 'react'
 import useClickAway from './useClickAway'
 import useEventListener from './useEventListener'
 
-export interface useContextOptions {
+export interface useContextmenuOptions {
   onClick?: (e: MouseEvent) => void
 
   onContextMenu?: (e: MouseEvent) => void
@@ -10,7 +10,7 @@ export interface useContextOptions {
 }
 function useContextmenu(
   ref: React.RefObject<HTMLElement>,
-  { onClick, onContextMenu, onClickAway }: useContextOptions = {}
+  { onClick, onContextMenu, onClickAway }: useContextmenuOptions = {}
 ) {
   useEventListener(ref, 'contextmenu', (e) => {
     e.preventDefault()

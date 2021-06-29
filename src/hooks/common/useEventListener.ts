@@ -5,31 +5,31 @@ function useEventListener<K extends keyof HTMLElementEventMap>(
   ref: React.RefObject<DomElement>,
   eventName: K,
   handler: (ev: HTMLElementEventMap[K]) => void,
-  options?: EventListenerOptions
+  options?: AddEventListenerOptions
 ): void
 function useEventListener<K extends keyof ElementEventMap>(
   ref: React.RefObject<DomElement>,
   eventName: K,
   handler: (ev: ElementEventMap[K]) => void,
-  options?: EventListenerOptions
+  options?: AddEventListenerOptions
 ): void
 function useEventListener<K extends keyof DocumentEventMap>(
   ref: React.RefObject<DomElement>,
   eventName: K,
   handler: (ev: DocumentEventMap[K]) => void,
-  options?: EventListenerOptions
+  options?: AddEventListenerOptions
 ): void
 function useEventListener<K extends keyof WindowEventMap>(
   ref: React.RefObject<DomElement>,
   eventName: K,
   handler: (ev: WindowEventMap[K]) => void,
-  options?: EventListenerOptions
+  options?: AddEventListenerOptions
 ): void
 function useEventListener(
   ref: React.RefObject<DomElement>,
   eventName: string,
   handler: Function,
-  options: EventListenerOptions
+  options: AddEventListenerOptions
 ): void
 function useEventListener(
   ref: React.RefObject<DomElement>,

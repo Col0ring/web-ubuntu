@@ -3,6 +3,7 @@ import { AppConfig } from './typings/app'
 const VsCode = React.lazy(() => import('@/pages/desktop/apps/vscode'))
 const Todoist = React.lazy(() => import('@/pages/desktop/apps/todoist'))
 const Firefox = React.lazy(() => import('@/pages/desktop/apps/firefox'))
+const Settings = React.lazy(() => import('@/pages/desktop/apps/settings'))
 const apps: AppConfig[] = [
   {
     id: 'firefox',
@@ -61,7 +62,8 @@ const apps: AppConfig[] = [
     icon: './themes/Yaru/apps/gnome-control-center.png',
     disabled: false,
     favorite: true,
-    shortcut: false
+    shortcut: false,
+    component: Settings
   },
   {
     id: 'trash',

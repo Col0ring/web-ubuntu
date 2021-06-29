@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react'
 import classnames from 'classnames'
 import useContextmenu, {
-  useContextOptions
+  useContextmenuOptions
 } from '@/hooks/common/useContextmenu'
 import Divider from './divider'
 import './style.less'
@@ -24,7 +24,7 @@ export interface ContextmenuProps {
     top: number
   }
   onItemClick?: (key: string, e: React.MouseEvent) => void
-  contextmenuOptionsRewrite?: useContextOptions
+  contextmenuOptionsRewrite?: useContextmenuOptions
 }
 
 const Contextmenu: React.FC<ContextmenuProps> = ({
@@ -43,11 +43,17 @@ const Contextmenu: React.FC<ContextmenuProps> = ({
   const [visible, setVisible] = useState(false)
   const contextmenuRef = useRef<HTMLDivElement | null>(null)
   const contextmenuClassName = classnames('relative', className)
-
+  // note: level 2 events are triggered before level 0 events，we need to use level 0 event
+  const { onClick, ...optionsRewrite1 } = contextmenuOptionsRewrite || {}
+  const onMenuClick =
+    onClick ||
+    (() => {
+      setVisible(false)
+    })
   useContextmenu(
     contextmenuRef,
     contextmenuOptionsRewrite
-      ? contextmenuOptionsRewrite
+      ? optionsRewrite1
       : {
           onContextMenu(e) {
             setVisible(true)
@@ -59,9 +65,6 @@ const Contextmenu: React.FC<ContextmenuProps> = ({
               top: e.clientY - top
             })
           },
-          onClick() {
-            setVisible(false)
-          },
           onClickAway() {
             setVisible(false)
           }
@@ -69,7 +72,13 @@ const Contextmenu: React.FC<ContextmenuProps> = ({
   )
 
   return (
-    <div ref={contextmenuRef} className={contextmenuClassName}>
+    <div
+      ref={contextmenuRef}
+      onClick={
+        onMenuClick as unknown as React.MouseEventHandler<HTMLDivElement>
+      }
+      className={contextmenuClassName}
+    >
       {children}
       {(rewriteVisible || visible) && (
         <div
@@ -80,32 +89,30 @@ const Contextmenu: React.FC<ContextmenuProps> = ({
             top: rewritePosition?.top || position.top
           }}
         >
-          {menus.map(
-            ({ key, title, render, onClick, icon, disabled }, index) => {
-              return (
-                <div
-                  key={key}
-                  onClick={(e) => {
-                    onClick?.(e)
-                    onItemClick?.(key, e)
-                  }}
-                >
-                  {render ? (
-                    render()
-                  ) : (
-                    <div
-                      className={`px-6 py-0.5 hover:bg-ub-warm-grey hover:bg-opacity-20 mb-1.5 ${
-                        disabled ? 'text-gray-400' : ''
-                      }`}
-                    >
-                      <span>{title}</span>
-                    </div>
-                  )}
-                  <Divider />
-                </div>
-              )
-            }
-          )}
+          {menus.map(({ key, title, render, onClick, icon, disabled }) => {
+            return (
+              <div
+                key={key}
+                onClick={(e) => {
+                  onClick?.(e)
+                  onItemClick?.(key, e)
+                }}
+              >
+                {render ? (
+                  render()
+                ) : (
+                  <div
+                    className={`px-6 py-0.5 hover:bg-ub-warm-grey hover:bg-opacity-20 mb-1.5 ${
+                      disabled ? 'text-gray-400' : ''
+                    }`}
+                  >
+                    <span>{title}</span>
+                  </div>
+                )}
+                <Divider />
+              </div>
+            )
+          })}
         </div>
       )}
     </div>

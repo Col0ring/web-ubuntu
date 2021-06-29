@@ -3,11 +3,13 @@ import apps from '@/apps'
 import { AppConfig, OpenedAppConfig } from '@/typings/app'
 import { DesktopContextValue } from './type'
 import { defaultImages } from './config'
+import { getBackgroundImage, setBackgroundImage } from './util'
 
 const [useDesktopContext, DesktopProvider, withDesktopProvider] =
   createMethodsContext(
     (state) => ({
       chooseBackgroundImage(image: string) {
+        setBackgroundImage(image)
         return { ...state, backgroundImage: image }
       },
       resizeWindow(width: number, height: number) {
@@ -138,7 +140,7 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
       }
     }),
     {
-      backgroundImage: defaultImages['wall-2'],
+      backgroundImage: getBackgroundImage() || defaultImages['wall-2'],
       backgroundImages: defaultImages,
       defaultAppWindow: {
         width: '85%',

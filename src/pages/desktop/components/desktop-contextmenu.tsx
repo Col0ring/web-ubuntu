@@ -2,7 +2,9 @@ import React, { useMemo, useState } from 'react'
 import Contextmenu, { ContextmenuProps } from '@/components/contextmenu'
 import { getParentNode } from '@/utils/tool'
 import { dataTarget } from '../config'
+import { useDesktopContext } from '../provider'
 const DesktopContextmenu: React.FC = ({ children }) => {
+  const [{ apps }, desktopMethods] = useDesktopContext()
   const [visible, setVisible] = useState(false)
   const [position, setPosition] = useState({
     left: 0,
@@ -39,7 +41,12 @@ const DesktopContextmenu: React.FC = ({ children }) => {
       },
       {
         key: 'Settings',
-        title: 'Settings'
+        title: 'Settings',
+        onClick() {
+          const settings = apps.find((app) => app.id === 'settings')
+          console.log(settings)
+          settings && desktopMethods.openApp(settings.id, settings)
+        }
       }
     ] as ContextmenuProps['menus']
   }, [])
@@ -64,12 +71,6 @@ const DesktopContextmenu: React.FC = ({ children }) => {
           ).getBoundingClientRect()
           let leftPosition = e.clientX - left
           let topPosition = e.clientY - top
-          if (leftPosition + 200 > window.innerWidth) {
-            leftPosition = window.innerWidth - 200
-          }
-          if (topPosition + 600 > window.innerWidth) {
-            topPosition = window.innerHeight - 300
-          }
           setPosition({
             left: leftPosition,
             top: topPosition

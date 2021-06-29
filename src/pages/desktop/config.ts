@@ -19,7 +19,6 @@ export const defaultWindowRect: {
 } = {
   width: '85%',
   height: '80%',
-  // TODO: window.onresize
   minWidth: (window.innerWidth * 1) / 3,
   minHeight: (window.innerHeight * 1) / 3
 }

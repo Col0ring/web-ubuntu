@@ -29,7 +29,6 @@ const AllAppsScreen: React.FC = () => {
   )
   const onAppOpen: Required<AppProps>['onOpen'] = useCallback(
     (id, app) => {
-      // TODO: app z-index
       desktopMethods.openApp(id, app)
       desktopMethods.setAllAppsScreen(false)
     },
