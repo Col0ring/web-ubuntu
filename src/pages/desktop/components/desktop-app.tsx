@@ -13,6 +13,7 @@ import { dataTarget, defaultDesktop } from '../config'
 export interface DesktopAppProps extends AppProps {}
 
 // need refactor
+// desktop z-index like app-window
 const DesktopApp: React.FC<DesktopAppProps> = (props) => {
   const draggableRef = useRef<HTMLDivElement | null>(null)
   const [isFocus, setIsFocus] = useState(false)

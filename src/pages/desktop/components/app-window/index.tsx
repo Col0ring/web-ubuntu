@@ -14,6 +14,7 @@ import { Percentage } from '@/typings/tools'
 import useTimeoutValue from '@/hooks/common/useTimeoutValue'
 import { MoveContext } from '@/hooks/common/useDomMove'
 import './style.less'
+import useUpdateEffect from '@/hooks/common/useUpdateEffect'
 
 export interface AppWindowProps {
   app: OpenedAppConfig
@@ -135,7 +136,7 @@ const AppWindow: React.FC<AppWindowProps> = ({
     }
   }, [position, isMaximized, rect, desktopMethods, defaultAppWindow])
 
-  useEffect(() => {
+  useUpdateEffect(() => {
     if (!isMaximized) {
       desktopMethods.updateOpenedApp(app.id, {
         ...app,

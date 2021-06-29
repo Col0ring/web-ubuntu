@@ -31,28 +31,36 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
       },
       openApp(id: string, app: AppConfig) {
         if (state.openedApps[id]) {
+          const openedApp = state.openedApps[id]!
           return {
             ...state,
             minimizedApps: {
               ...state.minimizedApps,
               [id]: null
             },
+            openedAppsArr: [
+              ...state.openedAppsArr.filter((app) => app.id !== id),
+              openedApp
+            ],
             focusAppId: id
           }
         }
+        const defaultOpenedApp = {
+          ...app,
+          rect: { ...state.defaultAppWindow },
+          position: {
+            left: 0,
+            top: 0
+          }
+        }
+
         return {
           ...state,
           focusAppId: id,
+          openedAppsArr: [...state.openedAppsArr, defaultOpenedApp],
           openedApps: {
             ...state.openedApps,
-            [id]: {
-              ...app,
-              rect: { ...state.defaultAppWindow },
-              position: {
-                left: 0,
-                top: 0
-              }
-            }
+            [id]: defaultOpenedApp
           }
         }
       },
@@ -62,7 +70,13 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
           openedApps: {
             ...state.openedApps,
             [id]: app
-          }
+          },
+          openedAppsArr: state.openedAppsArr.map((openedApp) => {
+            if (openedApp.id === id) {
+              return app
+            }
+            return openedApp
+          })
         }
       },
       closeApp(id: string) {
@@ -73,6 +87,7 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
             ...state.openedApps,
             [id]: null
           },
+          openedAppsArr: state.openedAppsArr.filter((app) => app.id !== id),
           maximizedApps: {
             ...state.maximizedApps,
             [id]: null
@@ -135,6 +150,7 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
       lockScreen: false,
       focusAppId: '',
       openedApps: {},
+      openedAppsArr: [],
       minimizedApps: {},
       maximizedApps: {},
       frequentApps: [],

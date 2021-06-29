@@ -28,6 +28,8 @@ export interface DesktopContextValue {
   allAppsScreen: boolean
   lockScreen: boolean
   focusAppId: string
+  // sort z-index
+  openedAppsArr: OpenedAppConfig[]
   openedApps: OpenedApps
   minimizedApps: Apps
   maximizedApps: Apps

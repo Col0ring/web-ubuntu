@@ -49,9 +49,10 @@ const DesktopContextmenu: React.FC = ({ children }) => {
         onContextMenu(e) {
           if (
             getParentNode(e.target as HTMLElement, (node) => {
+              const target = (node as HTMLDivElement).dataset?.target
               return (
-                (node as HTMLDivElement).dataset?.target ===
-                dataTarget.desktopApp
+                target === dataTarget.desktopApp ||
+                target === dataTarget.sidebarApp
               )
             })
           ) {

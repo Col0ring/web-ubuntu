@@ -4,6 +4,7 @@ import Tooltip from '@/components/tooltip'
 import useTimeoutFn from '@/hooks/common/useTimeoutFn'
 import { AppConfig } from '@/typings/app'
 import './style.less'
+import { dataTarget } from '@/pages/desktop/config'
 export interface SidebarAppProps {
   app: AppConfig
   isOpen?: boolean
@@ -43,6 +44,7 @@ const SidebarApp: React.FC<SidebarAppProps> = ({
   return (
     <Tooltip className="m-1" title={app.title} direction="left">
       <div
+        data-target={dataTarget.sidebarApp}
         // to focus
         tabIndex={0}
         ref={sidebarAppRef}
