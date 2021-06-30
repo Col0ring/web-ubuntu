@@ -98,7 +98,7 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
             {
               id: name,
               title: name,
-              icon: './themes/Yaru/system/user-home.png',
+              icon: './themes/Yaru/system/folder.png',
               disabled: false,
               shortcut: true,
               favorite: false,
@@ -108,7 +108,15 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
         }
       },
       updateDesktopApp(id: string, app: DesktopAppConfig) {
-        return { ...state }
+        return {
+          ...state,
+          desktopApps: state.desktopApps.map((desktopApp) => {
+            if (desktopApp.id === id) {
+              return app
+            }
+            return desktopApp
+          })
+        }
       },
       closeApp(id: string) {
         return {

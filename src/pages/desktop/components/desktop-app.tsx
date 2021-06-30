@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import classnames from 'classnames'
 import Draggable, { DraggableProps } from '@/components/draggable'
 import App, { AppProps } from '@/components/app'
@@ -60,6 +60,16 @@ const DesktopApp: React.FC<DesktopAppProps> = (props) => {
       }
     })
   }, [domRect])
+
+  useEffect(() => {
+    if (isRender) {
+      // when position changed
+      desktopMethods.updateDesktopApp(props.app.id, {
+        ...props.app,
+        position: position
+      })
+    }
+  }, [isRender, props.app.position, position])
 
   useClickAway(draggableRef, () => {
     setIsFocus(false)
