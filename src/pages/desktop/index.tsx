@@ -9,6 +9,7 @@ import LockScreen from './screens/lock-screen'
 import AppWindow from './components/app-window'
 import useEventListener from '@/hooks/common/useEventListener'
 import DesktopContextmenu from './components/desktop-contextmenu'
+import NewFolderModal from './components/new-folder-modal'
 
 const Desktop: React.FC = () => {
   const [desktopState, desktopMethods] = useDesktopContext()
@@ -49,6 +50,8 @@ const Desktop: React.FC = () => {
 
       <AllAppsScreen />
       <LockScreen />
+      {/* new-folder-modal */}
+      {desktopState.newFolderModal && <NewFolderModal />}
     </DesktopContextmenu>
   )
 }

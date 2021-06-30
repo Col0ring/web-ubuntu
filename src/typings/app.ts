@@ -24,3 +24,10 @@ export interface OpenedAppConfig extends AppConfig {
     top: number | Percentage
   }
 }
+
+export interface DesktopAppConfig extends AppConfig {
+  position: {
+    left: number | Percentage
+    top: number | Percentage
+  }
+}

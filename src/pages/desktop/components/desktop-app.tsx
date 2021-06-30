@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useRef, useState } from 'react'
 import classnames from 'classnames'
 import Draggable, { DraggableProps } from '@/components/draggable'
 import App, { AppProps } from '@/components/app'
-import { AppConfig } from '@/typings/app'
+import { AppConfig, DesktopAppConfig } from '@/typings/app'
 import useClickAway from '@/hooks/common/useClickAway'
 import useEventListener from '@/hooks/common/useEventListener'
 import useDomRect from '@/hooks/common/useDomRect'
@@ -11,10 +11,11 @@ import Contextmenu, { ContextmenuProps } from '@/components/contextmenu'
 import { dataTarget, defaultDesktop } from '../config'
 import { useDesktopContext } from '../provider'
 
-export interface DesktopAppProps extends AppProps {}
+export interface DesktopAppProps extends AppProps {
+  app: DesktopAppConfig
+}
 
-// need refactor
-// desktop z-index like app-window
+// TODO: to be more simple
 const DesktopApp: React.FC<DesktopAppProps> = (props) => {
   const [, desktopMethods] = useDesktopContext()
   const draggableRef = useRef<HTMLDivElement | null>(null)
@@ -29,11 +30,12 @@ const DesktopApp: React.FC<DesktopAppProps> = (props) => {
     top: 0
   })
   const [position, setPosition] = useState({
-    left: 0,
-    top: 0
+    left: props.app.position.left,
+    top: props.app.position.top
   })
   const draggableClassName = classnames(' hover:z-20 focus:z-20 z-10', {
-    absolute: isRender,
+    // be created
+    absolute: isRender || !!(props.app.position.left || props.app.position.top),
     'z-20': isFocus
   })
   const domRect = useDomRect(draggableRef, [])
@@ -114,8 +116,14 @@ const DesktopApp: React.FC<DesktopAppProps> = (props) => {
 
   const draggleStyle: React.CSSProperties = useMemo(
     () => ({
-      left: (position.left / window.innerWidth) * 100 + '%',
-      top: (position.top / window.innerHeight) * 100 + '%'
+      left:
+        typeof position.left === 'string'
+          ? position.left
+          : (position.left / window.innerWidth) * 100 + '%',
+      top:
+        typeof position.top === 'string'
+          ? position.top
+          : (position.top / window.innerHeight) * 100 + '%'
     }),
     [position]
   )

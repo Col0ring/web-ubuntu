@@ -14,7 +14,10 @@ const DesktopContextmenu: React.FC = ({ children }) => {
     return [
       {
         key: 'New Folder',
-        title: 'New Folder'
+        title: 'New Folder',
+        onClick() {
+          desktopMethods.setNewFolderModal(true)
+        }
       },
       {
         key: 'Paste',
@@ -44,7 +47,6 @@ const DesktopContextmenu: React.FC = ({ children }) => {
         title: 'Settings',
         onClick() {
           const settings = apps.find((app) => app.id === 'settings')
-          console.log(settings)
           settings && desktopMethods.openApp(settings.id, settings)
         }
       }
@@ -66,6 +68,10 @@ const DesktopContextmenu: React.FC = ({ children }) => {
             return setVisible(false)
           }
           setVisible(true)
+          desktopMethods.setMousePosition({
+            clientX: e.clientX,
+            clientY: e.clientY
+          })
           let { left, top } = (
             e.currentTarget as HTMLElement
           ).getBoundingClientRect()
@@ -83,7 +89,7 @@ const DesktopContextmenu: React.FC = ({ children }) => {
           setVisible(false)
         }
       }
-    }, [setVisible, setPosition])
+    }, [setVisible, setPosition, desktopMethods])
   return (
     <Contextmenu
       rewritePosition={position}

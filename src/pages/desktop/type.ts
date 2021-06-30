@@ -1,5 +1,5 @@
 import React from 'react'
-import { AppConfig, OpenedAppConfig } from '@/typings/app'
+import { AppConfig, DesktopAppConfig, OpenedAppConfig } from '@/typings/app'
 import { Percentage } from '@/typings/tools'
 import { StatusMenuItemProps } from './components/navbar/status-menu/status-menu-item'
 
@@ -18,6 +18,12 @@ export type OpenedApps = Record<string, OpenedAppConfig | null>
 
 export interface DesktopContextValue {
   backgroundImage: string
+  newFolderModal: boolean
+  // when open contextmenu in desktop
+  mousePosition: {
+    clientX: number
+    clientY: number
+  }
   defaultAppWindow: {
     width: Percentage
     height: Percentage
@@ -34,6 +40,6 @@ export interface DesktopContextValue {
   minimizedApps: Apps
   maximizedApps: Apps
   frequentApps: AppConfig[]
-  desktopApps: AppConfig[]
+  desktopApps: DesktopAppConfig[]
   apps: AppConfig[]
 }

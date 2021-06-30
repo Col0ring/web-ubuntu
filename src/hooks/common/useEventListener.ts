@@ -61,7 +61,7 @@ function useEventListener(
         capture: options.capture
       })
     }
-  }, [ref, eventName, ...Object.values(options)])
+  }, [ref.current, eventName, ...Object.values(options)])
 }
 
 export default useEventListener

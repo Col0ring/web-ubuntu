@@ -1,6 +1,6 @@
 import createMethodsContext from '@/hooks/common/factory/createMethodsContext'
 import apps from '@/apps'
-import { AppConfig, OpenedAppConfig } from '@/typings/app'
+import { AppConfig, DesktopAppConfig, OpenedAppConfig } from '@/typings/app'
 import { DesktopContextValue } from './type'
 import { defaultImages } from './config'
 import { getBackgroundImage, setBackgroundImage } from './util'
@@ -11,6 +11,15 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
       chooseBackgroundImage(image: string) {
         setBackgroundImage(image)
         return { ...state, backgroundImage: image }
+      },
+      setNewFolderModal(visible) {
+        return { ...state, newFolderModal: visible }
+      },
+      setMousePosition(position: DesktopContextValue['mousePosition']) {
+        return {
+          ...state,
+          mousePosition: position
+        }
       },
       resizeWindow(width: number, height: number) {
         return {
@@ -80,6 +89,26 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
             return openedApp
           })
         }
+      },
+      addNewFolder(name: string, position: DesktopAppConfig['position']) {
+        return {
+          ...state,
+          desktopApps: [
+            ...state.desktopApps,
+            {
+              id: name,
+              title: name,
+              icon: './themes/Yaru/system/user-home.png',
+              disabled: false,
+              shortcut: true,
+              favorite: false,
+              position
+            }
+          ]
+        }
+      },
+      updateDesktopApp(id: string, app: DesktopAppConfig) {
+        return { ...state }
       },
       closeApp(id: string) {
         return {
@@ -154,6 +183,11 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
     {
       backgroundImage: getBackgroundImage() || defaultImages['wall-2'],
       backgroundImages: defaultImages,
+      mousePosition: {
+        clientX: 0,
+        clientY: 0
+      },
+      newFolderModal: false,
       defaultAppWindow: {
         width: '85%',
         height: '80%',
@@ -168,7 +202,15 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
       minimizedApps: {},
       maximizedApps: {},
       frequentApps: [],
-      desktopApps: apps.filter((app) => app.shortcut),
+      desktopApps: apps
+        .filter((app) => app.shortcut)
+        .map((app) => ({
+          ...app,
+          position: {
+            left: 0,
+            top: 0
+          }
+        })),
       apps
     } as DesktopContextValue
   )
