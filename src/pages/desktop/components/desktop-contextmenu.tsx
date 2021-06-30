@@ -35,7 +35,11 @@ const DesktopContextmenu: React.FC = ({ children }) => {
       },
       {
         key: 'Change Background...',
-        title: 'Change Background...'
+        title: 'Change Background...',
+        onClick() {
+          const settings = apps.find((app) => app.id === 'settings')
+          settings && desktopMethods.openApp(settings.id, settings)
+        }
       },
       {
         key: 'Display Settings',
