@@ -1,18 +1,6 @@
-const brightnessKey = 'web-ubuntu-brightness-key'
-const soundKey = 'web-ubuntu-sound-key'
+import { createLocalStorage } from '@/utils/local-storage'
 
-export function setBrightness(brightness: number) {
-  localStorage.setItem(brightnessKey, `${brightness}`)
-}
+const { setBrightness, getBrightness } = createLocalStorage('brightness')
+const { setSound, getSound } = createLocalStorage('sound')
 
-export function getBrightness() {
-  return +(localStorage.getItem(brightnessKey) || 100)
-}
-
-export function setSound(sound: number) {
-  localStorage.setItem(soundKey, `${sound}`)
-}
-
-export function getSound() {
-  return +(localStorage.getItem(soundKey) || 100)
-}
+export { setBrightness, getBrightness, setSound, getSound }
