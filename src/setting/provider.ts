@@ -8,11 +8,11 @@ const [useSettingContext, SettingProvider] = createMethodsContext(
       return { ...state, ubuntu }
     },
     setBrightness(brightness: number) {
-      setBrightness(brightness)
+      setBrightness(`${brightness}`)
       return { ...state, config: { ...state.config, brightness } }
     },
     setSound(sound: number) {
-      setSound(sound)
+      setSound(`${sound}`)
       return { ...state, config: { ...state.config, sound } }
     },
     setTitle(title: string) {
