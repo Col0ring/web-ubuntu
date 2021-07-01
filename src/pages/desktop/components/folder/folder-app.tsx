@@ -1,7 +1,9 @@
 import React from 'react'
+import DesktopApp, { DesktopAppProps } from '../desktop-app'
 
-const FolderApp: React.FC = () => {
-  return <div></div>
+export interface FolderAppProps extends DesktopAppProps {}
+const FolderApp: React.FC<FolderAppProps> = (props) => {
+  return <DesktopApp {...props} />
 }
 
 export default FolderApp

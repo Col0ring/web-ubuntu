@@ -3,8 +3,9 @@ import React from 'react'
 export interface EmptyProps {
   title?: React.ReactNode
   icon?: React.ReactNode
+  img?: string
 }
-const Empty: React.FC<EmptyProps> = ({ title, icon }) => {
+const Empty: React.FC<EmptyProps> = ({ title, icon, img }) => {
   return (
     <div className="flex-grow flex flex-col justify-center items-center">
       <div className="w-24">
@@ -12,7 +13,8 @@ const Empty: React.FC<EmptyProps> = ({ title, icon }) => {
           icon
         ) : (
           <img
-            src="./themes/Yaru/status/user-trash-symbolic.svg"
+            className="w-full"
+            src={img || './themes/Yaru/status/empty-folder.svg'}
             alt="ubuntu-empty"
           />
         )}
