@@ -5,18 +5,21 @@ import AppProvider from '@/provider'
 import Auth from '@/auth'
 import Setting from '@/setting'
 import '@/styles/index.less'
+import { ErrorBoundary } from './components/error-bondary'
 
 ReactDOM.render(
   <React.StrictMode>
-    <AppProvider>
-      <Setting>
-        <AppRouter>
-          <Auth>
-            <AppRoutes />
-          </Auth>
-        </AppRouter>
-      </Setting>
-    </AppProvider>
+    <ErrorBoundary>
+      <AppProvider>
+        <Setting>
+          <AppRouter>
+            <Auth>
+              <AppRoutes />
+            </Auth>
+          </AppRouter>
+        </Setting>
+      </AppProvider>
+    </ErrorBoundary>
   </React.StrictMode>,
   document.getElementById('root')
 )

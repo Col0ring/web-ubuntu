@@ -57,7 +57,7 @@ const Sidebar: React.FC = () => {
           : (window.innerWidth * Number.parseFloat(`${app.rect.width}`)) / 100
       const left =
         typeof app.position.left === 'number'
-          ? app.rect.width
+          ? app.position.left
           : (window.innerWidth * Number.parseFloat(`${app.position.left}`)) /
             100
       return left < window.innerWidth - width - defaultDesktop.sidebar

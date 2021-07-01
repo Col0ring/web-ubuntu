@@ -31,9 +31,6 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
           }
         }
       },
-      setSidebar(visible: boolean) {
-        return { ...state, sidebar: visible }
-      },
       setAllAppsScreen(visible: boolean) {
         return { ...state, allAppsScreen: visible }
       },

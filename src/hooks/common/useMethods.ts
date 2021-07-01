@@ -23,20 +23,20 @@ function useMethods<S, M extends Record<Key, (...args: any[]) => S>>(
     },
     [createMethods]
   )
+  const actionTypes = useMemo(() => {
+    return Object.keys(createMethods(initialState))
+  }, [createMethods])
 
   const [state, dispatch] = useReducer(reducer, initialState)
 
   const wrappedMethods: WrappedMethods<S, M> = useMemo(() => {
-    // 每次调用时重新构成闭包，更新 state
-    const actionTypes = Object.keys(createMethods(initialState))
-
     // 重新生成 methods
     return actionTypes.reduce((methods, type: keyof M) => {
       // type 是 M 的键之一，需要重新注解类型
       methods[type] = (...payload) => dispatch({ type, payload })
       return methods
     }, {} as WrappedMethods<S, M>)
-  }, [createMethods, initialState])
+  }, [createMethods, actionTypes])
 
   return [state, wrappedMethods]
 }
