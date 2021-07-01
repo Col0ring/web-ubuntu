@@ -7,7 +7,7 @@ const initialToken = getToken()
 
 const [useAuthContext, AuthProvider] = createMethodsContext(
   (state) => ({
-    login(token: string) {
+    async login(token: string) {
       setToken(token)
       return { ...state, token, isLogin: true }
     },

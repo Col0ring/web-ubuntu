@@ -24,3 +24,17 @@ export function getParentNode(
 
   return null
 }
+
+export function resolvePromise<T>(value: T) {
+  return new Promise((resolve, reject) => {
+    if (value instanceof Promise) {
+      value
+        .then((res) => {
+          resolve(resolvePromise(res))
+        })
+        .catch((err) => reject(err))
+    } else {
+      resolve(value)
+    }
+  })
+}

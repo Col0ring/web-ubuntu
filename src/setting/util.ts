@@ -6,7 +6,7 @@ const { setBrightness, getBrightness } = createLocalStorage('brightness', {
     if (typeof v === 'string') {
       return +v
     }
-    return 0
+    return 100
   }
 })
 const { setSound, getSound } = createLocalStorage('sound', {
@@ -15,7 +15,7 @@ const { setSound, getSound } = createLocalStorage('sound', {
     if (typeof v === 'string') {
       return +v
     }
-    return 0
+    return 100
   }
 })
 

@@ -25,7 +25,7 @@ const Auth: React.FC = ({ children }) => {
     } else {
       routerMethods.reset()
     }
-  }, [isLogin])
+  }, [isLogin, routerMethods])
 
   useEffect(() => {
     // 初始化请求参数
