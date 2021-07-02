@@ -2,14 +2,14 @@ import React, { createContext, createElement, useContext, useMemo } from 'react'
 import useMethods, { CreateMethods, WrappedMethods } from '../useMethods'
 import { Key } from '@/typings/tools'
 
-type MethodsContextValue<S, M extends Record<Key, (...args: any[]) => S>> = [
+type MethodsContextValue<
   S,
-  WrappedMethods<S, M>
-]
+  M extends Record<Key, (...args: any[]) => S | Promise<S>>
+> = [S, WrappedMethods<S, M>]
 
 const createMethodsContext = <
   S = {},
-  M extends Record<Key, (...args: any[]) => S> = Record<
+  M extends Record<Key, (...args: any[]) => S | Promise<S>> = Record<
     Key,
     (...args: any[]) => S
   >

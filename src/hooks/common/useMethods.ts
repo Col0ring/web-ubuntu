@@ -1,29 +1,36 @@
 import { Reducer, useMemo, useReducer, useRef } from 'react'
 import { Key } from '@/typings/tools'
 import { resolvePromise } from '@/utils/tool'
-interface Action<T extends Key> {
+interface Action<S, T extends Key> {
   type: T
-  payload?: any
+  newState: S
 }
 
-type CreateMethods<S, M extends Record<Key, (...args: any[]) => S>> = (
-  state: S
-) => M
+type CreateMethods<
+  S,
+  M extends Record<Key, (...args: any[]) => S | Promise<S>>
+> = (state: S) => M
 
-type WrappedMethods<S, M extends Record<Key, (...args: any[]) => S>> = {
+type WrappedMethods<
+  S,
+  M extends Record<Key, (...args: any[]) => S | Promise<S>>
+> = {
   [K in keyof M]: (...payload: Parameters<M[K]>) => void
 }
 
-function useMethods<S, M extends Record<Key, (...args: any[]) => S>>(
+function useMethods<
+  S,
+  M extends Record<Key, (...args: any[]) => S | Promise<S>>
+>(
   createMethods: CreateMethods<S, M>,
   initialState: S
 ): [S, WrappedMethods<S, M>] {
-  const reducer: Reducer<S, Action<keyof M>> = useMemo(
+  const reducer: Reducer<S, Action<S, keyof M>> = useMemo(
     () =>
-      (reducerState, { payload }) => {
+      (reducerState, { newState }) => {
         // update
-        stateRef.current = payload
-        return payload
+        stateRef.current = newState
+        return newState
       },
     [createMethods]
   )
@@ -45,10 +52,10 @@ function useMethods<S, M extends Record<Key, (...args: any[]) => S>>(
         const newState = createMethods(stateRef.current)[type](...payload)
         if (newState instanceof Promise) {
           resolvePromise(newState).then((res) => {
-            dispatchRef.current({ type, payload: res })
+            dispatchRef.current({ type, newState: res })
           })
         } else {
-          dispatchRef.current({ type, payload: newState })
+          dispatchRef.current({ type, newState })
         }
       }
       return methods

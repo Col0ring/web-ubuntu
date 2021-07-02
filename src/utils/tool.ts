@@ -1,5 +1,5 @@
 import React from 'react'
-import { Key } from '@/typings/tools'
+import { Key, ResolvePromise } from '@/typings/tools'
 export function noop() {}
 export function preventDefault(e: React.UIEvent) {
   e.preventDefault()
@@ -26,7 +26,7 @@ export function getParentNode(
 }
 
 export function resolvePromise<T>(value: T) {
-  return new Promise((resolve, reject) => {
+  return new Promise<ResolvePromise<T>>((resolve, reject) => {
     if (value instanceof Promise) {
       value
         .then((res) => {
@@ -34,7 +34,7 @@ export function resolvePromise<T>(value: T) {
         })
         .catch((err) => reject(err))
     } else {
-      resolve(value)
+      resolve(value as ResolvePromise<T>)
     }
   })
 }
