@@ -1,10 +1,6 @@
-import { Reducer, useMemo, useReducer, useRef } from 'react'
+import { Reducer, useMemo, useReducer, useRef, useState } from 'react'
 import { Key } from '@/typings/tools'
 import { resolvePromise } from '@/utils/tool'
-interface Action<S, T extends Key> {
-  type: T
-  newState: S
-}
 
 type CreateMethods<
   S,
@@ -25,24 +21,12 @@ function useMethods<
   createMethods: CreateMethods<S, M>,
   initialState: S
 ): [S, WrappedMethods<S, M>] {
-  const reducer: Reducer<S, Action<S, keyof M>> = useMemo(
-    () =>
-      (reducerState, { newState }) => {
-        // update
-        stateRef.current = newState
-        return newState
-      },
-    [createMethods]
-  )
-
   const actionTypes = useMemo(() => {
     return Object.keys(createMethods(initialState))
   }, [createMethods])
 
-  const [state, dispatch] = useReducer(reducer, initialState)
-  const dispatchRef = useRef(dispatch)
+  const [state, setState] = useState(initialState)
   const stateRef = useRef(state)
-  dispatchRef.current = dispatch
 
   const wrappedMethods: WrappedMethods<S, M> = useMemo(() => {
     // 重新生成 methods
@@ -52,10 +36,12 @@ function useMethods<
         const newState = createMethods(stateRef.current)[type](...payload)
         if (newState instanceof Promise) {
           resolvePromise(newState).then((res) => {
-            dispatchRef.current({ type, newState: res })
+            setState(res)
+            stateRef.current = res
           })
         } else {
-          dispatchRef.current({ type, newState })
+          setState(newState)
+          stateRef.current = newState
         }
       }
       return methods
@@ -64,5 +50,5 @@ function useMethods<
   return [state, wrappedMethods]
 }
 
-export type { Action, CreateMethods, WrappedMethods }
+export type { CreateMethods, WrappedMethods }
 export default useMethods
