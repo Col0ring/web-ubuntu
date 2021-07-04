@@ -1,4 +1,4 @@
-import { Reducer, useMemo, useReducer, useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { Key } from '@/typings/tools'
 import { resolvePromise } from '@/utils/tool'
 

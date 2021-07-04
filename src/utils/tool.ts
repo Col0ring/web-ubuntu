@@ -38,3 +38,14 @@ export function resolvePromise<T>(value: T) {
     }
   })
 }
+
+export function safeJsonParse<T extends Record<string | number | symbol, any>>(
+  jsonStr: string,
+  defaultValue: T
+) {
+  try {
+    return JSON.parse(jsonStr)
+  } catch (err) {
+    return defaultValue
+  }
+}
