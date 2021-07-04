@@ -1,7 +1,9 @@
 import React from 'react'
 import Empty, { EmptyProps } from './empty'
 import FolderApp from './folder-app'
-import { DesktopAppConfig } from '@/typings/app'
+import { DragArea, Draggable } from '@/components/dragging'
+import { AppConfig, DesktopAppConfig } from '@/typings/app'
+import { safeJsonParse } from '@/utils/tool'
 
 export interface FolderProps {
   apps: DesktopAppConfig[]
@@ -9,13 +11,25 @@ export interface FolderProps {
 }
 const Folder: React.FC<FolderProps> = ({ apps, emptyProps }) => {
   return (
-    <div className="w-full h-full flex flex-col bg-ub-cool-grey text-white select-none">
+    <div className="w-full h-full flex flex-col bg-ub-cool-grey text-white select-none overflow-x-auto overflow-y-auto ub-scrollbar">
       {apps.length > 0 ? (
-        <div className="flex-grow ml-4 flex flex-wrap items-start content-start justify-start">
+        <DragArea
+          onDrop={(e) => {
+            const data: AppConfig = safeJsonParse(
+              e.dataTransfer.getData('custom'),
+              {}
+            )
+            console.log(data)
+          }}
+          preventDropAction
+          className="flex-grow flex flex-wrap items-start content-start justify-start"
+        >
           {apps.map((app) => (
-            <FolderApp app={app} key={app.id} />
+            <Draggable data={app} key={app.id}>
+              <FolderApp app={app} />
+            </Draggable>
           ))}
-        </div>
+        </DragArea>
       ) : (
         <Empty title="Folder is Empty" {...emptyProps} />
       )}

@@ -9,7 +9,11 @@ const [useDragContext, DragProvider, withDragProvider] = createMethodsContext(
   {
     dragArea: {
       width: 0,
-      height: 0
+      height: 0,
+      limitRange: {
+        x: [0, 0],
+        y: [0, 0]
+      }
     }
   } as DragContextValue
 )
