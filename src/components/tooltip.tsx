@@ -17,14 +17,14 @@ const directions: Record<Required<TooltipProps>['direction'], string> = {
   'top left': 'mb-0.5 right-full mr-0.5 bottom-full',
   'top right': 'mb-0.5 left-full ml-0.5 bottom-full',
   'bottom left': 'mt-0.5 right-full mr-0.5 top-full',
-  'bottom right': 'mt-0.5 left-full ml-0.5 top-full'
+  'bottom right': 'mt-0.5 left-full ml-0.5 top-full',
 }
 
 const Tooltip: React.FC<TooltipProps> = ({
   title,
   direction = 'right',
   children,
-  className
+  className,
 }) => {
   const tooltipRef = useRef<HTMLDivElement | null>(null)
   const isHover = useHover(tooltipRef)

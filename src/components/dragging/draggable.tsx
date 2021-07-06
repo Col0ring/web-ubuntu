@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import useDrag, { UseDragOptions } from '@/hooks/common/useDrag'
 import { useDragContext } from './provider'
 import classnames from 'classnames'
+
 export interface DraggableProps<T = any> extends UseDragOptions<T> {
   children?: React.ReactNode
   data?: T
@@ -21,32 +22,32 @@ const Draggable: React.ForwardRefRenderFunction<
   const ref = nodeRef || draggableRef
   const [rect, setRect] = useState({
     width: 0,
-    height: 0
+    height: 0,
   })
 
   const [position, setPosition] = useState({
     left: 0,
-    top: 0
+    top: 0,
   })
 
   const [offset, setOffset] = useState({
     left: 0,
-    top: 0
+    top: 0,
   })
 
   const onStart: Required<DraggableProps>['onDragStart'] = useCallback(
-    (data, e) => {
+    (dragData, e) => {
       const target = e.currentTarget as HTMLDivElement
       setOffset({
         left: e.clientX - target.offsetLeft,
-        top: e.clientY - target.offsetTop
+        top: e.clientY - target.offsetTop,
       })
-      onDragStart?.(data, e)
+      onDragStart?.(dragData, e)
     },
     [onDragStart, setOffset]
   )
   const onEnd: Required<DraggableProps>['onDragEnd'] = useCallback(
-    (data, e) => {
+    (dragData, e) => {
       let left = e.clientX - offset.left
       let top = e.clientY - offset.top
 
@@ -69,15 +70,15 @@ const Draggable: React.ForwardRefRenderFunction<
       }
       setPosition({
         left,
-        top
+        top,
       })
-      onDragEnd?.(data, e)
+      onDragEnd?.(dragData, e)
     },
     [onDragEnd, setPosition, offset, dragArea.limitRange]
   )
   const [, getProps] = useDrag({
     onDragStart: onStart,
-    onDragEnd: onEnd
+    onDragEnd: onEnd,
   })
   const draggableClassName = classnames(className, 'absolute')
 
@@ -88,11 +89,11 @@ const Draggable: React.ForwardRefRenderFunction<
       left:
         typeof position.left === 'string'
           ? position.left
-          : (position.left / x[1]) * 100 + '%',
+          : `${(position.left / x[1]) * 100}%`,
       top:
         typeof position.top === 'string'
           ? position.top
-          : (position.top / y[1]) * 100 + '%'
+          : `${(position.top / y[1]) * 100}%`,
     }
   }, [style, position, dragArea.limitRange])
 
@@ -101,7 +102,7 @@ const Draggable: React.ForwardRefRenderFunction<
       const domRect = ref.current.getBoundingClientRect()
       setRect({
         width: domRect.width,
-        height: domRect.height
+        height: domRect.height,
       })
     }
   }, [setRect])

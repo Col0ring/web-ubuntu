@@ -1,5 +1,6 @@
 import { Reducer, useMemo, useReducer } from 'react'
 import { Key } from '@/typings/tools'
+
 interface Action<T extends Key> {
   type: T
   payload?: any
@@ -33,6 +34,7 @@ function useMethods<S, M extends Record<Key, (...args: any[]) => S>>(
     // 重新生成 methods
     return actionTypes.reduce((methods, type: keyof M) => {
       // type 是 M 的键之一，需要重新注解类型
+      // eslint-disable-next-line no-param-reassign
       methods[type] = (...payload) => dispatch({ type, payload })
       return methods
     }, {} as WrappedMethods<S, M>)

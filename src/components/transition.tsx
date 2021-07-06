@@ -20,19 +20,21 @@ const Transition: React.FC<TransitionProps> = ({
   transitionProperty = ['all'],
   leaveClassName = '',
   enterClassName = '',
-  nodeRef
+  nodeRef,
 }) => {
   const [show, setShow] = useState(false)
-  const { run, cancel } = useTimeoutFn((visible: boolean) => {
-    setShow(visible)
+  const { run, cancel } = useTimeoutFn((isVisible: boolean) => {
+    setShow(isVisible)
   }, duration)
   const defaultNodeRef = useRef<Element | null>(null)
+  const ref = nodeRef || defaultNodeRef
   useEffect(() => {
     cancel()
     if (visible) {
       // This is to force a repaint,
       // which is necessary in order to transition styles when adding a class name.
-      ;(nodeRef || defaultNodeRef).current?.scrollTop
+      // eslint-disable-next-line no-unused-expressions
+      ref.current?.scrollTop
       setShow(visible)
     } else {
       run(visible)
@@ -41,45 +43,45 @@ const Transition: React.FC<TransitionProps> = ({
 
   if (React.isValidElement(children)) {
     if (React.Children.only(children)) {
-      const props = children.props
+      const { props } = children
       const transitionClassName = classnames(props.className, {
         hidden: exist && !(visible || show),
         [enterClassName]: show,
-        [leaveClassName]: !visible
+        [leaveClassName]: !visible,
       })
       return exist || visible || show
         ? React.cloneElement(children, {
             ...props,
-            ref: nodeRef || defaultNodeRef,
+            ref,
             style: Object.assign({}, props.style, {
-              transitionProperty: !!duration
+              transitionProperty: duration
                 ? transitionProperty.join(',')
                 : undefined,
-              transitionDuration: duration + 'ms'
+              transitionDuration: `${duration}ms`,
             } as React.CSSProperties),
-            className: transitionClassName
+            className: transitionClassName,
           })
         : null
     } else {
       return (
         <>
           {React.Children.map(children, (child) => {
-            const props = child.props
+            const { props } = child
             const transitionClassName = classnames(props.className, {
               hidden: exist && !(visible || show),
               [enterClassName]: show,
-              [leaveClassName]: !visible
+              [leaveClassName]: !visible,
             })
             return exist || visible || show
               ? React.cloneElement(child, {
                   ...props,
                   style: Object.assign({}, props.style, {
-                    transitionProperty: !!duration
+                    transitionProperty: duration
                       ? transitionProperty.join(',')
                       : undefined,
-                    transitionDuration: duration + 'ms'
+                    transitionDuration: `${duration}ms`,
                   } as React.CSSProperties),
-                  className: transitionClassName
+                  className: transitionClassName,
                 })
               : null
           })}

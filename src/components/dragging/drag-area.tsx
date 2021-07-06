@@ -17,7 +17,7 @@ const DragArea: React.FC<DragAreaProps> = ({
   limitRange,
   preventDropAction,
   className,
-  resizeDeps
+  resizeDeps,
 }) => {
   const [, dragMethods] = useDragContext()
   const dragAreaRef = useRef<HTMLDivElement | null>(null)
@@ -39,12 +39,10 @@ const DragArea: React.FC<DragAreaProps> = ({
     dragMethods.setDragArea({
       width,
       height,
-      limitRange: limitRange
-        ? limitRange
-        : {
-            x: [0, width],
-            y: [0, height]
-          }
+      limitRange: limitRange || {
+        x: [0, width],
+        y: [0, height],
+      },
     })
   }, [width, limitRange, height, dragMethods])
   return (

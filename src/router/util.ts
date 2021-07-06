@@ -10,19 +10,19 @@ export function convertRoutes(routes: RouteConfigProps[]): RouteConfigProps[] {
     if (route.redirect) {
       route.render = () => {
         return React.createElement(Redirect, {
-          to: route.redirect!
+          to: route.redirect!,
         })
       }
     }
     if (route.keepAlive) {
-      const render = route.render
-      const component = route.component
+      const { render } = route
+      const { component } = route
       route.render = (props) => {
         return React.createElement(
           KeepAlive,
           {
             ...route.keepAlive!,
-            className: 'w-full h-full'
+            className: 'w-full h-full',
           },
           render
             ? render(props)

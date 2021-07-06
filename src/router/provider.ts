@@ -9,8 +9,8 @@ const [useRouterContext, RouterProvider] = createMethodsContext(
         ...state,
         routes: [
           ...state.routes,
-          ...(Array.isArray(routes) ? routes : [routes])
-        ]
+          ...(Array.isArray(routes) ? routes : [routes]),
+        ],
       }
     },
     setMatchedRoutes(matchedRoutes: RouteConfigProps[]) {
@@ -18,11 +18,11 @@ const [useRouterContext, RouterProvider] = createMethodsContext(
     },
     reset() {
       return { routes: constantsRoutes, matchedRoutes: [] }
-    }
+    },
   }),
   {
     routes: constantsRoutes,
-    matchedRoutes: []
+    matchedRoutes: [],
   } as RouterContextValue
 )
 

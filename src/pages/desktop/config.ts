@@ -8,7 +8,7 @@ export const defaultImages = {
   'wall-5': '/images/wallpapers/wall-5.jpg',
   'wall-6': '/images/wallpapers/wall-6.png',
   'wall-7': '/images/wallpapers/wall-7.png',
-  'wall-8': '/images/wallpapers/wall-8.jpg'
+  'wall-8': '/images/wallpapers/wall-8.jpg',
 }
 
 export const defaultWindowRect: {
@@ -20,17 +20,17 @@ export const defaultWindowRect: {
   width: '85%',
   height: '80%',
   minWidth: (window.innerWidth * 1) / 3,
-  minHeight: (window.innerHeight * 1) / 3
+  minHeight: (window.innerHeight * 1) / 3,
 }
 
 export const defaultDesktop = {
   navbar: 30,
-  sidebar: 52
+  sidebar: 52,
 }
 
 export const dataTarget = {
   editButtons: 'edit-buttons',
   toolbar: 'toolbar',
   desktopApp: 'desktopApp',
-  sidebarApp: 'sidebarApp'
+  sidebarApp: 'sidebarApp',
 }

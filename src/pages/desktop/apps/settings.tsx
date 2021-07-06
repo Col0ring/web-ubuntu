@@ -15,9 +15,9 @@ const Settings: React.FC = () => {
           backgroundImage: `url(${backgroundImage})`,
           backgroundSize: 'cover',
           backgroundRepeat: 'no-repeat',
-          backgroundPosition: 'center center'
+          backgroundPosition: 'center center',
         }}
-      ></div>
+      />
       <div className="flex flex-grow flex-wrap justify-center content-start items-center border-t border-gray-900">
         {wallpapers.map(([name, url], index) => {
           return (
@@ -28,19 +28,18 @@ const Settings: React.FC = () => {
                 desktopMethods.chooseBackgroundImage(url)
               }}
               data-path={name}
-              className={
-                (url === backgroundImage
+              className={`${
+                url === backgroundImage
                   ? ' border-yellow-700 '
-                  : ' border-transparent ') +
-                ' md:px-28 md:py-20 md:m-4 m-2 px-14 py-10 outline-none border-4 border-opacity-80'
-              }
+                  : ' border-transparent '
+              } md:px-28 md:py-20 md:m-4 m-2 px-14 py-10 outline-none border-4 border-opacity-80`}
               style={{
                 backgroundImage: `url(${url})`,
                 backgroundSize: 'cover',
                 backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'center center'
+                backgroundPosition: 'center center',
               }}
-            ></div>
+            />
           )
         })}
       </div>

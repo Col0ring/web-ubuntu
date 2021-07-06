@@ -11,7 +11,7 @@ function useAsync<P extends any[] = [], R = any>(
   const defaultState = useMemo(
     () => ({
       loading: true,
-      ...initialState
+      ...initialState,
     }),
     []
   )

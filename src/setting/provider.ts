@@ -16,16 +16,16 @@ const [useSettingContext, SettingProvider] = createMethodsContext(
       return { ...state, config: { ...state.config, sound } }
     },
     setTitle(title: string) {
-      return { ...state, title: 'Web Ubuntu - ' + title }
-    }
+      return { ...state, title: `Web Ubuntu - ${title}` }
+    },
   }),
   {
     title: 'Web Ubuntu',
     ubuntu: { current: null },
     config: {
       brightness: getBrightness(),
-      sound: getSound()
-    }
+      sound: getSound(),
+    },
   } as SettingContextValue
 )
 

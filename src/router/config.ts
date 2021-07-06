@@ -9,14 +9,14 @@ export const accessRoutes: RouteConfigProps[] = convertRoutes([
     path: '/desktop',
     // if keep alive is turned on, do not use react.lazy
     keepAlive: {
-      cacheId: 'desktop-page'
+      cacheId: 'desktop-page',
     },
     exact: true,
-    component: Desktop
+    component: Desktop,
   },
   {
-    redirect: '/desktop'
-  }
+    redirect: '/desktop',
+  },
 ])
 
 export const constantsRoutes: RouteConfigProps[] = convertRoutes([
@@ -24,6 +24,6 @@ export const constantsRoutes: RouteConfigProps[] = convertRoutes([
     title: 'login',
     path: '/login',
     exact: true,
-    component: React.lazy(() => import('@/pages/login'))
-  }
+    component: React.lazy(() => import('@/pages/login')),
+  },
 ])

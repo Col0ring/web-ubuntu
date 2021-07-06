@@ -7,7 +7,7 @@ const VsCode: React.FC = () => {
       frameBorder="0"
       title="VsCode"
       className="h-full w-full bg-ub-cool-grey"
-    ></iframe>
+    />
   )
 }
 

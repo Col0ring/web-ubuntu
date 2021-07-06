@@ -1,5 +1,6 @@
 import React from 'react'
 import { AppConfig } from './typings/app'
+
 const VsCode = React.lazy(() => import('@/pages/desktop/apps/vscode'))
 const Todoist = React.lazy(() => import('@/pages/desktop/apps/todoist'))
 const Firefox = React.lazy(() => import('@/pages/desktop/apps/firefox'))
@@ -13,7 +14,7 @@ const apps: AppConfig[] = [
     disabled: false,
     favorite: true,
     shortcut: true,
-    component: Firefox
+    component: Firefox,
   },
   {
     id: 'todo-list',
@@ -22,7 +23,7 @@ const apps: AppConfig[] = [
     disabled: false,
     favorite: true,
     shortcut: false,
-    component: Todoist
+    component: Todoist,
   },
   {
     id: 'about-col0ring',
@@ -30,7 +31,7 @@ const apps: AppConfig[] = [
     icon: './themes/Yaru/system/user-home.png',
     disabled: false,
     favorite: true,
-    shortcut: true
+    shortcut: true,
   },
   {
     id: 'vscode',
@@ -39,7 +40,7 @@ const apps: AppConfig[] = [
     disabled: false,
     favorite: true,
     shortcut: false,
-    component: VsCode
+    component: VsCode,
   },
   {
     id: 'terminal',
@@ -47,7 +48,7 @@ const apps: AppConfig[] = [
     icon: './themes/Yaru/apps/bash.png',
     disabled: false,
     favorite: true,
-    shortcut: false
+    shortcut: false,
   },
   {
     id: 'music',
@@ -55,7 +56,7 @@ const apps: AppConfig[] = [
     icon: './themes/Yaru/apps/vue-aplayer-round.png',
     disabled: false,
     favorite: false,
-    shortcut: false
+    shortcut: false,
   },
   {
     id: 'settings',
@@ -64,7 +65,7 @@ const apps: AppConfig[] = [
     disabled: false,
     favorite: true,
     shortcut: false,
-    component: Settings
+    component: Settings,
   },
   {
     id: 'trash',
@@ -73,7 +74,7 @@ const apps: AppConfig[] = [
     disabled: false,
     favorite: true,
     shortcut: false,
-    component: Trash
+    component: Trash,
   },
   {
     id: 'gedit',
@@ -81,7 +82,7 @@ const apps: AppConfig[] = [
     icon: './themes/Yaru/apps/gedit.png',
     disabled: false,
     favorite: false,
-    shortcut: true
-  }
+    shortcut: true,
+  },
 ]
 export default apps

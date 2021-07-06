@@ -1,5 +1,6 @@
 import React, { forwardRef, useRef } from 'react'
 import useDomMove, { useDomMoveOptions } from '@/hooks/common/useDomMove'
+
 type ExtendsOptions = useDomMoveOptions & React.HTMLAttributes<HTMLDivElement>
 export interface MovableProps extends ExtendsOptions {
   children?: React.ReactNode
@@ -25,7 +26,7 @@ const Movable: React.ForwardRefRenderFunction<HTMLDivElement, MovableProps> = (
     onMoveStart,
     onMoveEnd,
     onMoving,
-    filterMoving
+    filterMoving,
   })
   return (
     <div ref={ref || movableRef} style={style} className={className} {...props}>

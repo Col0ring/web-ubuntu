@@ -11,7 +11,7 @@ export interface ClockProps {
 }
 
 function prependZero(n: number): string {
-  return n < 10 ? '0' + n : n + ''
+  return n < 10 ? `0${n}` : `${n}`
 }
 
 const monthList = [
@@ -26,7 +26,7 @@ const monthList = [
   'Sep',
   'Oct',
   'Nov',
-  'Dec'
+  'Dec',
 ]
 const dayList = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
@@ -35,7 +35,7 @@ const Clock: React.FC<ClockProps> = ({
   type = 'default',
   showSeconds,
   delay = 1000,
-  hour12 = true
+  hour12 = true,
 }) => {
   const [date, setDate] = useState(() => new Date())
   const clock = useMemo(() => {
@@ -43,7 +43,7 @@ const Clock: React.FC<ClockProps> = ({
     let hour = date.getHours()
     const minute = prependZero(date.getMinutes())
     const seconds = prependZero(date.getSeconds())
-    const secondsFormat = showSeconds ? ':' + seconds : ''
+    const secondsFormat = showSeconds ? `:${seconds}` : ''
     const month = monthList[date.getMonth()]
     const day = date.getDate()
     const meridiem = hour < 12 ? 'AM' : 'PM'
@@ -52,25 +52,12 @@ const Clock: React.FC<ClockProps> = ({
     }
     switch (type) {
       case 'date':
-        return week + ' ' + month + ' ' + day
+        return `${week} ${month} ${day}`
       case 'time':
-        return hour + ':' + minute + secondsFormat + ' ' + meridiem
+        return `${hour}:${minute}${secondsFormat} ${meridiem}`
       case 'default':
       default:
-        return (
-          week +
-          ' ' +
-          month +
-          ' ' +
-          day +
-          ' ' +
-          hour +
-          ':' +
-          minute +
-          secondsFormat +
-          ' ' +
-          meridiem
-        )
+        return `${week} ${month} ${day} ${hour}:${minute}${secondsFormat} ${meridiem}`
     }
   }, [date, type])
   const clockClassName = classnames(className)

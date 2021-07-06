@@ -50,7 +50,7 @@ function getProps(
     onPaste: (event) => {
       event.persist()
       callback(event.clipboardData, event)
-    }
+    },
   }
 }
 

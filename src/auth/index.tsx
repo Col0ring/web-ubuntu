@@ -34,6 +34,7 @@ const Auth: React.FC = ({ children }) => {
 
   // 管理登录态
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-extra-semi
     ;(async () => {
       if (authState.isLogin && !authState.user) {
         const [, res] = await getUserInfo()

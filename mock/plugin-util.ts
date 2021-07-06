@@ -21,7 +21,7 @@ function safeJsonParse<T extends Record<string | number | symbol, any>>(
 }
 
 // TODO: parse file
-export function parseBody<T>(
+export function parseBody(
   req: Connect.IncomingMessage
 ): Promise<Record<string, any>> {
   return new Promise((resolve) => {
@@ -37,7 +37,7 @@ export function parseBody<T>(
 
 export async function loadMockFiles({
   dir,
-  prefix
+  prefix,
 }: loadMockFilesOptions): Promise<MockRoutes | null> {
   const mockRoutes: MockRoutes = {}
   if (fs.existsSync(dir)) {
@@ -49,7 +49,7 @@ export async function loadMockFiles({
         // eslint-disable-next-line no-await-in-loop
         const childMockRoutes = await loadMockFiles({
           dir: currentPath,
-          prefix
+          prefix,
         })
         if (childMockRoutes) {
           Object.keys(childMockRoutes).forEach((key) => {
@@ -68,7 +68,7 @@ export async function loadMockFiles({
           const [method, routePath] = routeKey.split(' ')
           mockRoutes[path.join(prefix || '', routePrefix || '', routePath)] = {
             method: method as MethodsType,
-            handler: routes[routeKey]
+            handler: routes[routeKey],
           }
         })
       }
@@ -85,7 +85,7 @@ async function resolveModule(filename: string): Promise<any> {
     platform: 'node',
     bundle: true,
     format: 'cjs',
-    target: 'es2015'
+    target: 'es2015',
   })
   const { text } = res.outputFiles[0]
   return loadConfigFromBundledFile(filename, text)
@@ -99,7 +99,8 @@ async function loadConfigFromBundledFile(
   const defaultLoader = require.extensions[extension]
   require.extensions[extension] = (module: NodeModule, fName: string) => {
     if (filename === fName) {
-      ;(module as NodeModuleWithCompile)._compile(bundle, filename)
+      const compile = (module as NodeModuleWithCompile)._compile
+      compile(bundle, filename)
     } else {
       defaultLoader?.(module, fName)
     }
@@ -107,6 +108,7 @@ async function loadConfigFromBundledFile(
 
   // 删除缓存
   delete require.cache[filename]
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const moduleValue = require(filename)
   // 改回原样
   if (defaultLoader) {

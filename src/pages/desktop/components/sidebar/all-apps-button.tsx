@@ -1,5 +1,6 @@
 import React from 'react'
 import Tooltip from '@/components/tooltip'
+
 export interface AllAppsButtonProps {
   onClick?: React.MouseEventHandler<HTMLDivElement>
 }

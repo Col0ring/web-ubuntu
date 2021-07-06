@@ -7,7 +7,7 @@ const { setBrightness, getBrightness } = createLocalStorage('brightness', {
       return +v
     }
     return 100
-  }
+  },
 })
 const { setSound, getSound } = createLocalStorage('sound', {
   defaultValue: 100,
@@ -16,7 +16,7 @@ const { setSound, getSound } = createLocalStorage('sound', {
       return +v
     }
     return 100
-  }
+  },
 })
 
 export { setBrightness, getBrightness, setSound, getSound }

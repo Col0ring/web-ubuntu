@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
+import axios from 'axios'
 import useAuthContext from '@/hooks/useAuthContext'
 import message from '@/components/message'
 
@@ -6,11 +6,11 @@ const baseURL = '/mock'
 // retry refactor
 const service = axios.create({
   timeout: 26000,
-  baseURL
+  baseURL,
 })
 
 function retry(err: any) {
-  const config: AxiosRequestConfig = err.config
+  const { config } = err
   if (config.headers.noRetry) {
     return Promise.reject(err)
   }
@@ -23,7 +23,7 @@ function retry(err: any) {
 function errorHandler(count: number, msg: string) {
   if (count > 3) {
     message.error({
-      content: msg
+      content: msg,
     })
   }
 }
@@ -38,9 +38,10 @@ export function initService([authState, authMethods]: ReturnType<
 
   requestInterceptor = service.interceptors.request.use(
     (config) => {
+      const requestConfig = { ...config }
       if (window.axiosPromiseArr && Array.isArray(window.axiosPromiseArr)) {
         const index = window.axiosPromiseArr.findIndex(
-          (item) => item.url === config.url
+          (item) => item.url === requestConfig.url
         )
         const canceledRequest = window.axiosPromiseArr[index]
         if (canceledRequest) {
@@ -49,17 +50,17 @@ export function initService([authState, authMethods]: ReturnType<
         }
       }
 
-      config.cancelToken = new axios.CancelToken((cancel) => {
+      requestConfig.cancelToken = new axios.CancelToken((cancel) => {
         window.axiosPromiseArr = window.axiosPromiseArr || []
-        window.axiosPromiseArr.push({ url: config.url, cancel })
+        window.axiosPromiseArr.push({ url: requestConfig.url, cancel })
       })
-      config.headers.token = authState.token
-      if (typeof config.headers.retryCount === 'number') {
-        config.headers.retryCount++
+      requestConfig.headers.token = authState.token
+      if (typeof requestConfig.headers.retryCount === 'number') {
+        requestConfig.headers.retryCount++
       } else {
-        config.headers.retryCount = 0
+        requestConfig.headers.retryCount = 0
       }
-      return config
+      return requestConfig
     },
     (error) => {
       errorHandler(error.config.headers.retryCount, error.message)
@@ -76,24 +77,25 @@ export function initService([authState, authMethods]: ReturnType<
       if (axios.isCancel(error)) {
         return Promise.reject(error)
       }
-      const response: AxiosResponse = error.response
+      const { response } = error
       const { status, data } = response
 
       if (status === 400) {
         message.error({
-          content: data.message
+          content: data.message,
         })
         return Promise.reject(error)
       } else if (status === 401) {
         // 失败就 remove token
         authMethods.logout()
         message.error({
-          content: data.message
+          content: data.message,
         })
         return Promise.reject(error)
       }
 
       if (error.message.includes('timeout')) {
+        // eslint-disable-next-line no-param-reassign
         error.message = '请求超时'
       }
       errorHandler(error.config.headers.retryCount, error.message)

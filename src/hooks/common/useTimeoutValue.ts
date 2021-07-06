@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import useTimeoutFn from './useTimeoutFn'
-function useTimeoutValue<T>(value: T, ms: number = 0): T {
+
+function useTimeoutValue<T>(value: T, ms = 0): T {
   const [state, setState] = useState(value)
   const { run, cancel } = useTimeoutFn((val: T) => {
     setState(val)
@@ -8,8 +9,7 @@ function useTimeoutValue<T>(value: T, ms: number = 0): T {
   useEffect(() => {
     cancel()
     run(value)
-  }),
-    [value]
+  }, [value])
   return state
 }
 

@@ -8,6 +8,7 @@ type MethodsContextValue<
 > = [S, WrappedMethods<S, M>]
 
 const createMethodsContext = <
+  // eslint-disable-next-line @typescript-eslint/ban-types
   S = {},
   M extends Record<Key, (...args: any[]) => S | Promise<S>> = Record<
     Key,
@@ -28,7 +29,7 @@ const createMethodsContext = <
 
   const MethodsProvider: React.FC<{ initialValue?: S }> = ({
     children,
-    initialValue
+    initialValue,
   }) => {
     const stateAndMethods = useMethods(
       createMethods,

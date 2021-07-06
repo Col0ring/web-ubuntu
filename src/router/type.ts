@@ -1,5 +1,6 @@
 import { RouteConfig } from 'react-router-config'
 import { CacheOptions } from '@/components/keep-alive'
+
 export interface RouteConfigProps extends RouteConfig {
   title?: string
   redirect?: string

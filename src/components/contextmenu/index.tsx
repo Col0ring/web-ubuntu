@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react'
 import classnames from 'classnames'
 import useContextmenu, {
-  useContextmenuOptions
+  useContextmenuOptions,
 } from '@/hooks/common/useContextmenu'
 import Divider from './divider'
 import './style.less'
@@ -34,26 +34,27 @@ const Contextmenu: React.FC<ContextmenuProps> = ({
   onItemClick,
   contextmenuOptionsRewrite,
   rewriteVisible,
-  rewritePosition
+  rewritePosition,
 }) => {
   const [position, setPosition] = useState({
     left: 0,
-    top: 0
+    top: 0,
   })
   const [visible, setVisible] = useState(false)
   const contextmenuRef = useRef<HTMLDivElement | null>(null)
   const contextmenuClassName = classnames('relative', className)
   // note: level 2 events are triggered before level 0 events，we need to use level 0 event
-  const { onClick, ...optionsRewrite1 } = contextmenuOptionsRewrite || {}
+  const { onClick: onRewriteClick, ...optionsRewrite } =
+    contextmenuOptionsRewrite || {}
   const onMenuClick =
-    onClick ||
+    onRewriteClick ||
     (() => {
       setVisible(false)
     })
   useContextmenu(
     contextmenuRef,
     contextmenuOptionsRewrite
-      ? optionsRewrite1
+      ? optionsRewrite
       : {
           onContextMenu(e) {
             setVisible(true)
@@ -62,12 +63,12 @@ const Contextmenu: React.FC<ContextmenuProps> = ({
             ).getBoundingClientRect()
             setPosition({
               left: e.clientX - left,
-              top: e.clientY - top
+              top: e.clientY - top,
             })
           },
           onClickAway() {
             setVisible(false)
-          }
+          },
         }
   )
 
@@ -86,7 +87,7 @@ const Contextmenu: React.FC<ContextmenuProps> = ({
           style={{
             zIndex: 100000,
             left: rewritePosition?.left || position.left,
-            top: rewritePosition?.top || position.top
+            top: rewritePosition?.top || position.top,
           }}
         >
           {menus.map(({ key, title, render, onClick, icon, disabled }) => {
@@ -106,6 +107,7 @@ const Contextmenu: React.FC<ContextmenuProps> = ({
                       disabled ? 'text-gray-400' : ''
                     }`}
                   >
+                    {icon}
                     <span>{title}</span>
                   </div>
                 )}

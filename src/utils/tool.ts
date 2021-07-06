@@ -1,5 +1,7 @@
 import React from 'react'
 import { Key, ResolvePromise } from '@/typings/tools'
+
+// eslint-disable-next-line @typescript-eslint/no-empty-function
 export function noop() {}
 export function preventDefault(e: React.UIEvent) {
   e.preventDefault()

@@ -1,9 +1,8 @@
 import React from 'react'
 import Loading, { LoadingProps } from './loading'
-import Dot from './dot'
 import classnames from 'classnames'
 
-export interface PageLoadingProps extends LoadingProps {}
+export type PageLoadingProps = LoadingProps
 
 const PageLoading: React.FC<PageLoadingProps> = ({
   loadingClassName,

@@ -6,7 +6,7 @@ type UseIntervalReturn<T extends NormalFunction> = UseIntervalFnReturn<T>
 
 function useInterval<T extends NormalFunction>(
   handler: T,
-  ms: number = 0,
+  ms = 0,
   ...args: Parameters<T>
 ): UseIntervalReturn<T> {
   const context = useIntervalFn(handler, ms)

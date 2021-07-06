@@ -24,7 +24,7 @@ function useAsyncFn<P extends any[] = any[], R = any>(
     () => ({
       loading: initialState.loading || false,
       err: initialState.err || null,
-      data: undefined
+      data: undefined,
     }),
     []
   )
@@ -37,7 +37,7 @@ function useAsyncFn<P extends any[] = any[], R = any>(
     (...args) => {
       setState((draft) => ({
         ...draft,
-        loading: true
+        loading: true,
       }))
       countRef.current++
 
@@ -52,7 +52,7 @@ function useAsyncFn<P extends any[] = any[], R = any>(
               setState((draft) => ({
                 ...draft,
                 data: value,
-                loading: false
+                loading: false,
               }))
             return [null, value]
           },
@@ -62,7 +62,7 @@ function useAsyncFn<P extends any[] = any[], R = any>(
               setState((draft) => ({
                 ...draft,
                 err: error,
-                loading: false
+                loading: false,
               }))
             return [error, null]
           }

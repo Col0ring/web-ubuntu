@@ -29,7 +29,7 @@ const aliasKeyCodeMap: Record<string, number | number[]> = {
   left: 37,
   right: 39,
   down: 40,
-  delete: [8, 46]
+  delete: [8, 46],
 }
 
 // 键盘事件 key 别名
@@ -43,7 +43,7 @@ const aliasKeyMap: Record<string, string | string[]> = {
   left: ['Left', 'ArrowLeft'],
   right: ['Right', 'ArrowRight'],
   down: ['Down', 'ArrowDown'],
-  delete: ['Backspace', 'Delete']
+  delete: ['Backspace', 'Delete'],
 }
 
 // 修饰键
@@ -51,7 +51,7 @@ const modifierKey: Record<string, KeyPredicate> = {
   ctrl: (event: KeyboardEvent) => event.ctrlKey,
   shift: (event: KeyboardEvent) => event.shiftKey,
   alt: (event: KeyboardEvent) => event.altKey,
-  meta: (event: KeyboardEvent) => event.metaKey
+  meta: (event: KeyboardEvent) => event.metaKey,
 }
 
 /**
@@ -144,12 +144,12 @@ function useKeyPress(
   const documentRef = useRef(document)
   const { event = defaultEvents, target } = option
 
-  useEventListener(target || documentRef, event, (event) => {
+  useEventListener(target || documentRef, event, (e) => {
     // 生成 formatter 函数
     const genGuard = genKeyFormatter(keyFilter)
     // 如果能匹配
-    if (genGuard(event)) {
-      return eventHandler(event)
+    if (genGuard(e)) {
+      return eventHandler(e)
     }
   })
 }
@@ -159,6 +159,6 @@ export type {
   keyEvent,
   keyType,
   UseKeyPressOptions,
-  KeyboardEventHandler
+  KeyboardEventHandler,
 }
 export default useKeyPress

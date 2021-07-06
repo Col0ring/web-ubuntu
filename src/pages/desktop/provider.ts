@@ -18,7 +18,7 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
       setMousePosition(position: DesktopContextValue['mousePosition']) {
         return {
           ...state,
-          mousePosition: position
+          mousePosition: position,
         }
       },
       resizeWindow(width: number, height: number) {
@@ -27,8 +27,8 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
           defaultAppWindow: {
             ...state.defaultAppWindow,
             minHeight: height / 3,
-            minWidth: width / 3
-          }
+            minWidth: width / 3,
+          },
         }
       },
       setAllAppsScreen(visible: boolean) {
@@ -39,18 +39,18 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
       },
       openApp(id: string, app: AppConfig) {
         if (state.openedApps[id]) {
-          const openedApp = state.openedApps[id]!
+          const currentOpenedApp = state.openedApps[id]!
           return {
             ...state,
             minimizedApps: {
               ...state.minimizedApps,
-              [id]: null
+              [id]: null,
             },
             openedAppsArr: [
-              ...state.openedAppsArr.filter((app) => app.id !== id),
-              openedApp
+              ...state.openedAppsArr.filter((openedApp) => openedApp.id !== id),
+              currentOpenedApp,
             ],
-            focusAppId: id
+            focusAppId: id,
           }
         }
         const defaultOpenedApp = {
@@ -58,8 +58,8 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
           rect: { ...state.defaultAppWindow },
           position: {
             left: 0,
-            top: 0
-          }
+            top: 0,
+          },
         }
 
         return {
@@ -68,8 +68,8 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
           openedAppsArr: [...state.openedAppsArr, defaultOpenedApp],
           openedApps: {
             ...state.openedApps,
-            [id]: defaultOpenedApp
-          }
+            [id]: defaultOpenedApp,
+          },
         }
       },
       updateOpenedApp(id: string, app: OpenedAppConfig) {
@@ -77,14 +77,14 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
           ...state,
           openedApps: {
             ...state.openedApps,
-            [id]: app
+            [id]: app,
           },
           openedAppsArr: state.openedAppsArr.map((openedApp) => {
             if (openedApp.id === id) {
               return app
             }
             return openedApp
-          })
+          }),
         }
       },
       addNewFolder(name: string, position: DesktopAppConfig['position']) {
@@ -99,9 +99,9 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
               disabled: false,
               shortcut: true,
               favorite: false,
-              position
-            }
-          ]
+              position,
+            },
+          ],
         }
       },
       updateDesktopApp(id: string, app: DesktopAppConfig) {
@@ -112,7 +112,7 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
               return app
             }
             return desktopApp
-          })
+          }),
         }
       },
       closeApp(id: string) {
@@ -121,17 +121,17 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
           focusAppId: state.focusAppId === id ? '' : state.focusAppId,
           openedApps: {
             ...state.openedApps,
-            [id]: null
+            [id]: null,
           },
           openedAppsArr: state.openedAppsArr.filter((app) => app.id !== id),
           maximizedApps: {
             ...state.maximizedApps,
-            [id]: null
+            [id]: null,
           },
           minimizedApps: {
             ...state.minimizedApps,
-            [id]: null
-          }
+            [id]: null,
+          },
         }
       },
       minimizeApp(id: string, app: AppConfig) {
@@ -140,16 +140,16 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
             ...state,
             minimizedApps: {
               ...state.maximizedApps,
-              [id]: null
-            }
+              [id]: null,
+            },
           }
         }
         return {
           ...state,
           minimizedApps: {
             ...state.minimizedApps,
-            [id]: app
-          }
+            [id]: app,
+          },
         }
       },
       maximizeApp(id: string, app: AppConfig) {
@@ -158,46 +158,46 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
             ...state,
             maximizedApps: {
               ...state.maximizedApps,
-              [id]: null
+              [id]: null,
             },
-            focusAppId: id
+            focusAppId: id,
           }
         }
         return {
           ...state,
           maximizedApps: {
             ...state.maximizedApps,
-            [id]: app
+            [id]: app,
           },
-          focusAppId: id
+          focusAppId: id,
         }
       },
       clickDesktopApp(id: string, app: AppConfig) {
-        const desktopApp = state.desktopApps.find(
+        const currentDesktopApp = state.desktopApps.find(
           (desktopApp) => desktopApp.id === id
         )!
         return {
           ...state,
           desktopApps: [
             ...state.desktopApps.filter((desktopApp) => desktopApp.id !== id),
-            desktopApp
-          ]
+            currentDesktopApp,
+          ],
         }
-      }
+      },
     }),
     {
       backgroundImage: getBackgroundImage() || defaultImages['wall-2'],
       backgroundImages: defaultImages,
       mousePosition: {
         clientX: 0,
-        clientY: 0
+        clientY: 0,
       },
       newFolderModal: false,
       defaultAppWindow: {
         width: '85%',
         height: '80%',
         minWidth: window.innerWidth / 3,
-        minHeight: window.innerHeight / 3
+        minHeight: window.innerHeight / 3,
       },
       allAppsScreen: false,
       lockScreen: false,
@@ -213,10 +213,10 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
           ...app,
           position: {
             left: 0,
-            top: 0
-          }
+            top: 0,
+          },
         })),
-      apps
+      apps,
     } as DesktopContextValue
   )
 

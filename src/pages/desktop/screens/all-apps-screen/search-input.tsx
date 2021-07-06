@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react'
 import classnames from 'classnames'
+
 export interface SearchInputProps {
   placeholder?: string
   className?: string
@@ -11,7 +12,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
   placeholder = 'Type to Search...',
   className,
   value,
-  onChange
+  onChange,
 }) => {
   const searchInputClassName = classnames(
     'flex w-1/4 h-full items-center pl-2 pr-2 bg-white border-black border-width-2 rounded-xl overflow-hidden left',

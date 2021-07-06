@@ -6,7 +6,7 @@ enum IntervalStatus {
   Free = 'free',
   Pending = 'pending',
   Canceled = 'cancelled',
-  Calling = 'calling'
+  Calling = 'calling',
 }
 
 interface UseIntervalFnReturn<T extends NormalFunction> {
@@ -17,7 +17,7 @@ interface UseIntervalFnReturn<T extends NormalFunction> {
 
 function useIntervalFn<T extends NormalFunction>(
   handler: T,
-  ms: number = 0
+  ms = 0
 ): UseIntervalFnReturn<T> {
   const status = useRef<IntervalStatus>(IntervalStatus.Free)
   const interval = useRef<ReturnType<typeof setInterval>>()
@@ -51,7 +51,7 @@ function useIntervalFn<T extends NormalFunction>(
   return {
     currentStatus,
     run,
-    cancel
+    cancel,
   }
 }
 

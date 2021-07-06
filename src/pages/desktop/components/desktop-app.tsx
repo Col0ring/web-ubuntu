@@ -23,37 +23,39 @@ const DesktopApp: React.FC<DesktopAppProps> = (props) => {
   const [isRender, setIsRender] = useState(false)
   const [rect, setRect] = useState({
     width: 0,
-    height: 0
+    height: 0,
   })
   const [offset, setOffset] = useState({
     left: 0,
-    top: 0
+    top: 0,
   })
   const [position, setPosition] = useState({
     left: props.app.position.left,
-    top: props.app.position.top
+    top: props.app.position.top,
   })
   const draggableClassName = classnames(' hover:z-20 focus:z-20 z-10', {
     // be created
     absolute: isRender || !!(props.app.position.left || props.app.position.top),
-    'z-20': isFocus
+    'z-20': isFocus,
   })
   const domRect = useDomRect(draggableRef, [])
 
   useUpdateEffect(() => {
     requestAnimationFrame(() => {
       if (draggableRef.current) {
-        const domRect = draggableRef.current.getBoundingClientRect()
+        const { left, top, width, height } =
+          draggableRef.current.getBoundingClientRect()
         setPosition({
-          left: domRect.left,
-          top: domRect.top
+          left,
+          top,
         })
         setRect({
-          width: domRect.width,
-          height: domRect.height
+          width,
+          height,
         })
         requestAnimationFrame(() => {
           // to force a repaint,
+          // eslint-disable-next-line no-unused-expressions
           draggableRef.current!.scrollTop
           setIsRender(true)
         })
@@ -66,7 +68,7 @@ const DesktopApp: React.FC<DesktopAppProps> = (props) => {
       // when position changed
       desktopMethods.updateDesktopApp(props.app.id, {
         ...props.app,
-        position: position
+        position,
       })
     }
   }, [isRender, props.app.position, position])
@@ -86,7 +88,7 @@ const DesktopApp: React.FC<DesktopAppProps> = (props) => {
       ).getBoundingClientRect()
       setOffset({
         left: e.clientX - left,
-        top: e.clientY - top
+        top: e.clientY - top,
       })
     },
     []
@@ -111,7 +113,7 @@ const DesktopApp: React.FC<DesktopAppProps> = (props) => {
       }
       setPosition({
         left,
-        top
+        top,
       })
       desktopMethods.clickDesktopApp(data.id, data)
     },
@@ -129,11 +131,11 @@ const DesktopApp: React.FC<DesktopAppProps> = (props) => {
       left:
         typeof position.left === 'string'
           ? position.left
-          : (position.left / window.innerWidth) * 100 + '%',
+          : `${(position.left / window.innerWidth) * 100}%`,
       top:
         typeof position.top === 'string'
           ? position.top
-          : (position.top / window.innerHeight) * 100 + '%'
+          : `${(position.top / window.innerHeight) * 100}%`,
     }),
     [position]
   )
@@ -142,18 +144,18 @@ const DesktopApp: React.FC<DesktopAppProps> = (props) => {
     return [
       {
         key: 'New Folder',
-        title: 'New Folder'
+        title: 'New Folder',
       },
       {
         key: 'Paste',
         title: 'Paste',
-        disabled: true
+        disabled: true,
       },
       {
         key: 'Show Desktop in Files',
         title: 'Show Desktop in Files',
-        disabled: true
-      }
+        disabled: true,
+      },
     ] as ContextmenuProps['menus']
   }, [])
 

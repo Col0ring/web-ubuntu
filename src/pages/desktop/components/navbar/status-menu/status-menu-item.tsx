@@ -12,7 +12,7 @@ const StatusMenuItem: React.FC<StatusMenuItemProps> = ({
   image,
   imageAlt,
   onClick,
-  name
+  name,
 }) => {
   return (
     <div
@@ -22,9 +22,7 @@ const StatusMenuItem: React.FC<StatusMenuItemProps> = ({
       <div className="w-8">
         <img src={image} alt={imageAlt || name} />
       </div>
-      {children ? (
-        children
-      ) : (
+      {children || (
         <div className="w-2/3 flex items-center justify-between">
           <span>{name}</span>
         </div>

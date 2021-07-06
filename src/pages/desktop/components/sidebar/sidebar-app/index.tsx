@@ -5,6 +5,7 @@ import useTimeoutFn from '@/hooks/common/useTimeoutFn'
 import { AppConfig } from '@/typings/app'
 import './style.less'
 import { dataTarget } from '@/pages/desktop/config'
+
 export interface SidebarAppProps {
   app: AppConfig
   isOpen?: boolean
@@ -16,7 +17,7 @@ const SidebarApp: React.FC<SidebarAppProps> = ({
   onClick,
   isOpen,
   app,
-  isMinimized
+  isMinimized,
 }) => {
   const sidebarAppRef = useRef<HTMLDivElement | null>(null)
   const [isScale, setIsScale] = useState(false)
@@ -28,7 +29,7 @@ const SidebarApp: React.FC<SidebarAppProps> = ({
   const sidebarAppClassName = classnames(
     'w-auto p-2 outline-none relative transition hover:bg-white hover:bg-opacity-10 rounded',
     {
-      'bg-white bg-opacity-10': isOpen
+      'bg-white bg-opacity-10': isOpen,
     }
   )
 
@@ -61,7 +62,7 @@ const SidebarApp: React.FC<SidebarAppProps> = ({
           />
         )}
         {isOpen && (
-          <div className="w-1 h-1 absolute left-0 top-1/2 bg-ub-orange rounded-sm"></div>
+          <div className="w-1 h-1 absolute left-0 top-1/2 bg-ub-orange rounded-sm" />
         )}
       </div>
     </Tooltip>

@@ -9,16 +9,16 @@ html,
 body,
 #root {
   width: 100vw;
-  height: 100vh;
   min-width: 375px;
+  height: 100vh;
   min-height: 667px;
   overflow: hidden;
 }
 
 .text-cut {
-  text-overflow: ellipsis;
-  white-space: nowrap;
   overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .emoji-list > li {
@@ -46,8 +46,8 @@ body,
 }
 
 .ub-scrollbar::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   background-color: transparent;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
 
 .ub-scrollbar::-webkit-scrollbar {

@@ -18,7 +18,7 @@ export interface StatusMenuProps {
 const StatusMenu: React.FC<StatusMenuProps> = ({
   menus,
   onClickAway,
-  visible
+  visible,
 }) => {
   const statusMenuRef = useRef<HTMLDivElement | null>(null)
 
@@ -65,7 +65,7 @@ interface StatusMenuHelperProps {
 }
 const StatusMenuHelper: React.FC<StatusMenuHelperProps> = ({
   statusMenuRef,
-  onClickAway
+  onClickAway,
 }) => {
   useClickAway(statusMenuRef, (e) => {
     onClickAway?.(e)

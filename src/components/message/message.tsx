@@ -3,7 +3,7 @@ import React, {
   useCallback,
   useEffect,
   useImperativeHandle,
-  useState
+  useState,
 } from 'react'
 import classnames from 'classnames'
 import Transition from '@/components/transition'
@@ -11,20 +11,20 @@ import { MessageMethods, MessageOptions } from './type'
 import './style.less'
 import useTimeoutFn from '@/hooks/common/useTimeoutFn'
 
-export interface MessageProps extends MessageOptions {}
+export type MessageProps = MessageOptions
 
 const directions: Record<Required<MessageProps>['direction'], string> = {
   'top left': 'left-0 top-0',
   'top right': 'right-0 top-0',
   'bottom left': 'left-0 bottom-0',
-  'bottom right': 'right-0  bottom-0'
+  'bottom right': 'right-0  bottom-0',
 }
 
 const types: Record<Required<MessageProps>['type'], string> = {
   info: 'bg-ub-cool-grey',
   error: 'bg-red-500',
   success: 'bg-green-500',
-  warning: 'bg-yellow-500'
+  warning: 'bg-yellow-500',
 }
 
 const Message: React.ForwardRefRenderFunction<MessageMethods, MessageProps> = (
@@ -34,7 +34,7 @@ const Message: React.ForwardRefRenderFunction<MessageMethods, MessageProps> = (
     direction = 'top right',
     content,
     description,
-    wrapperClassName
+    wrapperClassName,
   },
   ref
 ) => {
@@ -49,7 +49,7 @@ const Message: React.ForwardRefRenderFunction<MessageMethods, MessageProps> = (
   useImperativeHandle(
     ref,
     () => ({
-      close
+      close,
     }),
     [close]
   )
@@ -57,7 +57,7 @@ const Message: React.ForwardRefRenderFunction<MessageMethods, MessageProps> = (
     'message-container',
     {
       'message-left': direction.includes('left'),
-      'message-right': direction.includes('right')
+      'message-right': direction.includes('right'),
     },
     directions[direction],
     types[type],

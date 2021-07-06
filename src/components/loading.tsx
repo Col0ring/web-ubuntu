@@ -14,7 +14,7 @@ const Loading: React.FC<LoadingProps> = ({
   loading,
   children,
   className,
-  loadingClassName
+  loadingClassName,
 }) => {
   const loadingWrapperClassName = classnames(
     'relative w-full h-full',

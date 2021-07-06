@@ -32,6 +32,7 @@ function useMethods<
     // 重新生成 methods
     return actionTypes.reduce((methods, type: keyof M) => {
       // type 是 M 的键之一，需要重新注解类型
+      // eslint-disable-next-line no-param-reassign
       methods[type] = (...payload) => {
         const newState = createMethods(stateRef.current)[type](...payload)
         if (newState instanceof Promise) {

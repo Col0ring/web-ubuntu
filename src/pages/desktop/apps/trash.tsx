@@ -1,5 +1,6 @@
 import React from 'react'
 import Folder from '../components/folder'
+
 const apps = [
   {
     id: 'php',
@@ -7,8 +8,8 @@ const apps = [
     icon: './themes/filetypes/php.png',
     position: {
       left: 0,
-      top: 0
-    }
+      top: 0,
+    },
   },
   {
     title: 'Angular.js',
@@ -16,9 +17,9 @@ const apps = [
     icon: './themes/filetypes/js.png',
     position: {
       left: 0,
-      top: 0
-    }
-  }
+      top: 0,
+    },
+  },
 ]
 const Trash: React.FC = () => {
   return (
@@ -26,7 +27,7 @@ const Trash: React.FC = () => {
       apps={apps}
       emptyProps={{
         img: './themes/Yaru/status/user-trash-symbolic.svg',
-        title: 'Trash is Empty'
+        title: 'Trash is Empty',
       }}
     />
   )

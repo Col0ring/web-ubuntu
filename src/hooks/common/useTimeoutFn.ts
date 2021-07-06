@@ -6,7 +6,7 @@ enum TimeoutStatus {
   Free = 'free',
   Pending = 'pending',
   Canceled = 'cancelled',
-  Called = 'called'
+  Called = 'called',
 }
 
 interface UseTimeoutFnReturn<T extends NormalFunction> {
@@ -17,7 +17,7 @@ interface UseTimeoutFnReturn<T extends NormalFunction> {
 
 function useTimeoutFn<T extends NormalFunction>(
   handler: T,
-  ms: number = 0
+  ms = 0
 ): UseTimeoutFnReturn<T> {
   const status = useRef<TimeoutStatus>(TimeoutStatus.Free)
   const timeout = useRef<ReturnType<typeof setTimeout>>()
@@ -48,7 +48,7 @@ function useTimeoutFn<T extends NormalFunction>(
   return {
     currentStatus,
     run,
-    cancel
+    cancel,
   }
 }
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import React, { useEffect, useRef } from 'react'
 import { DomElement } from '../../typings/tools'
 
@@ -53,12 +54,12 @@ function useEventListener(
     el.addEventListener(eventName, eventListener, {
       capture: options.capture,
       once: options.once,
-      passive: options.passive
+      passive: options.passive,
     })
 
     return () => {
       el.removeEventListener(eventName, eventListener, {
-        capture: options.capture
+        capture: options.capture,
       })
     }
   }, [ref.current, eventName, ...Object.values(options)])

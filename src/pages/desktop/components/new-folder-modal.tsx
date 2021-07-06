@@ -21,7 +21,7 @@ const NewFolderModal: React.FC = () => {
 
       desktopMethods.addNewFolder(value, {
         left: desktopState.mousePosition.clientX,
-        top: desktopState.mousePosition.clientY
+        top: desktopState.mousePosition.clientY,
       })
       desktopMethods.setNewFolderModal(false)
     },
@@ -42,7 +42,7 @@ const NewFolderModal: React.FC = () => {
       addNewFolder(inputValue)
     },
     {
-      target: inputRef
+      target: inputRef,
     }
   )
   return (

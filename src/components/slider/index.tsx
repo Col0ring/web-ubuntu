@@ -17,7 +17,7 @@ const Slider: React.FC<SliderProps> = ({
   max = 100,
   step = 1,
   value,
-  onChange
+  onChange,
 }) => {
   const sliderClassName = classnames('ubuntu-slider', className)
   const hasDefaultValue = typeof value === 'undefined'

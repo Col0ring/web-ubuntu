@@ -11,13 +11,13 @@ const userModule: Routes = {
     if (body.username === 'admin' && body.password === '123456') {
       return {
         data: {
-          token
-        }
+          token,
+        },
       }
     }
     return {
       status: 400,
-      message: 'username or password is wrong'
+      message: 'username or password is wrong',
     }
   },
   'get /getUserInfo': async (_, req) => {
@@ -26,15 +26,15 @@ const userModule: Routes = {
       return {
         data: {
           username: 'Col0ring',
-          email: 'xylCol0ring@gmail.com'
-        }
+          email: 'xylCol0ring@gmail.com',
+        },
       }
     }
     return {
       status: 401,
-      message: 'token is invalided'
+      message: 'token is invalided',
     }
-  }
+  },
 }
 
 export default userModule

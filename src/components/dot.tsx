@@ -12,7 +12,7 @@ const Dot: React.FC<DotProps> = ({
   children,
   delay = 500,
   dotNumber = 3,
-  className
+  className,
 }) => {
   const [dot, setDot] = useState('')
   useInterval(() => {
@@ -20,7 +20,7 @@ const Dot: React.FC<DotProps> = ({
       if (state === '.'.repeat(dotNumber)) {
         return ''
       }
-      return state + '.'
+      return `${state}.`
     })
   }, delay)
   const dotClassName = classnames('ml-1', className)

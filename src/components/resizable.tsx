@@ -1,6 +1,7 @@
-import React, { forwardRef, useMemo, useRef } from 'react'
+import React, { forwardRef, useRef } from 'react'
 import classnames from 'classnames'
 import useDomMove, { MoveContext } from '@/hooks/common/useDomMove'
+
 const directions = ['t', 'r', 'b', 'l', 'lt', 'lb', 'rb', 'rt'] as const
 export type Direction = 'lt' | 't' | 'rt' | 'r' | 'rb' | 'b' | 'lb' | 'l'
 export interface ResizableProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -26,11 +27,11 @@ const directionsClassLit = directions.map((direction) => {
     'h-full': direction.length === 1 && (hasL || hasR),
     'h-5': direction.includes('t') || direction.includes('b'),
     'w-full': direction.length === 1 && (hasT || hasB),
-    'w-5': direction.includes('l') || direction.includes('r')
+    'w-5': direction.includes('l') || direction.includes('r'),
   })
   return {
     className: directionClassName,
-    direction
+    direction,
   }
 })
 
@@ -45,7 +46,7 @@ const Resizable: React.ForwardRefRenderFunction<
     onMoving,
     onMoveEnd,
     onMoveStart,
-    disabled = false
+    disabled = false,
   },
   ref
 ) => {
@@ -69,18 +70,18 @@ const Resizable: React.ForwardRefRenderFunction<
     onMoving: (ctx, e) => {
       onMoving?.(directionRef.current!, ctx, e)
     },
-    onMoveEnd
+    onMoveEnd,
   })
   return (
     <div ref={ref || nodeRef} className={resizableClassName} style={style}>
       {!disabled &&
-        directionsClassLit.map(({ direction, className }) => {
+        directionsClassLit.map(({ direction, className: itemClassName }) => {
           return (
             <div
               key={direction}
               data-direction={direction}
-              className={className}
-            ></div>
+              className={itemClassName}
+            />
           )
         })}
       {children}

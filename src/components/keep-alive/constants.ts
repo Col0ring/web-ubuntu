@@ -4,5 +4,5 @@ export enum CacheStatus {
   ACTIVE = 'ACTIVE',
   ACTIVATED = 'ACTIVATED',
   DEACTIVATED = 'DEACTIVATED',
-  DESTROY = 'DESTROY'
+  DESTROY = 'DESTROY',
 }

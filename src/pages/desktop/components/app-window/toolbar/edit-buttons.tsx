@@ -2,6 +2,7 @@ import React, { useCallback } from 'react'
 import classnames from 'classnames'
 import { dataTarget } from '../../../../desktop/config'
 import { stopPropagation } from '@/utils/tool'
+
 export interface EditButtonsProps {
   className?: string
   onMinimize?: React.MouseEventHandler<HTMLButtonElement>
@@ -17,7 +18,7 @@ const EditButtons: React.FC<EditButtonsProps> = ({
   onMaximize,
   onMinimize,
   onClose,
-  className
+  className,
 }) => {
   const onMaximizeButtonClick: React.MouseEventHandler<HTMLButtonElement> =
     useCallback(

@@ -27,20 +27,20 @@ const AppWindow: React.FC<AppWindowProps> = ({
   app,
   isMaximized,
   isMinimized,
-  isFocus
+  isFocus,
 }) => {
   const [desktopState, desktopMethods] = useDesktopContext()
   const { defaultAppWindow } = desktopState
-  //prevent closure
+  // prevent closure
   const defaultAppWindowRef = useRef(defaultAppWindow)
   defaultAppWindowRef.current = defaultAppWindow
   const [position, setPosition] = useState({
     left: app.position.left || 0,
-    top: app.position.top || 0
+    top: app.position.top || 0,
   })
   const [rect, setRect] = useState({
     width: app.rect.width || 0,
-    height: app.rect.height || 0
+    height: app.rect.height || 0,
   })
   const [visible, setVisible] = useState(true)
   const rectRef = useRef(rect)
@@ -55,7 +55,7 @@ const AppWindow: React.FC<AppWindowProps> = ({
     {
       'not-focus': !isFocus,
       'z-10 not-focus': !isFocus && !isMaximized,
-      'z-30': isFocus && !isMaximized
+      'z-30': isFocus && !isMaximized,
       // hidden: isMinimized
     }
   )
@@ -80,7 +80,7 @@ const AppWindow: React.FC<AppWindowProps> = ({
           })
         )
       },
-      onMoving: ({ left, top, width, height }) => {
+      onMoving: ({ left, top }) => {
         // if (left < 0) {
         //   left = 1
         // }
@@ -98,12 +98,12 @@ const AppWindow: React.FC<AppWindowProps> = ({
         }
         setPosition({
           left,
-          top
+          top,
         })
       },
       onClick: () => {
         desktopMethods.openApp(app.id, app)
-      }
+      },
     }),
     [setPosition, defaultDesktop, app, desktopMethods]
   )
@@ -113,13 +113,13 @@ const AppWindow: React.FC<AppWindowProps> = ({
     const left = isMaximized
       ? 0
       : typeof position.left === 'number'
-      ? (position.left / window.innerWidth) * 100 + '%'
+      ? `${(position.left / window.innerWidth) * 100}%`
       : position.left
     const right = position.left ? undefined : '0%'
     const top = isMaximized
       ? 0
       : typeof position.top === 'number'
-      ? (position.top / window.innerHeight) * 100 + '%'
+      ? `${(position.top / window.innerHeight) * 100}%`
       : position.top
     const bottom = position.top ? undefined : '0%'
     return {
@@ -132,7 +132,7 @@ const AppWindow: React.FC<AppWindowProps> = ({
       minWidth: defaultAppWindow.minWidth,
       minHeight: defaultAppWindow.minHeight,
       // set the Resizable to be absolute
-      position: 'absolute'
+      position: 'absolute',
     }
   }, [position, isMaximized, rect, desktopMethods, defaultAppWindow])
 
@@ -142,12 +142,12 @@ const AppWindow: React.FC<AppWindowProps> = ({
         ...app,
         rect: {
           width: appWindowStyle.width as Percentage,
-          height: appWindowStyle.height as Percentage
+          height: appWindowStyle.height as Percentage,
         },
         position: {
           left: appWindowStyle.left as Percentage,
-          top: appWindowStyle.top as Percentage
-        }
+          top: appWindowStyle.top as Percentage,
+        },
       })
     }
   }, [appWindowStyle, isMaximized])
@@ -165,7 +165,7 @@ const AppWindow: React.FC<AppWindowProps> = ({
       },
       onMinimize: () => {
         desktopMethods.minimizeApp(app.id, app)
-      }
+      },
     }),
     [desktopMethods, app]
   )
@@ -176,25 +176,25 @@ const AppWindow: React.FC<AppWindowProps> = ({
         if (width - offsetX < defaultAppWindowRef.current.minWidth) {
           return
         }
-        setRect((rect) => {
+        setRect((state) => {
           return {
             width: width - offsetX,
-            height: rect.height
+            height: state.height,
           }
         })
 
-        setPosition((position) => {
+        setPosition((state) => {
           return {
-            top: position.top,
-            left
+            top: state.top,
+            left,
           }
         })
       },
       r: ({ width, offsetX }) => {
-        setRect((rect) => {
+        setRect((state) => {
           return {
             width: width + offsetX,
-            height: rect.height
+            height: state.height,
           }
         })
       },
@@ -202,25 +202,25 @@ const AppWindow: React.FC<AppWindowProps> = ({
         if (height - offsetY < defaultAppWindowRef.current.minHeight) {
           return
         }
-        setRect((rect) => {
+        setRect((state) => {
           return {
-            width: rect.width,
-            height: height - offsetY
+            width: state.width,
+            height: height - offsetY,
           }
         })
 
-        setPosition((position) => {
+        setPosition((state) => {
           return {
             top,
-            left: position.left
+            left: state.left,
           }
         })
       },
       b: ({ height, offsetY }) => {
-        setRect((rect) => {
+        setRect((state) => {
           return {
-            width: rect.width,
-            height: height + offsetY
+            width: state.width,
+            height: height + offsetY,
           }
         })
       },
@@ -230,19 +230,19 @@ const AppWindow: React.FC<AppWindowProps> = ({
         }
         setRect({
           width: width - offsetX,
-          height: height + offsetY
+          height: height + offsetY,
         })
-        setPosition((position) => {
+        setPosition((state) => {
           return {
-            top: position.top,
-            left
+            top: state.top,
+            left,
           }
         })
       },
       rb: ({ width, height, offsetX, offsetY }) => {
         setRect({
           width: width + offsetX,
-          height: height + offsetY
+          height: height + offsetY,
         })
       },
       lt: ({ width, height, offsetX, offsetY, top, left }) => {
@@ -254,12 +254,12 @@ const AppWindow: React.FC<AppWindowProps> = ({
         }
         setRect({
           width: width - offsetX,
-          height: height - offsetY
+          height: height - offsetY,
         })
 
         setPosition({
           top,
-          left
+          left,
         })
       },
       rt: ({ width, height, offsetX, offsetY, top }) => {
@@ -268,16 +268,16 @@ const AppWindow: React.FC<AppWindowProps> = ({
         }
         setRect({
           width: width + offsetX,
-          height: height - offsetY
+          height: height - offsetY,
         })
 
-        setPosition((position) => {
+        setPosition((state) => {
           return {
             top,
-            left: position.left
+            left: state.left,
           }
         })
-      }
+      },
     } as Record<Direction, (ctx: MoveContext) => void>
   }, [setRect, rect, setPosition])
 
@@ -287,19 +287,19 @@ const AppWindow: React.FC<AppWindowProps> = ({
         const { left, top } = (
           e.currentTarget as HTMLElement
         ).getBoundingClientRect()
-        setPosition((position) => {
-          if (position.left === left && position.top === top) {
-            return position
+        setPosition((state) => {
+          if (state.left === left && state.top === top) {
+            return state
           }
           return {
             top,
-            left
+            left,
           }
         })
       },
       onMoving: (direction, ctx) => {
         resizeDirectionMethods[direction](ctx)
-      }
+      },
     }),
     [setRect, setPosition, resizeDirectionMethods]
   )

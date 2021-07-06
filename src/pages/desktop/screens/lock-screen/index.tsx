@@ -19,7 +19,7 @@ const LockScreen: React.FC = () => {
     >
       <div
         style={{
-          backgroundImage: `url(${backgroundImage})`
+          backgroundImage: `url(${backgroundImage})`,
         }}
         onClick={onActive}
         onKeyPress={onActive}

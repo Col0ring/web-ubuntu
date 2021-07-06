@@ -29,7 +29,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
       onDoubleClick={onToolbarDoubleClick}
       style={{
         paddingLeft: 100,
-        paddingRight: 100
+        paddingRight: 100,
       }}
       className={toolbarClassName}
     >

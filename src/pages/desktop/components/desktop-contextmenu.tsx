@@ -3,12 +3,13 @@ import Contextmenu, { ContextmenuProps } from '@/components/contextmenu'
 import { getParentNode } from '@/utils/tool'
 import { dataTarget } from '../config'
 import { useDesktopContext } from '../provider'
+
 const DesktopContextmenu: React.FC = ({ children }) => {
   const [{ apps }, desktopMethods] = useDesktopContext()
   const [visible, setVisible] = useState(false)
   const [position, setPosition] = useState({
     left: 0,
-    top: 0
+    top: 0,
   })
   const menus = useMemo(() => {
     return [
@@ -17,21 +18,21 @@ const DesktopContextmenu: React.FC = ({ children }) => {
         title: 'New Folder',
         onClick() {
           desktopMethods.setNewFolderModal(true)
-        }
+        },
       },
       {
         key: 'Paste',
         title: 'Paste',
-        disabled: true
+        disabled: true,
       },
       {
         key: 'Show Desktop in Files',
         title: 'Show Desktop in Files',
-        disabled: true
+        disabled: true,
       },
       {
         key: 'Open in Terminal',
-        title: 'Open in Terminal'
+        title: 'Open in Terminal',
       },
       {
         key: 'Change Background...',
@@ -39,12 +40,12 @@ const DesktopContextmenu: React.FC = ({ children }) => {
         onClick() {
           const settings = apps.find((app) => app.id === 'settings')
           settings && desktopMethods.openApp(settings.id, settings)
-        }
+        },
       },
       {
         key: 'Display Settings',
         title: 'Display Settings',
-        disabled: true
+        disabled: true,
       },
       {
         key: 'Settings',
@@ -52,8 +53,8 @@ const DesktopContextmenu: React.FC = ({ children }) => {
         onClick() {
           const settings = apps.find((app) => app.id === 'settings')
           settings && desktopMethods.openApp(settings.id, settings)
-        }
-      }
+        },
+      },
     ] as ContextmenuProps['menus']
   }, [])
   const rewriteOptions: Required<ContextmenuProps>['contextmenuOptionsRewrite'] =
@@ -74,16 +75,16 @@ const DesktopContextmenu: React.FC = ({ children }) => {
           setVisible(true)
           desktopMethods.setMousePosition({
             clientX: e.clientX,
-            clientY: e.clientY
+            clientY: e.clientY,
           })
-          let { left, top } = (
+          const { left, top } = (
             e.currentTarget as HTMLElement
           ).getBoundingClientRect()
-          let leftPosition = e.clientX - left
-          let topPosition = e.clientY - top
+          const leftPosition = e.clientX - left
+          const topPosition = e.clientY - top
           setPosition({
             left: leftPosition,
-            top: topPosition
+            top: topPosition,
           })
         },
         onClick() {
@@ -91,7 +92,7 @@ const DesktopContextmenu: React.FC = ({ children }) => {
         },
         onClickAway() {
           setVisible(false)
-        }
+        },
       }
     }, [setVisible, setPosition, desktopMethods])
   return (

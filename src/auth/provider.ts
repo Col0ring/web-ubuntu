@@ -17,12 +17,12 @@ const [useAuthContext, AuthProvider] = createMethodsContext(
     logout() {
       removeToken()
       return { ...state, user: null, token: null, isLogin: false }
-    }
+    },
   }),
   {
     user: null,
     token: initialToken,
-    isLogin: initialToken ? true : false
+    isLogin: !!initialToken,
   } as AuthContextValue
 )
 

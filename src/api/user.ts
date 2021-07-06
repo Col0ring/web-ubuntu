@@ -11,13 +11,13 @@ export function reqLogin(options: {
   return request({
     url: '/user/login',
     method: 'post',
-    data: options
+    data: options,
   })
 }
 
 export function reqGetUserInfo(): ApiResponse<UserProps> {
   return request({
     url: '/user/getUserInfo',
-    method: 'get'
+    method: 'get',
   })
 }

@@ -15,7 +15,7 @@ const direction2Border = {
   up: 'Bottom',
   down: 'Top',
   left: 'Right',
-  right: 'Left'
+  right: 'Left',
 } as const
 
 const Arrow: React.FC<ArrowProps> = ({ direction, className, size, color }) => {
@@ -27,10 +27,10 @@ const Arrow: React.FC<ArrowProps> = ({ direction, className, size, color }) => {
     <i
       style={{
         borderWidth: size,
-        [`border${direction2Border[direction]}Color`]: color
+        [`border${direction2Border[direction]}Color`]: color,
       }}
       className={arrowClassName}
-    ></i>
+    />
   )
 }
 

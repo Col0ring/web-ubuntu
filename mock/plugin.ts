@@ -4,6 +4,7 @@ import qs from 'querystring'
 import { pathToRegexp, match } from 'path-to-regexp'
 import { Plugin } from 'vite'
 import { loadMockFiles, loadMockFilesOptions, parseBody } from './plugin-util'
+
 export default function viteMockPlugin(): Plugin {
   return {
     name: 'vite-mock-plugin',
@@ -12,7 +13,7 @@ export default function viteMockPlugin(): Plugin {
     async configureServer({ middlewares }) {
       const dir = path.resolve(__dirname, './modules')
       const loadOptions: loadMockFilesOptions = {
-        dir
+        dir,
       }
       let mockFiles = await loadMockFiles(loadOptions)
 
@@ -40,7 +41,7 @@ export default function viteMockPlugin(): Plugin {
                   query,
                   params:
                     (matched && (matched.params as Record<string, string>)) ||
-                    {}
+                    {},
                 },
                 req,
                 res
@@ -53,7 +54,7 @@ export default function viteMockPlugin(): Plugin {
                   JSON.stringify({
                     message: 'ok',
                     status: 200,
-                    ...result
+                    ...result,
                   })
                 )
               }
@@ -62,6 +63,6 @@ export default function viteMockPlugin(): Plugin {
           }
         }
       })
-    }
+    },
   }
 }

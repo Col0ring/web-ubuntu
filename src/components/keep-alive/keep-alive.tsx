@@ -14,7 +14,7 @@ const KeepAlive: React.FC<KeepAliveProps> = ({
   cacheId,
   className,
   style,
-  scroll = false
+  scroll = false,
 }) => {
   const [cacheState, cacheMethods] = useCacheContext()
   const keepAliveRef = useRef<HTMLDivElement | null>(null)
@@ -34,7 +34,7 @@ const KeepAlive: React.FC<KeepAliveProps> = ({
     ) {
       cacheMethods.renderCacheDoms(cacheId, {
         scroll,
-        parentNode: keepAliveRef.current!
+        parentNode: keepAliveRef.current!,
       })
     } else if (!cacheStatus || cacheStatus === CacheStatus.DESTROY) {
       // first render

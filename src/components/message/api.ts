@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDom from 'react-dom'
 import { MessageMethods, MessageOptions, MessageType } from './type'
 import Message from './message'
+
 export interface MessageInstance {
   (options?: MessageOptions): void
   info(options?: MessageOptions): void
@@ -22,7 +23,7 @@ const message: MessageInstance = ((options) => {
     ReactDom.createPortal(
       React.createElement(Message, {
         ref,
-        ...options
+        ...options,
       }),
       document.body
     ),
@@ -36,7 +37,7 @@ types.forEach((type) => {
   message[type] = (options) => {
     message({
       ...options,
-      type
+      type,
     })
   }
 })

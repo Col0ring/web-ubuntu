@@ -12,7 +12,7 @@ const [useCacheContext, CacheProvider, withCacheProvider] =
         if (cacheElement) {
           // if refresh or clear
           if (cacheElement.status === CacheStatus.DESTROY) {
-            const doms = cacheElement.doms
+            const { doms } = cacheElement
             doms.forEach((dom) => {
               dom.parentNode?.removeChild(dom)
             })
@@ -23,11 +23,11 @@ const [useCacheContext, CacheProvider, withCacheProvider] =
                 doms: [],
                 scrolls: {
                   x: 0,
-                  y: 0
+                  y: 0,
                 },
                 element,
-                status: CacheStatus.CREATE
-              }
+                status: CacheStatus.CREATE,
+              },
             }
           }
           return state
@@ -40,10 +40,10 @@ const [useCacheContext, CacheProvider, withCacheProvider] =
             element,
             scrolls: {
               x: 0,
-              y: 0
+              y: 0,
             },
-            status: CacheStatus.CREATE
-          }
+            status: CacheStatus.CREATE,
+          },
         }
       },
       addCacheDoms(cacheId: string, doms: HTMLElement[]) {
@@ -56,8 +56,8 @@ const [useCacheContext, CacheProvider, withCacheProvider] =
           [cacheId]: {
             ...state[cacheId],
             doms,
-            status: CacheStatus.CREATED
-          }
+            status: CacheStatus.CREATED,
+          },
         }
       },
       renderCacheDoms(
@@ -66,8 +66,8 @@ const [useCacheContext, CacheProvider, withCacheProvider] =
       ) {
         const cacheElement = state[cacheId]
         // the cache doms
-        const doms = cacheElement.doms
-        const scrolls = cacheElement.scrolls
+        const { doms } = cacheElement
+        const { scrolls } = cacheElement
         doms.forEach((dom) => parentNode.appendChild(dom))
 
         if (scroll) {
@@ -77,8 +77,8 @@ const [useCacheContext, CacheProvider, withCacheProvider] =
           ...state,
           [cacheId]: {
             ...cacheElement,
-            status: CacheStatus.ACTIVE
-          }
+            status: CacheStatus.ACTIVE,
+          },
         }
       },
 
@@ -90,9 +90,9 @@ const [useCacheContext, CacheProvider, withCacheProvider] =
             ...state[cacheId],
             scrolls: {
               x: target.scrollLeft,
-              y: target.scrollTop
-            }
-          }
+              y: target.scrollTop,
+            },
+          },
         }
       },
       activate(cacheId: string) {
@@ -100,8 +100,8 @@ const [useCacheContext, CacheProvider, withCacheProvider] =
           ...state,
           [cacheId]: {
             ...state[cacheId],
-            status: CacheStatus.ACTIVATED
-          }
+            status: CacheStatus.ACTIVATED,
+          },
         }
       },
       deactivate(cacheId: string) {
@@ -109,8 +109,8 @@ const [useCacheContext, CacheProvider, withCacheProvider] =
           ...state,
           [cacheId]: {
             ...state[cacheId],
-            status: CacheStatus.DEACTIVATED
-          }
+            status: CacheStatus.DEACTIVATED,
+          },
         }
       },
       refresh(cacheId: string) {
@@ -118,16 +118,17 @@ const [useCacheContext, CacheProvider, withCacheProvider] =
           ...state,
           [cacheId]: {
             ...state[cacheId],
-            status: CacheStatus.DESTROY
-          }
+            status: CacheStatus.DESTROY,
+          },
         }
       },
       clear() {
         return Object.keys(state).reduce((prev, next) => {
+          // eslint-disable-next-line no-param-reassign
           prev[next] = { ...state[next], status: CacheStatus.DESTROY }
           return prev
         }, {} as CacheContextValue)
-      }
+      },
     }),
     {} as CacheContextValue
   )

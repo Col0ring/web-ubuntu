@@ -1,6 +1,7 @@
 import React from 'react'
 import Arrow from '@/components/arrow'
 import { StatusIconConfig } from '../../type'
+
 export interface StatusProps {
   icons: StatusIconConfig[]
 }

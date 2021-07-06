@@ -15,7 +15,7 @@ export function createLocalStorage<T extends string, V = string | null>(
   const setAction = `set${action}`
   const getAction = `get${action}`
   const removeAction = `remove${action}`
-  const key = 'web-ubuntu-' + name + '-key'
+  const key = `web-ubuntu-${name}-key`
 
   return {
     [setAction](value: string) {
@@ -26,7 +26,7 @@ export function createLocalStorage<T extends string, V = string | null>(
     },
     [removeAction]() {
       localStorage.removeItem(key)
-    }
+    },
   } as {
     [P in SetAction | GetAction | RemoveAction]: P extends SetAction
       ? (value: string) => void

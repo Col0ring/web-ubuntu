@@ -10,13 +10,13 @@ export interface SidebarAreaProps {
 const SidebarArea: React.FC<SidebarAreaProps> = ({
   onEnter,
   onLeave,
-  children
+  children,
 }) => {
   const sidebarAreaRef = useRef<HTMLDivElement | null>(null)
 
   useHover(sidebarAreaRef, {
     onEnter,
-    onLeave
+    onLeave,
   })
 
   return (

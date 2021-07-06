@@ -7,7 +7,7 @@ const Todoist: React.FC = () => {
       frameBorder="0"
       title="Todoist"
       className="h-full w-full bg-ub-cool-grey"
-    ></iframe>
+    />
   )
 }
 

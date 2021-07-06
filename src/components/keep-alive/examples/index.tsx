@@ -48,14 +48,14 @@ const Example: React.FC = () => {
           style={{
             height: 200,
             overflow: 'scroll',
-            backgroundColor: 'green'
+            backgroundColor: 'green',
           }}
           cacheId="list"
           scroll
         >
           <div>
             2000
-            <div style={{ backgroundColor: 'red', height: 1000000 }}></div>
+            <div style={{ backgroundColor: 'red', height: 1000000 }} />
           </div>
         </KeepAlive>
       )}

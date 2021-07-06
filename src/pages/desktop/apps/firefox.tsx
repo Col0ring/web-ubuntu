@@ -38,7 +38,7 @@ const Firefox: React.FC = () => {
         id="firefox"
         frameBorder="0"
         title="Firefox"
-      ></iframe>
+      />
     </div>
   )
 }

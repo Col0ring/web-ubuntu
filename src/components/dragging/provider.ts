@@ -1,10 +1,11 @@
 import createMethodsContext from '@/hooks/common/factory/createMethodsContext'
 import { DragContextValue } from './type'
+
 const [useDragContext, DragProvider, withDragProvider] = createMethodsContext(
   (state) => ({
     setDragArea(options: DragContextValue['dragArea']) {
       return { ...state, dragArea: options }
-    }
+    },
   }),
   {
     dragArea: {
@@ -12,9 +13,9 @@ const [useDragContext, DragProvider, withDragProvider] = createMethodsContext(
       height: 0,
       limitRange: {
         x: [0, 0],
-        y: [0, 0]
-      }
-    }
+        y: [0, 0],
+      },
+    },
   } as DragContextValue
 )
 

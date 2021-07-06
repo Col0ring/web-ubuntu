@@ -19,7 +19,7 @@ const Navbar: React.FC = () => {
 
   const [, desktopMethods] = useDesktopContext()
   const {
-    config: { sound, brightness }
+    config: { sound, brightness },
   } = settingStatus
 
   const onSoundChange: Required<SliderProps>['onChange'] = useCallback(
@@ -48,16 +48,16 @@ const Navbar: React.FC = () => {
     () => [
       {
         icon: '/themes/Yaru/status/network-wireless-signal-good-symbolic.svg',
-        name: 'ubuntu wifi'
+        name: 'ubuntu wifi',
       },
       {
         icon: '/themes/Yaru/status/audio-volume-medium-symbolic.svg',
-        name: 'ubuntu sound'
+        name: 'ubuntu sound',
       },
       {
         icon: '/themes/Yaru/status/battery-good-symbolic.svg',
-        name: 'ubuntu battry'
-      }
+        name: 'ubuntu battry',
+      },
     ],
     []
   )
@@ -74,7 +74,7 @@ const Navbar: React.FC = () => {
               className="ubuntu-slider w-2/3"
               value={sound}
             />
-          )
+          ),
         },
         {
           image: '/themes/Yaru/status/display-brightness-symbolic.svg',
@@ -85,8 +85,8 @@ const Navbar: React.FC = () => {
               className="ubuntu-slider w-2/3"
               value={brightness}
             />
-          )
-        }
+          ),
+        },
       ],
       [
         {
@@ -98,7 +98,7 @@ const Navbar: React.FC = () => {
               <span>OnePlus 8 Pro</span>
               <Arrow direction="right" />
             </div>
-          )
+          ),
         },
         {
           image: '/themes/Yaru/status/battery-good-symbolic.svg',
@@ -108,7 +108,7 @@ const Navbar: React.FC = () => {
               <span>Off</span>
               <Arrow direction="right" />
             </div>
-          )
+          ),
         },
         {
           image: '/themes/Yaru/status/bluetooth-symbolic.svg',
@@ -118,14 +118,14 @@ const Navbar: React.FC = () => {
               <span>2:40 Remaining (75%)</span>
               <Arrow direction="right" />
             </div>
-          )
-        }
+          ),
+        },
       ],
       [
         {
           image: '/themes/Yaru/status/emblem-system-symbolic.svg',
           imageAlt: 'ubuntu settings',
-          name: 'Settings'
+          name: 'Settings',
         },
         {
           image: '/themes/Yaru/status/changes-prevent-symbolic.svg',
@@ -133,7 +133,7 @@ const Navbar: React.FC = () => {
           name: 'Lock',
           onClick: () => {
             desktopMethods.setLockScreen(true)
-          }
+          },
         },
         {
           image: '/themes/Yaru/status/system-shutdown-symbolic.svg',
@@ -146,9 +146,9 @@ const Navbar: React.FC = () => {
           ),
           onClick: () => {
             authMethods.logout()
-          }
-        }
-      ]
+          },
+        },
+      ],
     ],
     [sound, brightness, onSoundChange, onBrightnessChange, authMethods]
   )

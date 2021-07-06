@@ -29,7 +29,7 @@ function useDrag<T = any>(options?: UseDragOptions<T>): UseDragReturn<T> {
         onDragEnd: (e: React.DragEvent) => {
           setIsDrag(false)
           options?.onDragEnd?.(data, e)
-        }
+        },
       }
     },
     [Object.values(options || {}), setIsDrag]

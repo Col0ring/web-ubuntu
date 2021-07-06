@@ -75,8 +75,8 @@ function useFullscreen(
     {
       setFull,
       exitFull,
-      toggleFull
-    }
+      toggleFull,
+    },
   ] as const
 }
 

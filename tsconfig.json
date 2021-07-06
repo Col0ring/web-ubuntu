@@ -19,5 +19,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["./src", "./mock", "vite.config.ts"]
+  "include": ["./src", "./mock", "vite.config.ts"],
+  "exclude": ["node_modules", "dist", "dist-ssr"]
 }

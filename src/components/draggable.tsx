@@ -1,5 +1,6 @@
 import React, { forwardRef } from 'react'
 import useDrag, { UseDragOptions } from '@/hooks/common/useDrag'
+
 export interface DraggableProps<T = any> extends UseDragOptions<T> {
   children?: React.ReactNode
   data?: T
@@ -13,7 +14,7 @@ const Draggable: React.ForwardRefRenderFunction<
 > = ({ data, children, onDragEnd, onDragStart, className, style }, ref) => {
   const [, getProps] = useDrag({
     onDragStart,
-    onDragEnd
+    onDragEnd,
   })
   return (
     <div ref={ref} {...getProps(data)} style={style} className={className}>

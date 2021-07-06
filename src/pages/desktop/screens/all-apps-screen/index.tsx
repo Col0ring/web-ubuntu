@@ -7,13 +7,14 @@ import SearchInput from './search-input'
 import { useDesktopContext } from '../../provider'
 import './style.less'
 import { defaultDesktop } from '../../config'
+
 const tabs: TabsProps['tabs'] = [
   {
-    name: 'Frequent'
+    name: 'Frequent',
   },
   {
-    name: 'All'
-  }
+    name: 'All',
+  },
 ]
 
 const AllAppsScreen: React.FC = () => {

@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react'
 import { ErrorBoundary } from './error-bondary'
 import Loading from './loading'
+
 export interface LazyLoadProps {
   fallback?: React.ReactNode
 }
@@ -8,9 +9,7 @@ export interface LazyLoadProps {
 const LazyLoad: React.FC<LazyLoadProps> = ({ children, fallback }) => {
   return (
     <ErrorBoundary>
-      <Suspense fallback={fallback ? fallback : <Loading loading />}>
-        {children}
-      </Suspense>
+      <Suspense fallback={fallback || <Loading loading />}>{children}</Suspense>
     </ErrorBoundary>
   )
 }

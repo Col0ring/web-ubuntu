@@ -1,16 +1,19 @@
 .app-window {
   &.window-shadow {
-    box-shadow: 1px 4px 12px 4px rgba(0, 0, 0, 0.2);
     -webkit-box-shadow: 1px 4px 12px 4px rgba(0, 0, 0, 0.2);
     -moz-box-shadow: 1px 4px 12px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 1px 4px 12px 4px rgba(0, 0, 0, 0.2);
   }
+
   &.no-focus {
     filter: brightness(90%);
   }
   opacity: 0;
+
   &.app-window-show {
     opacity: 1;
   }
+
   &.app-window-leave {
     opacity: 0;
   }

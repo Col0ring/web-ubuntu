@@ -24,12 +24,12 @@ const Tabs: React.FC<TabsProps> = ({
   active,
   className,
   fontSize,
-  itemClassName
+  itemClassName,
 }) => {
   const tabItemClassName = classnames(
     'flex flex-col group  bg-transparent cursor-pointer items-center',
     {
-      'flex-1': stretch
+      'flex-1': stretch,
     },
     itemClassName
   )

@@ -41,7 +41,7 @@ const Sidebar: React.FC = () => {
       },
       onLeave: () => {
         setForceSidebarRender(false)
-      }
+      },
     }),
     [setForceSidebarRender]
   )

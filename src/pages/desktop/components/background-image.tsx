@@ -11,10 +11,10 @@ const BackgroundImage: React.FC<BackgroundImageProps> = ({ src }) => {
         backgroundImage: `url(${src})`,
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
-        backgroundPositionX: 'center'
+        backgroundPositionX: 'center',
       }}
       className="absolute top-0 right-0 overflow-hidden h-full w-full -z-10"
-    ></div>
+    />
   )
 }
 

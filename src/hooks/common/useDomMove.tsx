@@ -1,5 +1,6 @@
 import { useCallback } from 'react'
 import useEventListener from './useEventListener'
+
 interface MoveContext {
   left: number
   top: number
@@ -32,15 +33,15 @@ function useDomMove(
       width,
       left: rectLeft,
       top: rectTop,
-      height
+      height,
     } = (e.currentTarget as HTMLElement).getBoundingClientRect()
 
     const downX = e.clientX
     const downY = e.clientY
 
-    const onMuseMove = (e: MouseEvent) => {
-      const moveX = e.clientX
-      const moveY = e.clientY
+    const onMuseMove = (ev: MouseEvent) => {
+      const moveX = ev.clientX
+      const moveY = ev.clientY
       const offsetX = moveX - downX
       const offsetY = moveY - downY
       const left = rectLeft + offsetX
@@ -54,14 +55,14 @@ function useDomMove(
           left,
           top,
           width,
-          height
+          height,
         },
-        e
+        ev
       )
     }
 
-    const onMouseUp = (e: MouseEvent) => {
-      onMoveEnd?.(e)
+    const onMouseUp = (ev: MouseEvent) => {
+      onMoveEnd?.(ev)
       document.removeEventListener('mousemove', onMuseMove)
       document.removeEventListener('mouseup', onMouseUp)
     }
