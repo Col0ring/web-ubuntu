@@ -94,6 +94,7 @@ const AppWindow: React.FC<AppWindowProps> = ({
         // }
 
         if (top < defaultDesktop.navbar) {
+          // eslint-disable-next-line no-param-reassign
           top = defaultDesktop.navbar + 1
         }
         setPosition({

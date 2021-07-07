@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import classnames from 'classnames'
 import Draggable, { DraggableProps } from '@/components/draggable'
 import App, { AppProps } from '@/components/app'
-import { AppConfig, DesktopAppConfig } from '@/typings/app'
+import { DesktopAppConfig } from '@/typings/app'
 import useClickAway from '@/hooks/common/useClickAway'
 import useEventListener from '@/hooks/common/useEventListener'
 import useDomRect from '@/hooks/common/useDomRect'
@@ -82,7 +82,7 @@ const DesktopApp: React.FC<DesktopAppProps> = (props) => {
     setIsFocus(true)
   })
   const onDragStart: Required<DraggableProps>['onDragStart'] = useCallback(
-    (data: AppConfig, e) => {
+    (data: DesktopAppConfig, e) => {
       const { left, top } = (
         e.currentTarget as HTMLDivElement
       ).getBoundingClientRect()
@@ -94,7 +94,7 @@ const DesktopApp: React.FC<DesktopAppProps> = (props) => {
     []
   )
   const onDragEnd: Required<DraggableProps>['onDragEnd'] = useCallback(
-    (data: AppConfig, e) => {
+    (data: DesktopAppConfig, e) => {
       let left = e.clientX - offset.left
       let top = e.clientY - offset.top
       if (left < 0) {

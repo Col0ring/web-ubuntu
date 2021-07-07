@@ -172,7 +172,7 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
           focusAppId: id,
         }
       },
-      clickDesktopApp(id: string, app: AppConfig) {
+      clickDesktopApp(id: string, app: DesktopAppConfig) {
         const currentDesktopApp = state.desktopApps.find(
           (desktopApp) => desktopApp.id === id
         )!

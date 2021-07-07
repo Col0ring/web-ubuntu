@@ -99,8 +99,8 @@ async function loadConfigFromBundledFile(
   const defaultLoader = require.extensions[extension]
   require.extensions[extension] = (module: NodeModule, fName: string) => {
     if (filename === fName) {
-      const compile = (module as NodeModuleWithCompile)._compile
-      compile(bundle, filename)
+      // eslint-disable-next-line @typescript-eslint/no-extra-semi
+      ;(module as NodeModuleWithCompile)._compile(bundle, filename)
     } else {
       defaultLoader?.(module, fName)
     }

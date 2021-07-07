@@ -32,9 +32,11 @@ export default function viteMockPlugin(): Plugin {
               pathToRegexp(pathname).test(url) &&
               req.method?.toLowerCase() === method.toLowerCase()
             ) {
+              // eslint-disable-next-line no-await-in-loop
               const body = await parseBody(req)
               const query = qs.parse(search)
               const matched = match(pathname)(url)
+              // eslint-disable-next-line no-await-in-loop
               const result = await handler(
                 {
                   body,
