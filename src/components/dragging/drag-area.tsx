@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef } from 'react'
 import classnames from 'classnames'
-import useDomRect from '@/hooks/common/useDomRect'
+import useSize from '@/hooks/common/useSize'
 import { useDragContext, withDragProvider } from './provider'
 import { DragContextValue } from './type'
 
@@ -8,7 +8,6 @@ export interface DragAreaProps {
   limitRange?: DragContextValue['dragArea']['limitRange']
   preventDropAction?: boolean
   onDrop?: (e: React.DragEvent) => void
-  resizeDeps?: React.DependencyList
   className?: string
 }
 const DragArea: React.FC<DragAreaProps> = ({
@@ -17,11 +16,10 @@ const DragArea: React.FC<DragAreaProps> = ({
   limitRange,
   preventDropAction,
   className,
-  resizeDeps,
 }) => {
   const [, dragMethods] = useDragContext()
   const dragAreaRef = useRef<HTMLDivElement | null>(null)
-  const { width, height } = useDomRect(dragAreaRef, resizeDeps || [])
+  const { width, height } = useSize(dragAreaRef)
   const dragAreaClassName = classnames(
     'relative w-full h-full left-0 top-0',
     className
