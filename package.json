@@ -1,5 +1,22 @@
 {
-  "version": "0.0.0",
+  "name": "web-ubuntu",
+  "description": "A website simulating Ubuntu's GUI",
+  "version": "1.0.0",
+  "license": "MIT",
+  "private": false,
+  "author": {
+    "name": "Col0ring",
+    "email": "1561999073@qq.com"
+  },
+  "keywords": [
+    "react",
+    "typescript",
+    "web-ubuntu"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Col0ring/web-ubuntu.git"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
