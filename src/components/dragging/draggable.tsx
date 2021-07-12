@@ -9,12 +9,25 @@ export interface DraggableProps<T = any> extends UseDragOptions<T> {
   className?: string
   style?: React.CSSProperties
   nodeRef?: React.RefObject<HTMLDivElement>
+  defaultPosition?: {
+    left: number
+    top: number
+  }
 }
 
 const Draggable: React.ForwardRefRenderFunction<
   HTMLDivElement,
   DraggableProps
-> = ({ data, children, onDragEnd, onDragStart, className, style, nodeRef }) => {
+> = ({
+  data,
+  children,
+  onDragEnd,
+  onDragStart,
+  className,
+  style,
+  nodeRef,
+  defaultPosition,
+}) => {
   const [dragState] = useDragContext()
   const { dragArea } = dragState
 
@@ -25,10 +38,12 @@ const Draggable: React.ForwardRefRenderFunction<
     height: 0,
   })
 
-  const [position, setPosition] = useState({
-    left: 0,
-    top: 0,
-  })
+  const [position, setPosition] = useState(
+    defaultPosition || {
+      left: 0,
+      top: 0,
+    }
+  )
 
   const [offset, setOffset] = useState({
     left: 0,
@@ -85,7 +100,6 @@ const Draggable: React.ForwardRefRenderFunction<
   const draggableStyle = useMemo(() => {
     const { x, y } = dragArea.limitRange
     return {
-      ...style,
       left:
         typeof position.left === 'string'
           ? position.left
@@ -94,8 +108,13 @@ const Draggable: React.ForwardRefRenderFunction<
         typeof position.top === 'string'
           ? position.top
           : `${(position.top / y[1]) * 100}%`,
+      ...style,
     }
   }, [style, position, dragArea.limitRange])
+
+  useEffect(() => {
+    defaultPosition && setPosition(defaultPosition)
+  }, [defaultPosition?.top, defaultPosition?.left])
 
   useEffect(() => {
     if (ref.current) {

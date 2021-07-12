@@ -23,7 +23,6 @@ const NewFolderModal: React.FC = () => {
         left: desktopState.mousePosition.clientX,
         top: desktopState.mousePosition.clientY,
       })
-      desktopMethods.setNewFolderModal(false)
     },
     [desktopMethods, desktopState]
   )

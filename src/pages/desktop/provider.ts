@@ -4,6 +4,10 @@ import { AppConfig, DesktopAppConfig, OpenedAppConfig } from '@/typings/app'
 import { DesktopContextValue } from './type'
 import { defaultImages } from './config'
 import { getBackgroundImage, setBackgroundImage } from './util'
+import message from '@/components/message'
+import React from 'react'
+
+const Folder = React.lazy(() => import('@/pages/desktop/apps/folder'))
 
 const [useDesktopContext, DesktopProvider, withDesktopProvider] =
   createMethodsContext(
@@ -12,7 +16,7 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
         setBackgroundImage(image)
         return { ...state, backgroundImage: image }
       },
-      setNewFolderModal(visible) {
+      setNewFolderModal(visible: boolean) {
         return { ...state, newFolderModal: visible }
       },
       setMousePosition(position: DesktopContextValue['mousePosition']) {
@@ -88,17 +92,34 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
         }
       },
       addNewFolder(name: string, position: DesktopAppConfig['position']) {
+        if (state.desktopApps.find((app) => app.id === name)) {
+          message.error({
+            content: 'Something Wrong',
+            description: `The name ${name} is already in use. Please choose another name`,
+            duration: 5000,
+          })
+          return state
+        }
+        const newFolder: AppConfig = {
+          id: name,
+          title: name,
+          icon: './themes/Yaru/system/folder.png',
+          disabled: false,
+          shortcut: true,
+          favorite: false,
+          render: () =>
+            React.createElement(Folder, {
+              id: name,
+            }),
+        }
+        const folderState: DesktopContextValue = this.setNewFolderModal(false)
         return {
-          ...state,
+          ...folderState,
+          apps: [...apps, newFolder],
           desktopApps: [
             ...state.desktopApps,
             {
-              id: name,
-              title: name,
-              icon: './themes/Yaru/system/folder.png',
-              disabled: false,
-              shortcut: true,
-              favorite: false,
+              ...newFolder,
               position,
             },
           ],

@@ -1,5 +1,10 @@
 import React from 'react'
-import { AppConfig, DesktopAppConfig, OpenedAppConfig } from '@/typings/app'
+import {
+  App,
+  AppConfig,
+  DesktopAppConfig,
+  OpenedAppConfig,
+} from '@/typings/app'
 import { Percentage } from '@/typings/tools'
 import { StatusMenuItemProps } from './components/navbar/status-menu/status-menu-item'
 
@@ -12,7 +17,7 @@ export interface StatusMenuConfig extends StatusMenuItemProps {
   render?: () => React.ReactNode
 }
 
-export type Apps = Record<string, AppConfig | null>
+export type Apps = Record<string, App | null>
 
 export type OpenedApps = Record<string, OpenedAppConfig | null>
 
@@ -41,5 +46,5 @@ export interface DesktopContextValue {
   maximizedApps: Apps
   frequentApps: AppConfig[]
   desktopApps: DesktopAppConfig[]
-  apps: AppConfig[]
+  apps: App[]
 }

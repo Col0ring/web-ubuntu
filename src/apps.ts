@@ -1,12 +1,12 @@
 import React from 'react'
-import { AppConfig } from './typings/app'
+import { App } from './typings/app'
 
 const VsCode = React.lazy(() => import('@/pages/desktop/apps/vscode'))
 const Todoist = React.lazy(() => import('@/pages/desktop/apps/todoist'))
 const Firefox = React.lazy(() => import('@/pages/desktop/apps/firefox'))
 const Settings = React.lazy(() => import('@/pages/desktop/apps/settings'))
 const Trash = React.lazy(() => import('@/pages/desktop/apps/trash'))
-const apps: AppConfig[] = [
+const apps: App[] = [
   {
     id: 'firefox',
     title: 'Firefox Browser',
@@ -75,6 +75,26 @@ const apps: AppConfig[] = [
     favorite: true,
     shortcut: false,
     component: Trash,
+    apps: [
+      {
+        id: 'php',
+        title: 'php',
+        icon: './themes/filetypes/php.png',
+        position: {
+          left: 0,
+          top: 0,
+        },
+      },
+      {
+        title: 'Angular.js',
+        id: 'Angular.js',
+        icon: './themes/filetypes/js.png',
+        position: {
+          left: 0,
+          top: 0,
+        },
+      },
+    ],
   },
   {
     id: 'gedit',

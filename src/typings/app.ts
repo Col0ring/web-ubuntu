@@ -11,7 +11,10 @@ export interface AppConfig {
   shortcut?: boolean
   render?: () => React.ReactNode
   component?: React.ComponentType<any> | React.ComponentType
-  [prop: string]: any
+  position?: {
+    left: number | Percentage
+    top: number | Percentage
+  }
 }
 
 export interface OpenedAppConfig extends AppConfig {
@@ -30,4 +33,8 @@ export interface DesktopAppConfig extends AppConfig {
     left: number | Percentage
     top: number | Percentage
   }
+}
+export type App = FolderConfig | AppConfig
+export interface FolderConfig extends AppConfig {
+  apps: App[]
 }

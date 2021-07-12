@@ -7,7 +7,7 @@ export interface EmptyProps {
 }
 const Empty: React.FC<EmptyProps> = ({ title, icon, img }) => {
   return (
-    <div className="flex-grow flex flex-col justify-center items-center">
+    <div className="flex-grow flex flex-col justify-center items-center h-full w-full">
       <div className="w-24">
         {icon || (
           <img
