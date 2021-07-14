@@ -34,7 +34,7 @@ export interface DesktopAppConfig extends AppConfig {
     top: number | Percentage
   }
 }
-export type App = FolderConfig | AppConfig
+export type UbuntuApp = FolderConfig | AppConfig
 export interface FolderConfig extends AppConfig {
-  apps: App[]
+  apps: UbuntuApp[]
 }

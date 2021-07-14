@@ -1,10 +1,10 @@
 import React, { useCallback } from 'react'
 import classnames from 'classnames'
-import { AppConfig } from '@/typings/app'
+import { UbuntuApp } from '@/typings/app'
 
 export interface AppProps {
-  app: AppConfig
-  onOpen?: (id: string, app: AppConfig) => void
+  app: UbuntuApp
+  onOpen?: (id: string, app: UbuntuApp) => void
   className?: string
 }
 

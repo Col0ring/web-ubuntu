@@ -13,6 +13,7 @@ export interface DraggableProps<T = any> extends UseDragOptions<T> {
     left: number
     top: number
   }
+  onPositionChange?: (position: { left: number; top: number }) => void
 }
 
 const Draggable: React.ForwardRefRenderFunction<
@@ -27,6 +28,7 @@ const Draggable: React.ForwardRefRenderFunction<
   style,
   nodeRef,
   defaultPosition,
+  onPositionChange,
 }) => {
   const [dragState] = useDragContext()
   const { dragArea } = dragState
@@ -111,6 +113,10 @@ const Draggable: React.ForwardRefRenderFunction<
       ...style,
     }
   }, [style, position, dragArea.limitRange])
+
+  useEffect(() => {
+    onPositionChange?.(position)
+  }, [position])
 
   useEffect(() => {
     defaultPosition && setPosition(defaultPosition)

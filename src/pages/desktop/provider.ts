@@ -1,6 +1,11 @@
 import createMethodsContext from '@/hooks/common/factory/createMethodsContext'
 import apps from '@/apps'
-import { AppConfig, DesktopAppConfig, OpenedAppConfig } from '@/typings/app'
+import {
+  AppConfig,
+  DesktopAppConfig,
+  OpenedAppConfig,
+  UbuntuApp,
+} from '@/typings/app'
 import { DesktopContextValue } from './type'
 import { defaultImages } from './config'
 import { getBackgroundImage, setBackgroundImage } from './util'
@@ -123,6 +128,24 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
               position,
             },
           ],
+        }
+      },
+      updateFolderApp({
+        from,
+        to,
+        data,
+      }: {
+        from: string
+        to: string
+        data: UbuntuApp
+      }) {
+        if (from === to) {
+          const parentApp = state.apps.find((app) => app.id === from)
+          return { ...state }
+        } else {
+          const prevParentApp = state.apps.find((app) => app.id === from)
+          const nextParentApp = state.apps.find((app) => app.id === to)
+          return { ...state }
         }
       },
       updateDesktopApp(id: string, app: DesktopAppConfig) {

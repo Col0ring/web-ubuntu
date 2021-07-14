@@ -1,14 +1,25 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import App, { AppProps } from '@/components/app'
-import { Draggable } from '@/components/dragging'
+import { Draggable, DraggableProps } from '@/components/dragging'
+import { UbuntuApp } from '@/typings/app'
+import { useDesktopContext } from '../../provider'
 
-export type FolderAppProps = AppProps
+export interface FolderAppProps extends AppProps {
+  folderId: string
+}
+
+export interface FolderDragData {
+  app: UbuntuApp
+  from: string
+}
+
 const FolderApp: React.FC<FolderAppProps> = (props) => {
   const [isRender, setIsRender] = useState(false)
   const [position, setPosition] = useState({
     left: 0,
     top: 0,
   })
+  const [, desktopMethods] = useDesktopContext()
   const draggableRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
@@ -30,12 +41,32 @@ const FolderApp: React.FC<FolderAppProps> = (props) => {
     })
   }, [])
 
+  const dragData: FolderDragData = useMemo(() => {
+    return {
+      from: props.folderId,
+      app: props.app,
+    }
+  }, [props.app, props.folderId])
+
+  const onPositionChange: Required<DraggableProps>['onPositionChange'] =
+    useCallback((positionState) => {
+      desktopMethods.updateFolderApp({
+        from: props.folderId,
+        to: props.folderId,
+        data: {
+          ...props.app,
+          position: positionState,
+        },
+      })
+    }, [])
+
   return (
     <Draggable
       nodeRef={draggableRef}
       defaultPosition={position}
       style={{ position: isRender ? 'absolute' : 'relative' }}
-      data={props.app}
+      onPositionChange={onPositionChange}
+      data={dragData}
     >
       <App {...props} />
     </Draggable>

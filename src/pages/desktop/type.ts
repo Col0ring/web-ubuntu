@@ -1,6 +1,6 @@
 import React from 'react'
 import {
-  App,
+  UbuntuApp,
   AppConfig,
   DesktopAppConfig,
   OpenedAppConfig,
@@ -17,7 +17,7 @@ export interface StatusMenuConfig extends StatusMenuItemProps {
   render?: () => React.ReactNode
 }
 
-export type Apps = Record<string, App | null>
+export type Apps = Record<string, UbuntuApp | null>
 
 export type OpenedApps = Record<string, OpenedAppConfig | null>
 
@@ -46,5 +46,5 @@ export interface DesktopContextValue {
   maximizedApps: Apps
   frequentApps: AppConfig[]
   desktopApps: DesktopAppConfig[]
-  apps: App[]
+  apps: UbuntuApp[]
 }
