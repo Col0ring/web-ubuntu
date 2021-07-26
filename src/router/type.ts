@@ -10,5 +10,6 @@ export interface RouteConfigProps extends RouteConfig {
 
 export interface RouterContextValue {
   routes: RouteConfigProps[]
+  currentRoute: RouteConfigProps
   matchedRoutes: RouteConfigProps[]
 }

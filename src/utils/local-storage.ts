@@ -4,9 +4,9 @@ export interface createLocalStorageOptions<V> {
 }
 export function createLocalStorage<T extends string, V = string | null>(
   name: T,
-  options?: createLocalStorageOptions<V>
+  options: createLocalStorageOptions<V> = {}
 ) {
-  const { defaultValue, map = (v: string | null) => v } = options || {}
+  const { defaultValue, map = (v: string | null) => v } = options
   type SetAction = `set${Capitalize<T>}`
   type GetAction = `get${Capitalize<T>}`
   type RemoveAction = `remove${Capitalize<T>}`

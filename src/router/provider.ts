@@ -13,15 +13,19 @@ const [useRouterContext, RouterProvider] = createMethodsContext(
         ],
       }
     },
-    setMatchedRoutes(matchedRoutes: RouteConfigProps[]) {
-      return { ...state, matchedRoutes }
+    setMatchedRoutes(
+      matchedRoutes: RouteConfigProps[],
+      currentRoute: RouteConfigProps
+    ) {
+      return { ...state, matchedRoutes, currentRoute }
     },
     reset() {
-      return { routes: constantsRoutes, matchedRoutes: [] }
+      return { currentRoute: {}, routes: constantsRoutes, matchedRoutes: [] }
     },
   }),
   {
     routes: constantsRoutes,
+    currentRoute: {},
     matchedRoutes: [],
   } as RouterContextValue
 )

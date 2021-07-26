@@ -30,7 +30,7 @@ const AppRoutes: React.FC = () => {
 }
 
 const RouterHelper: React.FC = () => {
-  const [routerState, RouterMethods] = useRouterContext()
+  const [routerState, routerMethods] = useRouterContext()
   const [, settingMethods] = useSettingContext()
   const { routes } = routerState
   const { pathname } = useLocation()
@@ -38,10 +38,11 @@ const RouterHelper: React.FC = () => {
     const matchedRoutes = matchRoutes(routes, pathname).map(
       (route) => route.route
     )
-    RouterMethods.setMatchedRoutes(matchedRoutes)
-    const title = matchedRoutes[matchedRoutes.length - 1]?.title
+    const currentRoute = matchedRoutes[matchedRoutes.length - 1]
+    routerMethods.setMatchedRoutes(matchedRoutes, currentRoute)
+    const title = currentRoute?.title
     title && settingMethods.setTitle(title)
-  }, [pathname, routes, RouterMethods])
+  }, [pathname, routes, routerMethods])
   return null
 }
 
