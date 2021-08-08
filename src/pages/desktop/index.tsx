@@ -13,7 +13,6 @@ import NewFolderModal from './components/new-folder-modal'
 
 const Desktop: React.FC = () => {
   const [desktopState, desktopMethods] = useDesktopContext()
-  const windowRef = useRef(window)
 
   const onDesktopAppOpen: Required<DesktopAppProps>['onOpen'] = useCallback(
     (id, app) => {
@@ -22,7 +21,7 @@ const Desktop: React.FC = () => {
     [desktopMethods]
   )
 
-  useEventListener(windowRef, 'resize', () => {
+  useEventListener(window, 'resize', () => {
     desktopMethods.resizeWindow(window.innerWidth, window.innerHeight)
   })
 

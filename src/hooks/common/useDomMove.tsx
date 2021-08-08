@@ -1,4 +1,5 @@
 import { useCallback } from 'react'
+import { DomParam } from '@/typings/tools'
 import useEventListener from './useEventListener'
 
 interface MoveContext {
@@ -20,7 +21,7 @@ interface useDomMoveOptions {
 }
 
 function useDomMove(
-  ref: React.RefObject<HTMLElement>,
+  ref: DomParam,
   { filterMoving, onMoveStart, onMoving, onMoveEnd }: useDomMoveOptions = {}
 ) {
   const onMoveDown = useCallback((e: MouseEvent) => {

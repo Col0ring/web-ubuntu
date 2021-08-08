@@ -1,15 +1,14 @@
-import React from 'react'
+import { DomElement, DomParam } from '@/typings/tools'
 import useClickAway from './useClickAway'
 import useEventListener from './useEventListener'
 
 export interface useContextmenuOptions {
   onClick?: (e: MouseEvent) => void
-
   onContextMenu?: (e: MouseEvent) => void
   onClickAway?: (e: MouseEvent) => void
 }
 function useContextmenu(
-  ref: React.RefObject<HTMLElement>,
+  ref: DomParam<Exclude<DomElement, Window>>,
   { onClick, onContextMenu, onClickAway }: useContextmenuOptions = {}
 ) {
   useEventListener(ref, 'contextmenu', (e) => {

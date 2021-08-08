@@ -1,11 +1,13 @@
-import { RefObject, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
+import { DomElement, DomParam } from '@/typings/tools'
+import { getDomElement } from '@/utils/tool'
 
 type EventType = MouseEvent | TouchEvent
 
 const defaultEvents: (keyof HTMLElementEventMap)[] = ['click']
 
 function useClickAway<E extends EventType = EventType>(
-  ref: RefObject<HTMLElement | null>,
+  ref: DomParam<Exclude<DomElement, Window>>,
   onClickAway: (event: E) => void,
   events: (keyof HTMLElementEventMap)[] = defaultEvents
 ) {
@@ -14,7 +16,7 @@ function useClickAway<E extends EventType = EventType>(
 
   useEffect(() => {
     const handler: EventListener = (event) => {
-      const { current: el } = ref
+      const el = getDomElement(ref)
       // 执行回调
       el &&
         !el.contains(event.target as Node) &&

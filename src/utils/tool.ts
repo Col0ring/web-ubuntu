@@ -1,5 +1,5 @@
 import React from 'react'
-import { Key, ResolvePromise } from '@/typings/tools'
+import { DomElement, DomParam, Key, ResolvePromise } from '@/typings/tools'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 export function noop() {}
@@ -9,6 +9,24 @@ export function preventDefault(e: React.UIEvent) {
 export function stopPropagation(e: React.UIEvent) {
   e.stopPropagation()
 }
+
+export function isRef<T extends DomElement = DomElement>(
+  value: DomParam<T>
+): value is React.RefObject<T> {
+  return (
+    value && typeof value === 'object' && Object.keys(value).includes('current')
+  )
+}
+
+export function getDomElement<T extends DomElement>(
+  ref: DomParam<T>
+): T | null {
+  if (isRef(ref)) {
+    return ref.current
+  }
+  return ref
+}
+
 export function obj2arr<T>(obj: Record<Key, T>): T[] {
   return Object.keys(obj).map((key) => obj[key])
 }

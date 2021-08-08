@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { DomElement } from '../../typings/tools'
+import { useState } from 'react'
+import { DomParam } from '@/typings/tools'
 import useEventListener from './useEventListener'
 
 interface UseHoverOptions {
@@ -7,10 +7,7 @@ interface UseHoverOptions {
   onLeave?: () => void
 }
 
-function useHover(
-  ref: React.RefObject<DomElement>,
-  options: UseHoverOptions = {}
-): boolean {
+function useHover(ref: DomParam, options: UseHoverOptions = {}): boolean {
   const { onEnter, onLeave } = options
   const [isHovering, setIsHovering] = useState(false)
 

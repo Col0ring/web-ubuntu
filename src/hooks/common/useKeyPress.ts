@@ -1,5 +1,4 @@
-import React, { useRef } from 'react'
-import { DomElement } from '../../typings/tools'
+import { DomParam } from '@/typings/tools'
 import { noop } from '@/utils/tool'
 import useEventListener from './useEventListener'
 
@@ -16,7 +15,7 @@ type keyEvent = 'keydown' | 'keyup'
 
 interface UseKeyPressOptions {
   event?: keyEvent
-  target?: React.RefObject<DomElement>
+  target?: DomParam
 }
 
 // 键盘事件 keyCode 别名
@@ -141,10 +140,9 @@ function useKeyPress(
   eventHandler: KeyboardEventHandler = noop,
   option: UseKeyPressOptions = {}
 ) {
-  const documentRef = useRef(document)
   const { event = defaultEvents, target } = option
 
-  useEventListener(target || documentRef, event, (e) => {
+  useEventListener(target || document, event, (e) => {
     // 生成 formatter 函数
     const genGuard = genKeyFormatter(keyFilter)
     // 如果能匹配

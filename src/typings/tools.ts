@@ -7,6 +7,7 @@ export type AsyncFunction<P extends any[] = any[], R = any> = (
   ...args: P
 ) => Promise<R>
 export type DomElement = HTMLElement | Element | Window | Document
+export type DomParam<T extends DomElement = DomElement> = React.RefObject<T> | T
 export type Percentage = `${number}%`
 export type XDirection = 'left' | 'right'
 export type YDirection = 'top' | 'bottom'
