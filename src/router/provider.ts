@@ -1,4 +1,4 @@
-import createMethodsContext from '@/hooks/common/factory/createMethodsContext'
+import { createMethodsContext } from 'react-use-methods'
 import { RouteConfig, RouterContextValue } from './type'
 import { constantsRoutes } from './config'
 

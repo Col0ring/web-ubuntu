@@ -1,4 +1,4 @@
-import createMethodsContext from '@/hooks/common/factory/createMethodsContext'
+import { createMethodsContext } from 'react-use-methods'
 import { UserProps } from '@/typings/user'
 import { AuthContextValue } from './type'
 import { getToken, removeToken, setToken } from './util'

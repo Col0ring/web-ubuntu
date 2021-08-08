@@ -1,5 +1,5 @@
 import React from 'react'
-import createMethodsContext from '@/hooks/common/factory/createMethodsContext'
+import { createMethodsContext } from 'react-use-methods'
 import { CacheContextValue } from './type'
 import { CacheStatus } from './constants'
 

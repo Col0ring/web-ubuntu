@@ -1,4 +1,4 @@
-import createMethodsContext from '@/hooks/common/factory/createMethodsContext'
+import { createMethodsContext } from 'react-use-methods'
 import apps from '@/apps'
 import {
   AppConfig,
