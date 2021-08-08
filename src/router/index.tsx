@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react'
 import { BrowserRouter, useLocation } from 'react-router-dom'
-import { matchRoutes, renderRoutes } from 'react-router-config'
+import { matchRoutes, renderRoutes } from './util'
 import { useRouterContext } from './provider'
 import useSettingContext from '@/hooks/useSettingContext'
 import LazyLoad from '@/components/lazy-load'

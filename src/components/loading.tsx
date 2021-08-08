@@ -21,7 +21,7 @@ const Loading: React.FC<LoadingProps> = ({
     className
   )
   const currentLoadingClassName = classnames(
-    'absolute top-0 left-0 w-full h-full  flex flex-col items-center justify-center',
+    'absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center',
     loadingClassName
   )
   return (

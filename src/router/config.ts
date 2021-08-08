@@ -1,9 +1,8 @@
 import Desktop from '@/pages/desktop'
-import { RouteConfigProps } from './type'
-import { convertRoutes } from './util'
+import { RouteConfig } from './type'
 import React from 'react'
 
-export const accessRoutes: RouteConfigProps[] = convertRoutes([
+export const accessRoutes: RouteConfig[] = [
   {
     title: 'desktop',
     path: '/desktop',
@@ -17,13 +16,13 @@ export const accessRoutes: RouteConfigProps[] = convertRoutes([
   {
     redirect: '/desktop',
   },
-])
+]
 
-export const constantsRoutes: RouteConfigProps[] = convertRoutes([
+export const constantsRoutes: RouteConfig[] = [
   {
     title: 'login',
     path: '/login',
     exact: true,
     component: React.lazy(() => import('@/pages/login')),
   },
-])
+]

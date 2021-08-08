@@ -1,10 +1,10 @@
 import createMethodsContext from '@/hooks/common/factory/createMethodsContext'
-import { RouteConfigProps, RouterContextValue } from './type'
+import { RouteConfig, RouterContextValue } from './type'
 import { constantsRoutes } from './config'
 
 const [useRouterContext, RouterProvider] = createMethodsContext(
   (state) => ({
-    pushRoutes(routes: RouteConfigProps | RouteConfigProps[]) {
+    pushRoutes(routes: RouteConfig | RouteConfig[]) {
       return {
         ...state,
         routes: [
@@ -13,10 +13,7 @@ const [useRouterContext, RouterProvider] = createMethodsContext(
         ],
       }
     },
-    setMatchedRoutes(
-      matchedRoutes: RouteConfigProps[],
-      currentRoute: RouteConfigProps
-    ) {
+    setMatchedRoutes(matchedRoutes: RouteConfig[], currentRoute: RouteConfig) {
       return { ...state, matchedRoutes, currentRoute }
     },
     reset() {
