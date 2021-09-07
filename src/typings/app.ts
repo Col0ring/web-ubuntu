@@ -1,40 +1,40 @@
 import React from 'react'
 import { Percentage } from './tools'
 
+export type AppPositionValue = number | Percentage
+
 export interface AppConfig {
   id: string
+  parentId: string
   title: string
-  icon: string
+  icon?: React.ReactNode
   disabled?: boolean
   favorite?: boolean
-  // 快捷方式
-  shortcut?: boolean
+  // path redirect
+  redirect?: string
   render?: () => React.ReactNode
+  // if use immer，please use render to replace it
   component?: React.ComponentType<any> | React.ComponentType
+  // position in the folder
   position?: {
-    left: number | Percentage
-    top: number | Percentage
+    left: AppPositionValue
+    top: AppPositionValue
   }
 }
 
 export interface OpenedAppConfig extends AppConfig {
   rect: {
-    width: number | Percentage
-    height: number | Percentage
+    width: AppPositionValue
+    height: AppPositionValue
   }
-  position: {
-    left: number | Percentage
-    top: number | Percentage
+  windowPosition: {
+    left: AppPositionValue
+    top: AppPositionValue
   }
 }
 
-export interface DesktopAppConfig extends AppConfig {
-  position: {
-    left: number | Percentage
-    top: number | Percentage
-  }
-}
 export type UbuntuApp = FolderConfig | AppConfig
 export interface FolderConfig extends AppConfig {
-  apps: UbuntuApp[]
+  apps?: UbuntuApp[]
+  folder: boolean
 }

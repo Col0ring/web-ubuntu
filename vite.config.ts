@@ -14,15 +14,15 @@ export default defineConfig({
   plugins: [
     reactRefresh(),
     viteMockPlugin(),
-    eslintPlugin({
-      fix: true,
-      include: ['src/**/*.js', 'src/**/*.jsx', 'src/**/*.ts', 'src/**/*.tsx'],
-      exclude: ['node_modules', 'dist', 'dist-ssr'],
-    }),
-    viteStylelint({
-      include: /.*\.(less|css)/,
-      exclude: ['node_modules', 'dist', 'dist-ssr'],
-    }),
+    // eslintPlugin({
+    //   fix: true,
+    //   include: ['src/**/*.js', 'src/**/*.jsx', 'src/**/*.ts', 'src/**/*.tsx'],
+    //   exclude: ['node_modules', 'dist', 'dist-ssr'],
+    // }),
+    // viteStylelint({
+    //   include: /.*\.(less|css)/,
+    //   exclude: ['node_modules', 'dist', 'dist-ssr'],
+    // }),
   ],
   css: {
     preprocessorOptions: {

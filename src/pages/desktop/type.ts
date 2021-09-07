@@ -1,10 +1,5 @@
 import React from 'react'
-import {
-  UbuntuApp,
-  AppConfig,
-  DesktopAppConfig,
-  OpenedAppConfig,
-} from '@/typings/app'
+import { UbuntuApp, AppConfig, OpenedAppConfig } from '@/typings/app'
 import { Percentage } from '@/typings/tools'
 import { StatusMenuItemProps } from './components/navbar/status-menu/status-menu-item'
 
@@ -36,8 +31,11 @@ export interface DesktopContextValue {
     minHeight: number
   }
   backgroundImages: Record<string, string>
+  // all app screen is visible
   allAppsScreen: boolean
+  // lok screen is visible
   lockScreen: boolean
+  // current app
   focusAppId: string
   // sort z-index
   openedAppsArr: OpenedAppConfig[]
@@ -45,6 +43,6 @@ export interface DesktopContextValue {
   minimizedApps: Apps
   maximizedApps: Apps
   frequentApps: AppConfig[]
-  desktopApps: DesktopAppConfig[]
   apps: UbuntuApp[]
+  appMap: Record<string, UbuntuApp>
 }

@@ -53,7 +53,8 @@ export async function loadMockFiles({
         })
         if (childMockRoutes) {
           Object.keys(childMockRoutes).forEach((key) => {
-            mockRoutes[key] = childMockRoutes[key]
+            mockRoutes[key as keyof Routes] =
+              childMockRoutes[key as keyof MockRoutes]
           })
         }
       } else {
@@ -66,9 +67,15 @@ export async function loadMockFiles({
         }
         Object.keys(routes).forEach((routeKey) => {
           const [method, routePath] = routeKey.split(' ')
-          mockRoutes[path.join(prefix || '', routePrefix || '', routePath)] = {
+          mockRoutes[
+            path.join(
+              prefix || '',
+              routePrefix || '',
+              routePath
+            ) as keyof MockRoutes
+          ] = {
             method: method as MethodsType,
-            handler: routes[routeKey],
+            handler: routes[routeKey as keyof Routes],
           }
         })
       }

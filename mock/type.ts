@@ -35,10 +35,10 @@ export type RouteHandle = (
   res: http.ServerResponse
 ) => Promise<HandlerResult | void> | HandlerResult | void
 
-export type Routes = Record<string, RouteHandle>
+export type Routes = Record<`${MethodsType} ${string}`, RouteHandle>
 
 export type MockRoutes = Record<
-  string,
+  `${MethodsType} ${string}`,
   {
     handler: RouteHandle
     method: MethodsType

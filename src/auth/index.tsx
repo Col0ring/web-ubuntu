@@ -17,7 +17,6 @@ const Auth: React.FC = ({ children }) => {
   const [, routerMethods] = useRouterContext()
   const { pathname } = useLocation()
   const [, getUserInfo] = useAsyncFn(reqGetUserInfo, [])
-
   const { isLogin } = authState
   useEffect(() => {
     if (isLogin) {
