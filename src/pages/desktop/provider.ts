@@ -2,7 +2,7 @@
 import React from 'react'
 import { createMethodsContext } from 'react-use-methods'
 import useImmerMethods from '@/hooks/common/useImmerMethods'
-import apps from '@/apps'
+import apps from './apps'
 import {
   AppConfig,
   FolderConfig,

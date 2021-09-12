@@ -16,8 +16,8 @@ export interface FolderDragData {
 const FolderApp: React.FC<FolderAppProps> = (props) => {
   const [isRender, setIsRender] = useState(false)
   const [position, setPosition] = useState({
-    left: 0,
-    top: 0,
+    left: props.app.position?.left || 0,
+    top: props.app.position?.top || 0,
   })
   const [, desktopMethods] = useDesktopContext()
   const draggableRef = useRef<HTMLDivElement | null>(null)
@@ -59,7 +59,6 @@ const FolderApp: React.FC<FolderAppProps> = (props) => {
         },
       })
     }, [])
-
   return (
     <Draggable
       nodeRef={draggableRef}

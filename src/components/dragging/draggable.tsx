@@ -2,8 +2,10 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import useDrag, { UseDragOptions } from '@/hooks/common/useDrag'
 import { useDragContext } from './provider'
 import classnames from 'classnames'
+import { Key } from '@/typings/tools'
 
-export interface DraggableProps<T = any> extends UseDragOptions<T> {
+export interface DraggableProps<T extends Record<Key, any> = Record<Key, any>>
+  extends UseDragOptions<T> {
   children?: React.ReactNode
   data?: T
   className?: string
@@ -67,7 +69,6 @@ const Draggable: React.ForwardRefRenderFunction<
     (dragData, e) => {
       let left = e.clientX - offset.left
       let top = e.clientY - offset.top
-
       const { x, y } = dragArea.limitRange
 
       if (left < x[0]) {
@@ -132,10 +133,15 @@ const Draggable: React.ForwardRefRenderFunction<
     }
   }, [setRect])
 
+  const dragData = useMemo(
+    () => ({ ...data, position, rect }),
+    [data, position, rect]
+  )
+
   return (
     <div
       ref={ref}
-      {...getProps(data)}
+      {...getProps(dragData)}
       style={draggableStyle}
       className={draggableClassName}
     >

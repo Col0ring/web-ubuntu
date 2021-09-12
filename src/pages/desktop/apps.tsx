@@ -20,7 +20,7 @@ const apps: UbuntuApp[] = [
         id: '/desktop/Col0ring',
         title: 'Col0ring',
         icon: './themes/Yaru/system/folder.png',
-        render: () => <Folder id="/desktop/AAA" />,
+        render: () => <Folder id="/desktop/Col0ring" />,
         folder: true,
         apps: [],
       },

@@ -15,7 +15,7 @@ const Folder: React.FC<FolderProps> = ({ id, emptyProps }) => {
   const folderApps = useMemo(() => {
     const currentFolder = appMap[id]
     if (isFolder(currentFolder)) {
-      return currentFolder.apps
+      return currentFolder.apps.map((app) => appMap[app.id])
     }
     return []
   }, [appMap])
@@ -23,14 +23,38 @@ const Folder: React.FC<FolderProps> = ({ id, emptyProps }) => {
     <div className="w-full h-full flex flex-col bg-ub-cool-grey text-white select-none overflow-x-auto overflow-y-auto ub-scrollbar">
       <DragArea
         onDrop={(e) => {
-          const data: FolderDragData = safeJsonParse(
-            e.dataTransfer.getData('custom'),
-            {}
-          )
+          const data: FolderDragData & {
+            position: {
+              left: number
+              top: number
+            }
+            rect: {
+              width: number
+              height: number
+            }
+          } = safeJsonParse(e.dataTransfer.getData('custom'), {})
+          const target = e.currentTarget as HTMLDivElement
+          function getDisTop(element) {
+            // 获取元素距离页面顶部的距离
+            let realTop = element.offsetTop
+            let parent = element.offsetParent
+            while (parent !== null) {
+              realTop += parent.offsetTop
+              parent = parent.offsetParent
+            }
+            return realTop
+          }
+          console.log(getDisTop(target))
           desktopMethods.updateFolderApp({
             from: data.from,
             to: id,
-            data: data.app,
+            data: {
+              ...data.app,
+              position: {
+                left: e.clientX,
+                top: e.clientY,
+              },
+            },
           })
         }}
         preventDropAction
