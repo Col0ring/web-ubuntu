@@ -11,14 +11,14 @@ export interface FolderProps {
   emptyProps?: EmptyProps
 }
 const Folder: React.FC<FolderProps> = ({ id, emptyProps }) => {
-  const [{ apps }] = useDesktopContext()
+  const [{ appMap }, desktopMethods] = useDesktopContext()
   const folderApps = useMemo(() => {
-    const currentFolder = apps.find((app) => app.id === id)
-    if (currentFolder && isFolder(currentFolder)) {
+    const currentFolder = appMap[id]
+    if (isFolder(currentFolder)) {
       return currentFolder.apps
     }
     return []
-  }, [apps])
+  }, [appMap])
   return (
     <div className="w-full h-full flex flex-col bg-ub-cool-grey text-white select-none overflow-x-auto overflow-y-auto ub-scrollbar">
       <DragArea
@@ -27,6 +27,11 @@ const Folder: React.FC<FolderProps> = ({ id, emptyProps }) => {
             e.dataTransfer.getData('custom'),
             {}
           )
+          desktopMethods.updateFolderApp({
+            from: data.from,
+            to: id,
+            data: data.app,
+          })
         }}
         preventDropAction
         className="min-h-full flex-grow flex flex-wrap items-start content-start justify-start"

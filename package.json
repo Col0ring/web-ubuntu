@@ -24,7 +24,7 @@
     "prettier": "prettier --write '**/*.{ts,tsx,js,json,html,yml,css,less,scss,md}'",
     "lint": "tsc && npm run lint:eslint && npm run lint:stylelint && npm run lint:prettier ",
     "lint:prettier": "npm run prettier",
-    "lint:eslint": "eslint --fix -c .eslintrc.js --ext .ts,.tsx,.js,.jsx {src,mock}",
+    "lint:eslint": "eslint --fix -c .eslintrc.js --ext .ts,.tsx,.js,.jsx .",
     "lint:stylelint": "stylelint --fix --config .stylelintrc.js **/*.{less,css,scss}",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "prepare": "husky install",
@@ -33,9 +33,10 @@
   },
   "dependencies": {
     "autoprefixer": "^10.3.1",
-    "axios": "^0.21.1",
+    "axios": "^0.21.4",
     "classnames": "^2.3.1",
     "immer": "^9.0.5",
+    "mockjs": "^1.1.0",
     "path-to-regexp": "^6.2.0",
     "postcss": "^8.3.6",
     "react": "^17.0.0",
@@ -45,10 +46,12 @@
     "react-use-methods": "^1.1.0",
     "resize-observer-polyfill": "^1.5.1",
     "screenfull": "^5.1.0",
-    "tailwindcss": "^2.2.7"
+    "tailwindcss": "^2.2.7",
+    "vite-plugin-mock": "^2.9.6"
   },
   "devDependencies": {
     "@amatlash/vite-plugin-stylelint": "^1.1.1",
+    "@col0ring/vite-plugin-mock": "^1.0.3",
     "@commitlint/cli": "^13.1.0",
     "@commitlint/config-angular": "^13.1.0",
     "@commitlint/config-conventional": "^13.1.0",

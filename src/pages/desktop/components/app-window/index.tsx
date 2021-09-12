@@ -35,12 +35,12 @@ const AppWindow: React.FC<AppWindowProps> = ({
   const defaultAppWindowRef = useRef(defaultAppWindow)
   defaultAppWindowRef.current = defaultAppWindow
   const [position, setPosition] = useState({
-    left: app.position.left || 0,
-    top: app.position.top || 0,
+    left: app.windowPosition.left,
+    top: app.windowPosition.top,
   })
   const [rect, setRect] = useState({
-    width: app.rect.width || 0,
-    height: app.rect.height || 0,
+    width: app.rect.width,
+    height: app.rect.height,
   })
   const [visible, setVisible] = useState(true)
   const rectRef = useRef(rect)
@@ -323,7 +323,6 @@ const AppWindow: React.FC<AppWindowProps> = ({
 
     return 0
   }, [isMaximized, isMaximizedTimeout, isMinimized])
-
   return (
     <Transition
       transitionProperty={['width', 'height', 'left', 'top', 'opacity']}

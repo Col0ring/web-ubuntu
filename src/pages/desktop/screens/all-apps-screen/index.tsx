@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import classnames from 'classnames'
 import Tabs, { TabsProps } from '@/components/tabs'
 import Transition from '@/components/transition'
@@ -7,6 +7,8 @@ import SearchInput from './search-input'
 import { useDesktopContext } from '../../provider'
 import './style.less'
 import { defaultDesktop } from '../../config'
+import { SpecialFolder } from '../../constants'
+import { FolderConfig } from '@/typings/app'
 
 const tabs: TabsProps['tabs'] = [
   {
@@ -19,9 +21,14 @@ const tabs: TabsProps['tabs'] = [
 
 const AllAppsScreen: React.FC = () => {
   // TODO: frequentApps sort
-  const [{ apps, allAppsScreen, frequentApps }, desktopMethods] =
+  const [{ appMap, allAppsScreen, frequentApps }, desktopMethods] =
     useDesktopContext()
   const [active, setActive] = useState<'All' | 'Frequent'>('All')
+
+  const applications = useMemo(
+    () => (appMap[SpecialFolder.Application] as FolderConfig).apps,
+    [appMap]
+  )
   const onTabItemClick: Required<TabsProps>['onItemClick'] = useCallback(
     (name) => {
       setActive(name as 'All' | 'Frequent')
@@ -64,7 +71,7 @@ const AllAppsScreen: React.FC = () => {
               ? frequentApps.map((app) => (
                   <App key={app.id} onOpen={onAppOpen} app={app} />
                 ))
-              : apps.map((app) => (
+              : applications.map((app) => (
                   <App key={app.id} onOpen={onAppOpen} app={app} />
                 ))}
           </div>

@@ -3,9 +3,10 @@ import Contextmenu, { ContextmenuProps } from '@/components/contextmenu'
 import { getParentNode } from '@/utils/tool'
 import { dataTarget } from '../config'
 import { useDesktopContext } from '../provider'
+import { SpecialFolder } from '../constants'
 
 const DesktopContextmenu: React.FC = ({ children }) => {
-  const [{ apps }, desktopMethods] = useDesktopContext()
+  const [{ appMap }, desktopMethods] = useDesktopContext()
   const [visible, setVisible] = useState(false)
   const [position, setPosition] = useState({
     left: 0,
@@ -38,7 +39,7 @@ const DesktopContextmenu: React.FC = ({ children }) => {
         key: 'Change Background...',
         title: 'Change Background...',
         onClick() {
-          const settings = apps.find((app) => app.id === 'settings')
+          const settings = appMap[SpecialFolder.Settings]
           settings && desktopMethods.openApp(settings.id, settings)
         },
       },
@@ -51,7 +52,7 @@ const DesktopContextmenu: React.FC = ({ children }) => {
         key: 'Settings',
         title: 'Settings',
         onClick() {
-          const settings = apps.find((app) => app.id === 'settings')
+          const settings = appMap[SpecialFolder.Settings]
           settings && desktopMethods.openApp(settings.id, settings)
         },
       },

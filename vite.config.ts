@@ -3,7 +3,7 @@ import { defineConfig } from 'vite'
 import reactRefresh from '@vitejs/plugin-react-refresh'
 import eslintPlugin from 'vite-plugin-eslint'
 import viteStylelint from '@amatlash/vite-plugin-stylelint'
-import viteMockPlugin from './mock/plugin'
+import viteMockPlugin from '@col0ring/vite-plugin-mock'
 
 function resolve(relativePath: string) {
   return path.resolve(__dirname, relativePath)
@@ -13,16 +13,18 @@ function resolve(relativePath: string) {
 export default defineConfig({
   plugins: [
     reactRefresh(),
-    viteMockPlugin(),
-    // eslintPlugin({
-    //   fix: true,
-    //   include: ['src/**/*.js', 'src/**/*.jsx', 'src/**/*.ts', 'src/**/*.tsx'],
-    //   exclude: ['node_modules', 'dist', 'dist-ssr'],
-    // }),
-    // viteStylelint({
-    //   include: /.*\.(less|css)/,
-    //   exclude: ['node_modules', 'dist', 'dist-ssr'],
-    // }),
+    viteMockPlugin({
+      dir: resolve('mock'),
+      exclude: /utils/,
+    }),
+    eslintPlugin({
+      fix: true,
+      include: ['./src/**/*.[tj]s?(x)'],
+    }),
+    viteStylelint({
+      include: /.*\.(less|css)/,
+      exclude: ['node_modules', 'dist', 'dist-ssr'],
+    }),
   ],
   css: {
     preprocessorOptions: {
@@ -34,6 +36,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': resolve('./src'),
+      '@mock': resolve('./mock'),
     },
   },
 })

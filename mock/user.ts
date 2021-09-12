@@ -1,5 +1,5 @@
-import { wait } from 'mock/util'
-import { Routes } from '../type'
+import { wait } from './utils'
+import { Routes } from '@col0ring/vite-plugin-mock'
 
 export const prefix = '/user'
 

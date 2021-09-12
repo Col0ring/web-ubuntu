@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import classnames from 'classnames'
 import Draggable, { DraggableProps } from '@/components/draggable'
 import App, { AppProps } from '@/components/app'
-import { DesktopAppConfig } from '@/typings/app'
+import { UbuntuApp } from '@/typings/app'
 import useClickAway from '@/hooks/common/useClickAway'
 import useEventListener from '@/hooks/common/useEventListener'
 import useDomRect from '@/hooks/common/useDomRect'
@@ -12,7 +12,7 @@ import { dataTarget, defaultDesktop } from '../config'
 import { useDesktopContext } from '../provider'
 
 export interface DesktopAppProps extends AppProps {
-  app: DesktopAppConfig
+  app: UbuntuApp
 }
 
 // TODO: to be more simple
@@ -30,12 +30,13 @@ const DesktopApp: React.FC<DesktopAppProps> = (props) => {
     top: 0,
   })
   const [position, setPosition] = useState({
-    left: props.app.position.left,
-    top: props.app.position.top,
+    left: props.app.position?.left || 0,
+    top: props.app.position?.top || 0,
   })
   const draggableClassName = classnames(' hover:z-20 focus:z-20 z-10', {
     // be created
-    absolute: isRender || !!(props.app.position.left || props.app.position.top),
+    absolute:
+      isRender || !!(props.app.position?.left || props.app.position?.top),
     'z-20': isFocus,
   })
   const domRect = useDomRect(draggableRef, [])
@@ -66,9 +67,13 @@ const DesktopApp: React.FC<DesktopAppProps> = (props) => {
   useEffect(() => {
     if (isRender) {
       // when position changed
-      desktopMethods.updateDesktopApp(props.app.id, {
-        ...props.app,
-        position,
+      desktopMethods.updateFolderApp({
+        from: props.app.parentId,
+        to: props.app.parentId,
+        data: {
+          ...props.app,
+          position,
+        },
       })
     }
   }, [isRender, props.app.position, position])
@@ -78,11 +83,11 @@ const DesktopApp: React.FC<DesktopAppProps> = (props) => {
   })
 
   useEventListener(draggableRef, 'click', () => {
-    desktopMethods.clickDesktopApp(props.app.id, props.app)
+    desktopMethods.clickApp(props.app.id, props.app)
     setIsFocus(true)
   })
   const onDragStart: Required<DraggableProps>['onDragStart'] = useCallback(
-    (data: DesktopAppConfig, e) => {
+    (data: UbuntuApp, e) => {
       const { left, top } = (
         e.currentTarget as HTMLDivElement
       ).getBoundingClientRect()
@@ -94,7 +99,7 @@ const DesktopApp: React.FC<DesktopAppProps> = (props) => {
     []
   )
   const onDragEnd: Required<DraggableProps>['onDragEnd'] = useCallback(
-    (data: DesktopAppConfig, e) => {
+    (data: UbuntuApp, e) => {
       let left = e.clientX - offset.left
       let top = e.clientY - offset.top
       if (left < 0) {
@@ -115,7 +120,7 @@ const DesktopApp: React.FC<DesktopAppProps> = (props) => {
         left,
         top,
       })
-      desktopMethods.clickDesktopApp(data.id, data)
+      desktopMethods.clickApp(data.id, data)
     },
     [setPosition, rect, offset, desktopMethods]
   )

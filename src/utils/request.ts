@@ -74,12 +74,13 @@ export function initService([authState, authMethods]: ReturnType<
       return data
     },
     (error) => {
+      console.log(123)
+
       if (axios.isCancel(error)) {
         return Promise.reject(error)
       }
       const { response } = error
       const { status, data } = response
-
       if (status === 400) {
         message.error({
           content: data.message,

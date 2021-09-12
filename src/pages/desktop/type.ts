@@ -12,13 +12,12 @@ export interface StatusMenuConfig extends StatusMenuItemProps {
   render?: () => React.ReactNode
 }
 
-export type Apps = Record<string, UbuntuApp | null>
-
-export type OpenedApps = Record<string, OpenedAppConfig | null>
+export type AppMap = Record<string, UbuntuApp>
+export type OpenedAppMap = Record<string, OpenedAppConfig>
 
 export interface DesktopContextValue {
   backgroundImage: string
-  newFolderModal: boolean
+  backgroundImages: Record<string, string>
   // when open contextmenu in desktop
   mousePosition: {
     clientX: number
@@ -30,7 +29,7 @@ export interface DesktopContextValue {
     minWidth: number
     minHeight: number
   }
-  backgroundImages: Record<string, string>
+  newFolderModal: boolean
   // all app screen is visible
   allAppsScreen: boolean
   // lok screen is visible
@@ -38,11 +37,11 @@ export interface DesktopContextValue {
   // current app
   focusAppId: string
   // sort z-index
-  openedAppsArr: OpenedAppConfig[]
-  openedApps: OpenedApps
-  minimizedApps: Apps
-  maximizedApps: Apps
+  openedApps: OpenedAppConfig[]
+  openedAppMap: OpenedAppMap
+  minimizedApps: AppMap
+  maximizedApps: AppMap
   frequentApps: AppConfig[]
-  apps: UbuntuApp[]
-  appMap: Record<string, UbuntuApp>
+  favoriteApps: AppConfig[]
+  appMap: AppMap
 }

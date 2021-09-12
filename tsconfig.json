@@ -16,9 +16,9 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@mock/*": ["./mock/*"]
     }
   },
-  "include": ["./src", "./mock", "vite.config.ts"],
   "exclude": ["node_modules", "dist", "dist-ssr"]
 }

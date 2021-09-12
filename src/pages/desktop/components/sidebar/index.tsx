@@ -11,14 +11,19 @@ import './style.less'
 import { defaultDesktop } from '../../config'
 
 const Sidebar: React.FC = () => {
-  const [{ apps, openedApps, minimizedApps, allAppsScreen }, desktopMethods] =
-    useDesktopContext()
+  const [
+    { favoriteApps, openedAppMap, openedApps, minimizedApps, allAppsScreen },
+    desktopMethods,
+  ] = useDesktopContext()
   const [forceSidebarRender, setForceSidebarRender] = useState(false)
   const sidebarClassName = classnames(
     'desktop-sidebar select-none h-full pt-7 flex flex-col justify-start items-center border-black border-opacity-60 bg-black bg-opacity-50'
   )
   const noFavoriteMinimizedAppsArr = useMemo(
-    () => obj2arr(minimizedApps).filter((app) => app && !app.favorite),
+    () =>
+      obj2arr(minimizedApps).filter(
+        (app) => !favoriteApps.find((favoriteApp) => favoriteApp.id === app.id)
+      ),
     [minimizedApps]
   ) as AppConfig[]
 
@@ -47,7 +52,7 @@ const Sidebar: React.FC = () => {
   )
 
   const sidebar = useMemo(() => {
-    return obj2arr(openedApps).every((app) => {
+    return openedApps.every((app) => {
       if (!app || minimizedApps[app.id]) {
         return true
       }
@@ -56,9 +61,10 @@ const Sidebar: React.FC = () => {
           ? app.rect.width
           : (window.innerWidth * Number.parseFloat(`${app.rect.width}`)) / 100
       const left =
-        typeof app.position.left === 'number'
-          ? app.position.left
-          : (window.innerWidth * Number.parseFloat(`${app.position.left}`)) /
+        typeof app.windowPosition.left === 'number'
+          ? app.windowPosition.left
+          : (window.innerWidth *
+              Number.parseFloat(`${app.windowPosition.left}`)) /
             100
       return left < window.innerWidth - width - defaultDesktop.sidebar
     })
@@ -76,20 +82,18 @@ const Sidebar: React.FC = () => {
         visible={forceSidebarRender || sidebar}
       >
         <div className={sidebarClassName}>
-          {apps
-            .filter((app) => app.favorite)
-            .map((app) => (
-              <SidebarApp
-                isOpen={!!openedApps[app.id]}
-                isMinimized={!!minimizedApps[app.id]}
-                onClick={onAppClick}
-                key={app.id}
-                app={app}
-              />
-            ))}
+          {favoriteApps.map((app) => (
+            <SidebarApp
+              isOpen={!!openedAppMap[app.id]}
+              isMinimized={!!minimizedApps[app.id]}
+              onClick={onAppClick}
+              key={app.id}
+              app={app}
+            />
+          ))}
           {noFavoriteMinimizedAppsArr.map((app) => (
             <SidebarApp
-              isOpen={!!openedApps[app.id]}
+              isOpen={!!openedAppMap[app.id]}
               isMinimized={!!minimizedApps[app.id]}
               onClick={onAppClick}
               key={app.id}

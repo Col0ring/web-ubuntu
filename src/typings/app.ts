@@ -7,9 +7,8 @@ export interface AppConfig {
   id: string
   parentId: string
   title: string
-  icon?: React.ReactNode
+  icon?: string
   disabled?: boolean
-  favorite?: boolean
   // path redirect
   redirect?: string
   render?: () => React.ReactNode
@@ -22,7 +21,9 @@ export interface AppConfig {
   }
 }
 
-export interface OpenedAppConfig extends AppConfig {
+export interface OpenedAppConfig
+  extends AppConfig,
+    Partial<Omit<FolderConfig, keyof AppConfig>> {
   rect: {
     width: AppPositionValue
     height: AppPositionValue
@@ -35,6 +36,6 @@ export interface OpenedAppConfig extends AppConfig {
 
 export type UbuntuApp = FolderConfig | AppConfig
 export interface FolderConfig extends AppConfig {
-  apps?: UbuntuApp[]
+  apps: UbuntuApp[]
   folder: boolean
 }

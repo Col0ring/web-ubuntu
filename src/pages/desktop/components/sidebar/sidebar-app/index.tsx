@@ -53,13 +53,19 @@ const SidebarApp: React.FC<SidebarAppProps> = ({
         className={sidebarAppClassName}
         id={`sidebar-app-${app.id}`}
       >
-        <img className="w-7" src={app.icon} alt={app.title} />
-        {isScale && (
-          <img
-            className="scalable-app-icon w-7 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-            src={app.icon}
-            alt={app.title}
-          />
+        {typeof app.icon === 'string' ? (
+          <>
+            <img className="w-7" src={app.icon} alt={app.title} />
+            {isScale && (
+              <img
+                className="scalable-app-icon w-7 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                src={app.icon}
+                alt={app.title}
+              />
+            )}
+          </>
+        ) : (
+          app.icon
         )}
         {isOpen && (
           <div className="w-1 h-1 absolute left-0 top-1/2 bg-ub-orange rounded-sm" />

@@ -1,12 +1,12 @@
 import React from 'react'
-import Folder from './pages/desktop/apps/folder'
-import { UbuntuApp } from './typings/app'
+import Folder from './apps/folder'
+import { UbuntuApp } from '@/typings/app'
 
-const VsCode = React.lazy(() => import('@/pages/desktop/apps/vscode'))
-const Todoist = React.lazy(() => import('@/pages/desktop/apps/todoist'))
-const Firefox = React.lazy(() => import('@/pages/desktop/apps/firefox'))
-const Settings = React.lazy(() => import('@/pages/desktop/apps/settings'))
-const Trash = React.lazy(() => import('@/pages/desktop/apps/trash'))
+const Todoist = React.lazy(() => import('./apps/todoist'))
+const Firefox = React.lazy(() => import('./apps/firefox'))
+const Settings = React.lazy(() => import('./apps/settings'))
+const Trash = React.lazy(() => import('./apps/trash'))
+const VsCode = React.lazy(() => import('./apps/vscode'))
 
 const apps: UbuntuApp[] = [
   {
