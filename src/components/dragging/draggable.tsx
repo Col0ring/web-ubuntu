@@ -2,20 +2,22 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import useDrag, { UseDragOptions } from '@/hooks/common/useDrag'
 import { useDragContext } from './provider'
 import classnames from 'classnames'
-import { Key } from '@/typings/tools'
+import { AppPositionValue } from '@/typings/app'
 
-export interface DraggableProps<T extends Record<Key, any> = Record<Key, any>>
-  extends UseDragOptions<T> {
+export interface DraggableProps<T = any> extends UseDragOptions<T> {
   children?: React.ReactNode
   data?: T
   className?: string
   style?: React.CSSProperties
   nodeRef?: React.RefObject<HTMLDivElement>
   defaultPosition?: {
-    left: number
-    top: number
+    left: AppPositionValue
+    top: AppPositionValue
   }
-  onPositionChange?: (position: { left: number; top: number }) => void
+  onPositionChange?: (position: {
+    left: AppPositionValue
+    top: AppPositionValue
+  }) => void
 }
 
 const Draggable: React.ForwardRefRenderFunction<
@@ -38,10 +40,6 @@ const Draggable: React.ForwardRefRenderFunction<
 
   const draggableRef = useRef<HTMLDivElement | null>(null)
   const ref = nodeRef || draggableRef
-  const [rect, setRect] = useState({
-    width: 0,
-    height: 0,
-  })
 
   const [position, setPosition] = useState(
     defaultPosition || {
@@ -71,17 +69,18 @@ const Draggable: React.ForwardRefRenderFunction<
       let left = e.clientX - offset.left
       let top = e.clientY - offset.top
       const { x, y } = dragArea.limitRange
+      const domRect = ref.current!.getBoundingClientRect()
 
       if (left < x[0]) {
         left = 0
       }
 
-      if (left > x[1] - rect.width) {
-        left = x[1] - rect.width
+      if (left > x[1] - domRect.width) {
+        left = x[1] - domRect.width
       }
 
-      if (top > y[1] - rect.height) {
-        top = y[1] - rect.height
+      if (top > y[1] - domRect.height) {
+        top = y[1] - domRect.height
       }
 
       if (top < y[0]) {
@@ -108,7 +107,6 @@ const Draggable: React.ForwardRefRenderFunction<
     onDrag: onMoving,
   })
   const draggableClassName = classnames(className, 'absolute')
-
   const draggableStyle = useMemo(() => {
     const { x, y } = dragArea.limitRange
     return {
@@ -132,20 +130,7 @@ const Draggable: React.ForwardRefRenderFunction<
     defaultPosition && setPosition(defaultPosition)
   }, [defaultPosition?.top, defaultPosition?.left])
 
-  useEffect(() => {
-    if (ref.current) {
-      const domRect = ref.current.getBoundingClientRect()
-      setRect({
-        width: domRect.width,
-        height: domRect.height,
-      })
-    }
-  }, [setRect])
-
-  const dragData = useMemo(
-    () => ({ ...data, position, rect }),
-    [data, position, rect]
-  )
+  const dragData = useMemo(() => data, [data])
 
   return (
     <div

@@ -12,6 +12,7 @@ import DesktopContextmenu from './components/desktop-contextmenu'
 import NewFolderModal from './components/new-folder-modal'
 import { SpecialFolder } from './constants'
 import { FolderConfig } from '@/typings/app'
+import { DragArea } from '@/components/dragging'
 
 const Desktop: React.FC = () => {
   const [desktopState, desktopMethods] = useDesktopContext()
@@ -23,20 +24,27 @@ const Desktop: React.FC = () => {
     [desktopMethods]
   )
   const desktopApps = useMemo(
-    () => (desktopState.appMap[SpecialFolder.Desktop] as FolderConfig).apps,
+    () =>
+      (desktopState.appMap[SpecialFolder.Desktop] as FolderConfig).apps.map(
+        (app) => desktopState.appMap[app.id]
+      ),
     [desktopState.appMap]
   )
   useEventListener(window, 'resize', () => {
     desktopMethods.resizeBrowserWindow(window.innerWidth, window.innerHeight)
   })
+
   return (
     <DesktopContextmenu>
       <BackgroundImage src={desktopState.backgroundImage} />
-      {/* desktop apps */}
-      {desktopApps.map((app) => (
-        <DesktopApp onOpen={onDesktopAppOpen} app={app} key={app.id} />
-      ))}
+      <DragArea>
+        {/* desktop apps */}
+        {desktopApps.map((app) => (
+          <DesktopApp onOpen={onDesktopAppOpen} app={app} key={app.id} />
+        ))}
+      </DragArea>
       <Navbar />
+
       <Sidebar />
       {/* app windows */}
       {desktopState.openedApps.map((app) => {

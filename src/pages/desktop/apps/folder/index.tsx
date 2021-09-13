@@ -1,6 +1,6 @@
-import React, { useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import Empty, { EmptyProps } from './empty'
-import FolderApp, { FolderDragData } from './folder-app'
+import FolderApp, { FolderAppProps, FolderDragData } from './folder-app'
 import { DragArea } from '@/components/dragging'
 import { getOffsetWindow, safeJsonParse } from '@/utils/tool'
 import { isFolder } from '@/utils/app'
@@ -19,20 +19,21 @@ const Folder: React.FC<FolderProps> = ({ id, emptyProps }) => {
     }
     return []
   }, [appMap])
+  const onAppOpen: Required<FolderAppProps>['onOpen'] = useCallback(
+    (appId, app) => {
+      desktopMethods.openApp(appId, app)
+    },
+    [desktopMethods]
+  )
   return (
     <div className="w-full h-full flex flex-col bg-ub-cool-grey text-white select-none overflow-x-auto overflow-y-auto ub-scrollbar">
       <DragArea
         onDrop={(e) => {
-          const data: FolderDragData & {
-            position: {
-              left: number
-              top: number
-            }
-            rect: {
-              width: number
-              height: number
-            }
-          } = safeJsonParse(e.dataTransfer.getData('custom'), {})
+          const data: FolderDragData = safeJsonParse(
+            e.dataTransfer.getData('custom'),
+            {}
+          )
+          const app = appMap[data.app.id]
           const domOffset: { left: number; top: number } = safeJsonParse(
             e.dataTransfer.getData('domOffset'),
             {}
@@ -41,7 +42,7 @@ const Folder: React.FC<FolderProps> = ({ id, emptyProps }) => {
           const { offsetLeft, offsetTop } = getOffsetWindow(target)
           const position =
             data.from === id
-              ? data.app.position
+              ? app.position
               : {
                   left: e.clientX - offsetLeft - domOffset.left,
                   top: e.clientY - offsetTop - domOffset.top,
@@ -50,7 +51,7 @@ const Folder: React.FC<FolderProps> = ({ id, emptyProps }) => {
             from: data.from,
             to: id,
             data: {
-              ...data.app,
+              ...app,
               position,
             },
           })
@@ -60,7 +61,12 @@ const Folder: React.FC<FolderProps> = ({ id, emptyProps }) => {
       >
         {folderApps.length > 0 ? (
           folderApps.map((app) => (
-            <FolderApp folderId={id} key={app.id} app={app} />
+            <FolderApp
+              onOpen={onAppOpen}
+              folderId={id}
+              key={app.id}
+              app={app}
+            />
           ))
         ) : (
           <Empty title="Folder is Empty" {...emptyProps} />

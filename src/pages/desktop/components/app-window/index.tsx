@@ -145,7 +145,7 @@ const AppWindow: React.FC<AppWindowProps> = ({
           width: appWindowStyle.width as Percentage,
           height: appWindowStyle.height as Percentage,
         },
-        position: {
+        windowPosition: {
           left: appWindowStyle.left as Percentage,
           top: appWindowStyle.top as Percentage,
         },
@@ -346,7 +346,7 @@ const AppWindow: React.FC<AppWindowProps> = ({
           <MainView>
             <LazyLoad>
               {typeof app.render === 'function'
-                ? app.render()
+                ? app.render(app.id)
                 : app.component
                 ? React.createElement(app.component)
                 : null}

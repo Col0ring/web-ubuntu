@@ -20,9 +20,38 @@ const apps: UbuntuApp[] = [
         id: '/desktop/Col0ring',
         title: 'Col0ring',
         icon: './themes/Yaru/system/folder.png',
-        render: () => <Folder id="/desktop/Col0ring" />,
+        render: (id) => <Folder id={id} />,
         folder: true,
-        apps: [],
+        apps: [
+          {
+            parentId: '/desktop/Col0ring',
+            id: '/desktop/Col0ring/index.php',
+            icon: './themes/filetypes/php.png',
+            title: 'php',
+          },
+          {
+            parentId: '/desktop/Col0ring',
+            title: 'Angular.js',
+            id: '/desktop/Col0ring/Angular.js',
+            icon: './themes/filetypes/js.png',
+          },
+        ],
+      },
+      {
+        parentId: '/desktop',
+        id: '/desktop/222',
+        title: '222',
+        icon: './themes/Yaru/system/folder.png',
+        render: (id) => <Folder id={id} />,
+        folder: true,
+        apps: [
+          {
+            parentId: '/desktop/222',
+            id: '/desktop/222/js',
+            icon: './themes/filetypes/php.png',
+            title: 'js',
+          },
+        ],
       },
       {
         parentId: '/desktop',

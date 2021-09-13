@@ -13,7 +13,7 @@ import { DesktopContextValue } from './type'
 import { defaultImages } from './config'
 import { getBackgroundImage, setBackgroundImage } from './util'
 import message from '@/components/message'
-import { appArr2Map } from '@/utils/app'
+import { appArr2Map, moveApp } from '@/utils/app'
 import { SpecialFolder } from './constants'
 
 const Folder = React.lazy(() => import('@/pages/desktop/apps/folder'))
@@ -80,9 +80,9 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
             disabled: false,
             position,
             apps: [],
-            render: () =>
+            render: (currentId) =>
               React.createElement(Folder, {
-                id: name,
+                id: currentId,
               }),
           }
           this.setNewFolderModal(false)
@@ -101,24 +101,36 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
           data: UbuntuApp
         }) {
           const fromFolder = state.appMap[from] as FolderConfig
+          // 先改变原值
+          state.appMap[data.id] = data
           if (from === to) {
-            state.appMap[data.id] = data
+            fromFolder.apps = fromFolder.apps.map((app) => {
+              if (app.id === data.id) {
+                return data
+              }
+              return app
+            })
             return state
           } else {
+            // 如果文件夹拖到自己里面
+            if (to === data.id) {
+              return state
+            }
             const toFolder = state.appMap[to] as FolderConfig
-            fromFolder.apps = fromFolder.apps.filter(
-              (app) => app.id !== data.id
-            )
             const ids = data.id.split('/')
             const id = `${toFolder.id}/${ids[ids.length - 1]}`
-            const newApp = {
-              ...data,
+            moveApp(state.appMap, {
+              currentId: id,
+              prevId: data.id,
               parentId: toFolder.id,
-              id,
-            }
-            toFolder.apps.push(newApp)
-            Reflect.deleteProperty(state.appMap, data.id)
-            state.appMap[id] = newApp
+              prevParentId: fromFolder.id,
+            })
+            Reflect.deleteProperty(state.openedAppMap, data.id)
+            Reflect.deleteProperty(state.maximizedApps, data.id)
+            Reflect.deleteProperty(state.minimizedApps, data.id)
+            state.openedApps = state.openedApps.filter(
+              (app) => app.id !== data.id
+            )
             return state
           }
         },

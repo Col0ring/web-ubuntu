@@ -57,16 +57,19 @@ const FolderApp: React.FC<FolderAppProps> = (props) => {
   }, [props.app, props.folderId])
 
   const onPositionChange: Required<DraggableProps>['onPositionChange'] =
-    useCallback((positionState) => {
-      desktopMethods.updateFolderApp({
-        from: props.folderId,
-        to: props.folderId,
-        data: {
-          ...props.app,
-          position: positionState,
-        },
-      })
-    }, [])
+    useCallback(
+      (positionState) => {
+        desktopMethods.updateFolderApp({
+          from: props.folderId,
+          to: props.folderId,
+          data: {
+            ...props.app,
+            position: positionState,
+          },
+        })
+      },
+      [props.app, props.folderId]
+    )
 
   const onDragStart: Required<DraggableProps>['onDragStart'] = useCallback(
     (_, e) => {

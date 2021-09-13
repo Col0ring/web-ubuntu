@@ -1,5 +1,7 @@
+/* eslint-disable no-param-reassign */
 import { produce } from 'immer'
 import { UbuntuApp, FolderConfig } from '@/typings/app'
+import { AppMap } from '@/pages/desktop/type'
 
 export function isFolder(app: UbuntuApp): app is FolderConfig {
   if (!app) {
@@ -56,6 +58,52 @@ export function appMap2Arr(appMap: Record<string, UbuntuApp>): UbuntuApp[] {
     }
   })
   return loop(childrenMap, '/')
+}
+
+export function moveApp(
+  // immer
+  appMap: AppMap,
+  {
+    currentId,
+    prevId,
+    parentId,
+    prevParentId,
+  }: {
+    currentId: string
+    prevId: string
+    parentId: string
+    prevParentId: string
+  }
+) {
+  const currentApp = appMap[prevId]
+  const parentApp = appMap[parentId] as FolderConfig
+  const prevParentApp = appMap[prevParentId] as FolderConfig
+
+  currentApp.parentId = parentId
+  currentApp.id = currentId
+  Reflect.deleteProperty(appMap, prevId)
+  appMap[currentId] = currentApp
+  prevParentApp.apps = prevParentApp.apps.filter((app) => app.id !== prevId)
+  parentApp.apps.push(currentApp)
+
+  if (isFolder(currentApp)) {
+    currentApp.apps = currentApp.apps.map((app) => {
+      const prevAppId = app.id
+      const ids = prevAppId.split('/')
+      const currentAppId = `${currentId}/${ids[ids.length - 1]}`
+      moveApp(appMap, {
+        currentId: currentAppId,
+        prevId: prevAppId,
+        parentId: currentId,
+        prevParentId: currentId,
+      })
+      return {
+        ...app,
+        id: currentAppId,
+        parentId: currentId,
+      }
+    })
+  }
 }
 
 // TODO: no need

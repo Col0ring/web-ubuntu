@@ -1,15 +1,18 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import classnames from 'classnames'
-import Draggable, { DraggableProps } from '@/components/draggable'
+import { DraggableProps, Draggable } from '@/components/dragging'
 import App, { AppProps } from '@/components/app'
-import { UbuntuApp } from '@/typings/app'
+import { AppPositionValue, UbuntuApp } from '@/typings/app'
 import useClickAway from '@/hooks/common/useClickAway'
 import useEventListener from '@/hooks/common/useEventListener'
 import useDomRect from '@/hooks/common/useDomRect'
 import useUpdateEffect from '@/hooks/common/useUpdateEffect'
 import Contextmenu, { ContextmenuProps } from '@/components/contextmenu'
-import { dataTarget, defaultDesktop } from '../config'
+import { dataTarget } from '../config'
 import { useDesktopContext } from '../provider'
+import { SpecialFolder } from '../constants'
+import { FolderDragData } from '../apps/folder/folder-app'
+import { getMousePositionOfDom } from '@/utils/tool'
 
 export interface DesktopAppProps extends AppProps {
   app: UbuntuApp
@@ -21,47 +24,38 @@ const DesktopApp: React.FC<DesktopAppProps> = (props) => {
   const draggableRef = useRef<HTMLDivElement | null>(null)
   const [isFocus, setIsFocus] = useState(false)
   const [isRender, setIsRender] = useState(false)
-  const [rect, setRect] = useState({
-    width: 0,
-    height: 0,
-  })
-  const [offset, setOffset] = useState({
-    left: 0,
-    top: 0,
-  })
   const [position, setPosition] = useState({
     left: props.app.position?.left || 0,
     top: props.app.position?.top || 0,
   })
-  const draggableClassName = classnames(' hover:z-20 focus:z-20 z-10', {
-    // be created
-    absolute:
-      isRender || !!(props.app.position?.left || props.app.position?.top),
+  const isAbsolute = useMemo(
+    () => isRender || !!(props.app.position?.left || props.app.position?.top),
+    [isRender, props.app.position]
+  )
+  const draggableClassName = classnames('hover:z-20 focus:z-20 z-10', {
     'z-20': isFocus,
   })
   const domRect = useDomRect(draggableRef, [])
 
   useUpdateEffect(() => {
-    requestAnimationFrame(() => {
-      if (draggableRef.current) {
-        const { left, top, width, height } =
-          draggableRef.current.getBoundingClientRect()
-        setPosition({
-          left,
-          top,
-        })
-        setRect({
-          width,
-          height,
-        })
-        requestAnimationFrame(() => {
-          // to force a repaint,
-          // eslint-disable-next-line no-unused-expressions
-          draggableRef.current!.scrollTop
-          setIsRender(true)
-        })
-      }
-    })
+    if (draggableRef.current && !isRender) {
+      requestAnimationFrame(() => {
+        if (draggableRef.current) {
+          const left = draggableRef.current.offsetLeft
+          const top = draggableRef.current.offsetTop
+          setPosition({
+            left,
+            top,
+          })
+          requestAnimationFrame(() => {
+            // to force a repaint,
+            // eslint-disable-next-line no-unused-expressions
+            draggableRef.current!.scrollTop
+            setIsRender(true)
+          })
+        }
+      })
+    }
   }, [domRect])
 
   useEffect(() => {
@@ -87,42 +81,19 @@ const DesktopApp: React.FC<DesktopAppProps> = (props) => {
     setIsFocus(true)
   })
   const onDragStart: Required<DraggableProps>['onDragStart'] = useCallback(
-    (data: UbuntuApp, e) => {
-      const { left, top } = (
-        e.currentTarget as HTMLDivElement
-      ).getBoundingClientRect()
-      setOffset({
-        left: e.clientX - left,
-        top: e.clientY - top,
-      })
+    (data, e) => {
+      const target = e.currentTarget as HTMLDivElement
+      e.dataTransfer.setData(
+        'domOffset',
+        JSON.stringify(
+          getMousePositionOfDom(
+            { clientX: e.clientX, clientY: e.clientY },
+            target
+          )
+        )
+      )
     },
     []
-  )
-  const onDragEnd: Required<DraggableProps>['onDragEnd'] = useCallback(
-    (data: UbuntuApp, e) => {
-      let left = e.clientX - offset.left
-      let top = e.clientY - offset.top
-      if (left < 0) {
-        left = 0
-      }
-      if (left > window.innerWidth - rect.width) {
-        left = window.innerWidth - rect.width
-      }
-
-      if (top > window.innerHeight - rect.height) {
-        top = window.innerHeight - rect.height
-      }
-
-      if (top < defaultDesktop.navbar) {
-        top = defaultDesktop.navbar
-      }
-      setPosition({
-        left,
-        top,
-      })
-      desktopMethods.clickApp(data.id, data)
-    },
-    [setPosition, rect, offset, desktopMethods]
   )
 
   // preventDefault
@@ -131,7 +102,10 @@ const DesktopApp: React.FC<DesktopAppProps> = (props) => {
     e.preventDefault()
   })
 
-  const draggleStyle: React.CSSProperties = useMemo(
+  const defaultPosition: {
+    left: AppPositionValue
+    top: AppPositionValue
+  } = useMemo(
     () => ({
       left:
         typeof position.left === 'string'
@@ -164,13 +138,20 @@ const DesktopApp: React.FC<DesktopAppProps> = (props) => {
     ] as ContextmenuProps['menus']
   }, [])
 
+  const dragData: FolderDragData = useMemo(() => {
+    return {
+      from: SpecialFolder.Desktop,
+      app: props.app,
+    }
+  }, [props.app])
   return (
     <Draggable
-      ref={draggableRef}
-      style={draggleStyle}
+      nodeRef={draggableRef}
+      style={{ position: isAbsolute ? 'absolute' : 'relative' }}
       className={draggableClassName}
-      data={props.app}
-      onDragEnd={onDragEnd}
+      data={dragData}
+      defaultPosition={defaultPosition}
+      // onDragEnd={onDragEnd}
       onDragStart={onDragStart}
     >
       <div data-target={dataTarget.desktopApp}>

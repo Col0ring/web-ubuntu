@@ -11,7 +11,7 @@ export interface AppConfig {
   disabled?: boolean
   // path redirect
   redirect?: string
-  render?: () => React.ReactNode
+  render?: (id: string) => React.ReactNode
   // if use immer，please use render to replace it
   component?: React.ComponentType<any> | React.ComponentType
   // position in the folder

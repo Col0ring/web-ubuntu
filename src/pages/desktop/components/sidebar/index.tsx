@@ -69,6 +69,7 @@ const Sidebar: React.FC = () => {
       return left < window.innerWidth - width - defaultDesktop.sidebar
     })
   }, [openedApps, minimizedApps])
+
   return (
     <SidebarArea
       // if the window is maximized,can not enter

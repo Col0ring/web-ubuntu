@@ -9,6 +9,7 @@ import StatusMenu from './status-menu'
 import { StatusIconConfig, StatusMenuConfig } from '../../type'
 import { useAuthContext } from '@/auth/provider'
 import { useDesktopContext } from '../../provider'
+import { SpecialFolder } from '../../constants'
 
 const Navbar: React.FC = () => {
   const [statusMenuVisible, setStatusMenuVisible] = useState(false)
@@ -17,7 +18,7 @@ const Navbar: React.FC = () => {
 
   const [settingStatus, settingMethods] = useSettingContext()
 
-  const [, desktopMethods] = useDesktopContext()
+  const [{ appMap }, desktopMethods] = useDesktopContext()
   const {
     config: { sound, brightness },
   } = settingStatus
@@ -126,6 +127,12 @@ const Navbar: React.FC = () => {
           image: '/themes/Yaru/status/emblem-system-symbolic.svg',
           imageAlt: 'ubuntu settings',
           name: 'Settings',
+          onClick: () => {
+            desktopMethods.openApp(
+              SpecialFolder.Settings,
+              appMap[SpecialFolder.Settings]
+            )
+          },
         },
         {
           image: '/themes/Yaru/status/changes-prevent-symbolic.svg',
@@ -150,7 +157,7 @@ const Navbar: React.FC = () => {
         },
       ],
     ],
-    [sound, brightness, onSoundChange, onBrightnessChange, authMethods]
+    [sound, brightness, onSoundChange, onBrightnessChange, appMap, authMethods]
   )
 
   return (
