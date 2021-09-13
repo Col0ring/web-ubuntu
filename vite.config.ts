@@ -11,6 +11,7 @@ function resolve(relativePath: string) {
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: 'https://col0ring.github.io/web-ubuntu/',
   plugins: [
     reactRefresh(),
     viteMockPlugin({
