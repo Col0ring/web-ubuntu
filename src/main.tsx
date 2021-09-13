@@ -7,19 +7,26 @@ import Setting from '@/setting'
 import '@/styles/index.less'
 import { ErrorBoundary } from './components/error-bondary'
 
-ReactDOM.render(
-  <React.StrictMode>
-    <ErrorBoundary>
-      <AppProvider>
-        <Setting>
-          <AppRouter>
-            <Auth>
-              <AppRoutes />
-            </Auth>
-          </AppRouter>
-        </Setting>
-      </AppProvider>
-    </ErrorBoundary>
-  </React.StrictMode>,
-  document.getElementById('root')
-)
+const render = () => {
+  ReactDOM.render(
+    <React.StrictMode>
+      <ErrorBoundary>
+        <AppProvider>
+          <Setting>
+            <AppRouter>
+              <Auth>
+                <AppRoutes />
+              </Auth>
+            </AppRouter>
+          </Setting>
+        </AppProvider>
+      </ErrorBoundary>
+    </React.StrictMode>,
+    document.getElementById('root')
+  )
+}
+if (process.env.NODE_ENV !== 'development') {
+  import('./mock').then(() => render())
+} else {
+  render()
+}
