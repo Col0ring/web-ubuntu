@@ -1,5 +1,11 @@
 import React from 'react'
-import { DomElement, DomParam, Key, ResolvePromise } from '@/typings/tools'
+import {
+  DomElement,
+  DomParam,
+  Key,
+  MousePosition,
+  ResolvePromise,
+} from '@/typings/tools'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 export function noop() {}
@@ -8,6 +14,32 @@ export function preventDefault(e: React.UIEvent) {
 }
 export function stopPropagation(e: React.UIEvent) {
   e.stopPropagation()
+}
+
+export function getOffsetWindow(element: HTMLElement) {
+  // 获取元素距离页面顶部的距离
+  let { offsetTop, offsetLeft } = element
+  let offsetParent = element.offsetParent as HTMLElement
+  while (offsetParent) {
+    offsetTop += offsetParent.offsetTop
+    offsetLeft += offsetParent.offsetLeft
+    offsetParent = offsetParent.offsetParent as HTMLElement
+  }
+  return {
+    offsetTop,
+    offsetLeft,
+  }
+}
+
+export function getMousePositionOfDom(
+  { clientX, clientY }: MousePosition,
+  element: HTMLElement
+) {
+  const { offsetLeft, offsetTop } = getOffsetWindow(element)
+  return {
+    left: clientX - offsetLeft,
+    top: clientY - offsetTop,
+  }
 }
 
 export function isRef<T extends DomElement = DomElement>(

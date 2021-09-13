@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import Empty, { EmptyProps } from './empty'
 import FolderApp, { FolderDragData } from './folder-app'
 import { DragArea } from '@/components/dragging'
-import { safeJsonParse } from '@/utils/tool'
+import { getOffsetWindow, safeJsonParse } from '@/utils/tool'
 import { isFolder } from '@/utils/app'
 import { useDesktopContext } from '../../provider'
 
@@ -33,27 +33,25 @@ const Folder: React.FC<FolderProps> = ({ id, emptyProps }) => {
               height: number
             }
           } = safeJsonParse(e.dataTransfer.getData('custom'), {})
+          const domOffset: { left: number; top: number } = safeJsonParse(
+            e.dataTransfer.getData('domOffset'),
+            {}
+          )
           const target = e.currentTarget as HTMLDivElement
-          function getDisTop(element) {
-            // 获取元素距离页面顶部的距离
-            let realTop = element.offsetTop
-            let parent = element.offsetParent
-            while (parent !== null) {
-              realTop += parent.offsetTop
-              parent = parent.offsetParent
-            }
-            return realTop
-          }
-          console.log(getDisTop(target))
+          const { offsetLeft, offsetTop } = getOffsetWindow(target)
+          const position =
+            data.from === id
+              ? data.app.position
+              : {
+                  left: e.clientX - offsetLeft - domOffset.left,
+                  top: e.clientY - offsetTop - domOffset.top,
+                }
           desktopMethods.updateFolderApp({
             from: data.from,
             to: id,
             data: {
               ...data.app,
-              position: {
-                left: e.clientX,
-                top: e.clientY,
-              },
+              position,
             },
           })
         }}

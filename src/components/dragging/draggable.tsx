@@ -26,6 +26,7 @@ const Draggable: React.ForwardRefRenderFunction<
   children,
   onDragEnd,
   onDragStart,
+  onDrag,
   className,
   style,
   nodeRef,
@@ -94,9 +95,17 @@ const Draggable: React.ForwardRefRenderFunction<
     },
     [onDragEnd, setPosition, offset, dragArea.limitRange]
   )
+
+  const onMoving: Required<DraggableProps>['onDrag'] = useCallback(
+    (dragData, e) => {
+      onDrag?.(dragData, e)
+    },
+    [onDrag, setPosition, offset, dragArea.limitRange]
+  )
   const [, getProps] = useDrag({
     onDragStart: onStart,
     onDragEnd: onEnd,
+    onDrag: onMoving,
   })
   const draggableClassName = classnames(className, 'absolute')
 

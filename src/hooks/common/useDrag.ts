@@ -13,6 +13,7 @@ type UseDragReturn<T> = [
 interface UseDragOptions<T> {
   onDragStart?: (data: T, e: React.DragEvent) => void
   onDragEnd?: (data: T, e: React.DragEvent) => void
+  onDrag?: (data: T, e: React.DragEvent) => void
   customDragData?: Record<Key, string>
 }
 
@@ -35,6 +36,9 @@ function useDrag<T = any>(options?: UseDragOptions<T>): UseDragReturn<T> {
               e.dataTransfer.setData(key, options.customDragData![key])
             })
           }
+        },
+        onDrag: (e: React.DragEvent) => {
+          options?.onDrag?.(data, e)
         },
         onDragEnd: (e: React.DragEvent) => {
           setIsDrag(false)

@@ -3,6 +3,7 @@ import App, { AppProps } from '@/components/app'
 import { Draggable, DraggableProps } from '@/components/dragging'
 import { UbuntuApp } from '@/typings/app'
 import { useDesktopContext } from '../../provider'
+import { getMousePositionOfDom } from '@/utils/tool'
 
 export interface FolderAppProps extends AppProps {
   folderId: string
@@ -14,31 +15,38 @@ export interface FolderDragData {
 }
 
 const FolderApp: React.FC<FolderAppProps> = (props) => {
-  const [isRender, setIsRender] = useState(false)
   const [position, setPosition] = useState({
-    left: props.app.position?.left || 0,
-    top: props.app.position?.top || 0,
+    left: (props.app.position?.left as number) || 0,
+    top: (props.app.position?.top as number) || 0,
+  })
+  const [isRender, setIsRender] = useState(() => {
+    return !!(
+      props.app.position &&
+      (props.app.position.left ?? props.app.position?.top)
+    )
   })
   const [, desktopMethods] = useDesktopContext()
   const draggableRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
-    requestAnimationFrame(() => {
-      if (draggableRef.current) {
-        const left = draggableRef.current.offsetLeft
-        const top = draggableRef.current.offsetTop
-        setPosition({
-          left,
-          top,
-        })
-        requestAnimationFrame(() => {
-          // to force a repaint,
-          // eslint-disable-next-line no-unused-expressions
-          draggableRef.current!.scrollTop
-          setIsRender(true)
-        })
-      }
-    })
+    if (!isRender) {
+      requestAnimationFrame(() => {
+        if (draggableRef.current) {
+          const left = draggableRef.current.offsetLeft
+          const top = draggableRef.current.offsetTop
+          setPosition({
+            left,
+            top,
+          })
+          requestAnimationFrame(() => {
+            // to force a repaint,
+            // eslint-disable-next-line no-unused-expressions
+            draggableRef.current!.scrollTop
+            setIsRender(true)
+          })
+        }
+      })
+    }
   }, [])
 
   const dragData: FolderDragData = useMemo(() => {
@@ -59,8 +67,25 @@ const FolderApp: React.FC<FolderAppProps> = (props) => {
         },
       })
     }, [])
+
+  const onDragStart: Required<DraggableProps>['onDragStart'] = useCallback(
+    (_, e) => {
+      const target = e.currentTarget as HTMLDivElement
+      e.dataTransfer.setData(
+        'domOffset',
+        JSON.stringify(
+          getMousePositionOfDom(
+            { clientX: e.clientX, clientY: e.clientY },
+            target
+          )
+        )
+      )
+    },
+    []
+  )
   return (
     <Draggable
+      onDragStart={onDragStart}
       nodeRef={draggableRef}
       defaultPosition={position}
       style={{ position: isRender ? 'absolute' : 'relative' }}

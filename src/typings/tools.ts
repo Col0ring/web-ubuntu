@@ -12,3 +12,7 @@ export type Percentage = `${number}%`
 export type XDirection = 'left' | 'right'
 export type YDirection = 'top' | 'bottom'
 export type Direction = XDirection | YDirection | `${YDirection} ${XDirection}`
+export interface MousePosition {
+  clientX: number
+  clientY: number
+}
