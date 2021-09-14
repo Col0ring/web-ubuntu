@@ -124,7 +124,7 @@ const Draggable: React.ForwardRefRenderFunction<
 
   useEffect(() => {
     onPositionChange?.(position)
-  }, [position])
+  }, [position, onPositionChange])
 
   useEffect(() => {
     defaultPosition && setPosition(defaultPosition)

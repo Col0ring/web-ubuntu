@@ -56,21 +56,17 @@ const FolderApp: React.FC<FolderAppProps> = (props) => {
     }
   }, [props.app, props.folderId])
 
-  // use in drag-area
-  // const onPositionChange: Required<DraggableProps>['onPositionChange'] =
-  //   useCallback(
-  //     (positionState) => {
-  //       desktopMethods.updateFolderApp({
-  //         from: props.folderId,
-  //         to: props.folderId,
-  //         data: {
-  //           ...props.app,
-  //           position: positionState,
-  //         },
-  //       })
-  //     },
-  //     [props.app, props.folderId]
-  //   )
+  // TODO: filter position
+  const onPositionChange: Required<DraggableProps>['onPositionChange'] =
+    useCallback(
+      (positionState) => {
+        if (!isRender) {
+          return
+        }
+        setPosition(positionState)
+      },
+      [props.app, props.folderId, isRender, setPosition]
+    )
 
   const onDragStart: Required<DraggableProps>['onDragStart'] = useCallback(
     (_, e) => {
@@ -166,7 +162,10 @@ const FolderApp: React.FC<FolderAppProps> = (props) => {
       className={draggableClassName}
       data={dragData}
       style={{ position: isAbsolute ? 'absolute' : 'relative' }}
-      // onPositionChange={onPositionChange}
+      onPositionChange={onPositionChange}
+      onDragEnd={(data, e) => {
+        console.log(e.dataTransfer.getData('target'))
+      }}
     >
       <div data-target={dataTarget.folderApp}>
         <Contextmenu menus={menus}>

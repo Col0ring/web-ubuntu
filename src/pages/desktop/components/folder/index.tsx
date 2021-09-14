@@ -40,11 +40,17 @@ const Folder: React.FC<FolderProps> = ({
     <div className={folderWrapperClassName}>
       <DragArea
         onDrop={(e) => {
+          e.stopPropagation()
+          e.dataTransfer.setData('target', id)
           const data: FolderDragData = safeJsonParse(
             e.dataTransfer.getData('custom'),
             {}
           )
+          // no app or drag app in itself
           if (!data.app) {
+            return
+          }
+          if (id === data.app.id) {
             return
           }
           const app = appMap[data.app.id]
@@ -54,6 +60,7 @@ const Folder: React.FC<FolderProps> = ({
           } = safeJsonParse(e.dataTransfer.getData('domOffset'), {})
           const target = e.currentTarget as HTMLDivElement
           const { offsetLeft, offsetTop } = getOffsetWindow(target)
+
           const position =
             data.from === id
               ? app.position

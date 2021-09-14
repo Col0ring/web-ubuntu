@@ -112,10 +112,6 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
             })
             return state
           } else {
-            // 如果文件夹拖到自己里面
-            if (to === data.id) {
-              return state
-            }
             const toFolder = state.appMap[to] as FolderConfig
             const ids = data.id.split('/')
             const id = `${toFolder.id}/${ids[ids.length - 1]}`
