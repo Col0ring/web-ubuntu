@@ -62,3 +62,25 @@ export function moveApp(
     })
   }
 }
+
+export function validMoveFolder(
+  appMap: AppMap,
+  id: string,
+  toFolderId: string
+) {
+  if (id === toFolderId) {
+    return false
+  }
+  const currentApp = appMap[id]
+  if (isFolder(currentApp)) {
+    let toFolder = appMap[toFolderId]
+    while (toFolder) {
+      if (toFolder.parentId === id) {
+        return false
+      }
+      toFolder = appMap[toFolder.parentId]
+    }
+    return true
+  }
+  return true
+}

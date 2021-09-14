@@ -7,9 +7,9 @@ export const accessRoutes: RouteConfig[] = [
     title: 'desktop',
     path: '/desktop',
     // if keep alive is turned on, do not use react.lazy
-    keepAlive: {
-      cacheId: 'desktop-page',
-    },
+    // keepAlive: {
+    //   cacheId: 'desktop-page',
+    // },
     exact: true,
     component: Desktop,
   },

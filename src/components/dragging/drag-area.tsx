@@ -1,22 +1,19 @@
-import React, { useCallback, useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import classnames from 'classnames'
 import useSize from '@/hooks/common/useSize'
 import { useDragContext, withDragProvider } from './provider'
 import { DragContextValue } from './type'
-import { preventDefault } from '@/utils/tool'
+import useDrop, { DropAreaOptions } from '@/hooks/common/useDrop'
 
-export interface DragAreaProps {
+export interface DragAreaProps extends DropAreaOptions {
   limitRange?: DragContextValue['dragArea']['limitRange']
-  preventDropAction?: boolean
-  onDrop?: (e: React.DragEvent) => void
   className?: string
 }
 const DragArea: React.FC<DragAreaProps> = ({
   children,
-  onDrop,
   limitRange,
-  preventDropAction,
   className,
+  ...props
 }) => {
   const [, dragMethods] = useDragContext()
   const dragAreaRef = useRef<HTMLDivElement | null>(null)
@@ -25,15 +22,8 @@ const DragArea: React.FC<DragAreaProps> = ({
     'relative w-full h-full left-0 top-0',
     className
   )
-  const onDragAreaDrop: React.DragEventHandler<HTMLDivElement> = useCallback(
-    (e) => {
-      if (preventDropAction) {
-        e.preventDefault()
-      }
-      onDrop?.(e)
-    },
-    [onDrop]
-  )
+  const [dropAreaProps] = useDrop(props)
+
   useEffect(() => {
     dragMethods.setDragArea({
       width,
@@ -45,12 +35,7 @@ const DragArea: React.FC<DragAreaProps> = ({
     })
   }, [width, limitRange, height, dragMethods])
   return (
-    <div
-      ref={dragAreaRef}
-      onDrop={onDragAreaDrop}
-      onDragOver={preventDefault}
-      className={dragAreaClassName}
-    >
+    <div ref={dragAreaRef} className={dragAreaClassName} {...dropAreaProps}>
       {children}
     </div>
   )

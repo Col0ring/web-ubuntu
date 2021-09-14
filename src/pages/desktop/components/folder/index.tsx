@@ -6,6 +6,8 @@ import { DragArea } from '@/components/dragging'
 import { getOffsetWindow, safeJsonParse } from '@/utils/tool'
 import { isFolder } from '@/utils/app'
 import { useDesktopContext } from '../../provider'
+import { validMoveFolder } from '../../util'
+import { setFolderDragTarget } from './store'
 
 export interface FolderProps {
   id: string
@@ -39,9 +41,11 @@ const Folder: React.FC<FolderProps> = ({
   return (
     <div className={folderWrapperClassName}>
       <DragArea
+        onDragEnter={() => {
+          setFolderDragTarget(id)
+        }}
         onDrop={(e) => {
           e.stopPropagation()
-          e.dataTransfer.setData('target', id)
           const data: FolderDragData = safeJsonParse(
             e.dataTransfer.getData('custom'),
             {}
@@ -50,9 +54,11 @@ const Folder: React.FC<FolderProps> = ({
           if (!data.app) {
             return
           }
-          if (id === data.app.id) {
+
+          if (!validMoveFolder(appMap, data.app.id, id)) {
             return
           }
+          // drag to its parent
           const app = appMap[data.app.id]
           const domOffset: {
             left: number
@@ -77,7 +83,6 @@ const Folder: React.FC<FolderProps> = ({
             },
           })
         }}
-        preventDropAction
         className={className}
       >
         {folderApps.length > 0 || !showEmpty ? (

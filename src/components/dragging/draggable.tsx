@@ -18,6 +18,7 @@ export interface DraggableProps<T = any> extends UseDragOptions<T> {
     left: AppPositionValue
     top: AppPositionValue
   }) => void
+  onValid?: (data: T, e: React.DragEvent) => Promise<boolean> | boolean
 }
 
 const Draggable: React.ForwardRefRenderFunction<
@@ -29,6 +30,7 @@ const Draggable: React.ForwardRefRenderFunction<
   onDragEnd,
   onDragStart,
   onDrag,
+  onValid,
   className,
   style,
   nodeRef,
@@ -65,12 +67,15 @@ const Draggable: React.ForwardRefRenderFunction<
     [onDragStart, setOffset]
   )
   const onEnd: Required<DraggableProps>['onDragEnd'] = useCallback(
-    (dragData, e) => {
+    async (dragData, e) => {
       let left = e.clientX - offset.left
       let top = e.clientY - offset.top
       const { x, y } = dragArea.limitRange
       const domRect = ref.current!.getBoundingClientRect()
-
+      const isValid = await onValid?.(dragData, e)
+      if (!isValid) {
+        return
+      }
       if (left < x[0]) {
         left = 0
       }
@@ -90,7 +95,6 @@ const Draggable: React.ForwardRefRenderFunction<
         left,
         top,
       })
-      onDragEnd?.(dragData, e)
     },
     [onDragEnd, setPosition, offset, dragArea.limitRange]
   )

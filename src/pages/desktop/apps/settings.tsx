@@ -10,7 +10,7 @@ const Settings: React.FC = () => {
   return (
     <div className="flex w-full h-full flex-col z-20 overflow-y-auto select-none bg-ub-cool-grey">
       <div
-        className="md:w-2/5 w-2/3 h-1/3 m-auto my-4"
+        className="md:w-2/5 h-1/3 w-2/3 m-auto my-4 flex-shrink-0"
         style={{
           backgroundImage: `url(${backgroundImage})`,
           backgroundSize: 'cover',

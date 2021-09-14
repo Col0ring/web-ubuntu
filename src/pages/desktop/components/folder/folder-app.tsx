@@ -14,6 +14,8 @@ import { getMousePositionOfDom } from '@/utils/tool'
 import Contextmenu, { ContextmenuProps } from '@/components/contextmenu'
 import { dataTarget } from '../../config'
 import useUpdateEffect from '@/hooks/common/useUpdateEffect'
+import { getFolderDragTarget, removeFolderDragTarget } from './store'
+import { validMoveFolder } from '../../util'
 
 export interface FolderAppProps extends AppProps {
   folderId: string
@@ -35,6 +37,7 @@ const FolderApp: React.FC<FolderAppProps> = (props) => {
       (props.app.position.left ?? props.app.position?.top)
     )
   })
+  const [{ appMap }] = useDesktopContext()
   const [{ dragArea }] = useDragContext()
   const [load, setLoad] = useState(false)
 
@@ -56,18 +59,6 @@ const FolderApp: React.FC<FolderAppProps> = (props) => {
     }
   }, [props.app, props.folderId])
 
-  // TODO: filter position
-  const onPositionChange: Required<DraggableProps>['onPositionChange'] =
-    useCallback(
-      (positionState) => {
-        if (!isRender) {
-          return
-        }
-        setPosition(positionState)
-      },
-      [props.app, props.folderId, isRender, setPosition]
-    )
-
   const onDragStart: Required<DraggableProps>['onDragStart'] = useCallback(
     (_, e) => {
       const target = e.currentTarget as HTMLDivElement
@@ -83,6 +74,13 @@ const FolderApp: React.FC<FolderAppProps> = (props) => {
     },
     []
   )
+
+  const onValid: Required<DraggableProps>['onValid'] = useCallback(() => {
+    const toFolderId = getFolderDragTarget()
+    removeFolderDragTarget()
+    return validMoveFolder(appMap, props.app.id, toFolderId)
+  }, [props.app])
+
   const defaultPosition: {
     left: AppPositionValue
     top: AppPositionValue
@@ -122,18 +120,15 @@ const FolderApp: React.FC<FolderAppProps> = (props) => {
 
   useUpdateEffect(() => {
     if (draggableRef.current && load && !isRender) {
+      const left = draggableRef.current.offsetLeft
+      const top = draggableRef.current.offsetTop
       requestAnimationFrame(() => {
         if (draggableRef.current) {
-          const left = draggableRef.current.offsetLeft
-          const top = draggableRef.current.offsetTop
           setPosition({
             left,
             top,
           })
           requestAnimationFrame(() => {
-            // to force a repaint,
-            // eslint-disable-next-line no-unused-expressions
-            draggableRef.current!.scrollTop
             setIsRender(true)
           })
         }
@@ -162,10 +157,7 @@ const FolderApp: React.FC<FolderAppProps> = (props) => {
       className={draggableClassName}
       data={dragData}
       style={{ position: isAbsolute ? 'absolute' : 'relative' }}
-      onPositionChange={onPositionChange}
-      onDragEnd={(data, e) => {
-        console.log(e.dataTransfer.getData('target'))
-      }}
+      onValid={onValid}
     >
       <div data-target={dataTarget.folderApp}>
         <Contextmenu menus={menus}>

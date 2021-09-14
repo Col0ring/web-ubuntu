@@ -13,7 +13,7 @@ interface DropProps {
   onPaste: React.ClipboardEventHandler
 }
 
-interface DropAreaOptions {
+interface DropAreaOptions extends Partial<DropProps> {
   onFiles?: (files: File[], event?: React.DragEvent) => void
   onUri?: (url: string, event?: React.DragEvent) => void
   // 自定义 dom 节点
@@ -26,39 +26,45 @@ type DropCallback = (
   event: React.DragEvent | React.ClipboardEvent
 ) => void
 
-function getProps(
-  callback: DropCallback,
-  setIsHovering: (over: boolean) => void
-): DropProps {
-  return {
-    onDragOver: (event) => {
-      event.preventDefault()
-    },
-    onDragEnter: (event) => {
-      event.preventDefault()
-      setIsHovering(true)
-    },
-    onDragLeave: () => {
-      setIsHovering(false)
-    },
-    onDrop: (event) => {
-      event.preventDefault()
-      event.persist()
-      setIsHovering(false)
-      callback(event.dataTransfer, event)
-    },
-    onPaste: (event) => {
-      event.persist()
-      callback(event.clipboardData, event)
-    },
-  }
-}
-
 // TODO: drag file
 function useDrop(options: DropAreaOptions = {}): [DropProps, DropAreaState] {
   const optionsRef = useRef(options)
   optionsRef.current = options
   const [isHovering, setIsHovering] = useState(false)
+
+  const getProps = useCallback(
+    (callback: DropCallback): DropProps => {
+      return {
+        onDragOver: (event) => {
+          event.preventDefault()
+          optionsRef.current.onDragOver?.(event)
+        },
+        onDragEnter: (event) => {
+          event.preventDefault()
+          setIsHovering(true)
+          optionsRef.current.onDragEnter?.(event)
+        },
+        onDragLeave: (event) => {
+          event.preventDefault()
+          setIsHovering(false)
+          optionsRef.current.onDragLeave?.(event)
+        },
+        onDrop: (event) => {
+          event.preventDefault()
+          event.persist()
+          setIsHovering(false)
+          optionsRef.current.onDrop?.(event)
+          callback(event.dataTransfer, event)
+        },
+        onPaste: (event) => {
+          event.persist()
+          optionsRef.current.onPaste?.(event)
+          callback(event.clipboardData, event)
+        },
+      }
+    },
+    [setIsHovering]
+  )
 
   const isMounted = useMountedState()
   const callback: DropCallback = useCallback(
@@ -114,10 +120,7 @@ function useDrop(options: DropAreaOptions = {}): [DropProps, DropAreaState] {
     [isMounted]
   )
 
-  const props: DropProps = useMemo(
-    () => getProps(callback, setIsHovering),
-    [callback, setIsHovering]
-  )
+  const props: DropProps = useMemo(() => getProps(callback), [callback])
 
   return [props, { isHovering }]
 }
