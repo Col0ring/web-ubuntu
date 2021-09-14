@@ -6,7 +6,7 @@ import { accessRoutes } from '@/router/config'
 import { initService } from '@/utils/request'
 import PageLoading from '@/components/page-loading'
 import useAsyncFn from '@/hooks/common/useAsyncFn'
-import { reqGetUserInfo } from '@/api/user'
+import { reqGetUserInfo } from '@/services/user'
 
 const whiteList = ['/login']
 

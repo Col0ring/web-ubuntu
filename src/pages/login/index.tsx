@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import useAsyncFn from '@/hooks/common/useAsyncFn'
-import { reqLogin } from '@/api/user'
+import { reqLogin } from '@/services/user'
 import { useAuthContext } from '@/auth/provider'
 import LoginButton from './components/login-button'
 
