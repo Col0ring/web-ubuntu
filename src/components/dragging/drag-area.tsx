@@ -3,6 +3,7 @@ import classnames from 'classnames'
 import useSize from '@/hooks/common/useSize'
 import { useDragContext, withDragProvider } from './provider'
 import { DragContextValue } from './type'
+import { preventDefault } from '@/utils/tool'
 
 export interface DragAreaProps {
   limitRange?: DragContextValue['dragArea']['limitRange']
@@ -47,6 +48,7 @@ const DragArea: React.FC<DragAreaProps> = ({
     <div
       ref={dragAreaRef}
       onDrop={onDragAreaDrop}
+      onDragOver={preventDefault}
       className={dragAreaClassName}
     >
       {children}

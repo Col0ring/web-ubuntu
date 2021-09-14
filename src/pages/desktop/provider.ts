@@ -11,9 +11,9 @@ import {
 } from '@/typings/app'
 import { DesktopContextValue } from './type'
 import { defaultImages } from './config'
-import { getBackgroundImage, setBackgroundImage } from './util'
+import { getBackgroundImage, moveApp, setBackgroundImage } from './util'
 import message from '@/components/message'
-import { appArr2Map, moveApp } from '@/utils/app'
+import { appArr2Map } from '@/utils/app'
 import { SpecialFolder } from './constants'
 
 const Folder = React.lazy(() => import('@/pages/desktop/apps/folder'))
@@ -119,18 +119,13 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
             const toFolder = state.appMap[to] as FolderConfig
             const ids = data.id.split('/')
             const id = `${toFolder.id}/${ids[ids.length - 1]}`
-            moveApp(state.appMap, {
+            moveApp(state, {
               currentId: id,
               prevId: data.id,
               parentId: toFolder.id,
               prevParentId: fromFolder.id,
             })
-            Reflect.deleteProperty(state.openedAppMap, data.id)
-            Reflect.deleteProperty(state.maximizedApps, data.id)
-            Reflect.deleteProperty(state.minimizedApps, data.id)
-            state.openedApps = state.openedApps.filter(
-              (app) => app.id !== data.id
-            )
+
             return state
           }
         },

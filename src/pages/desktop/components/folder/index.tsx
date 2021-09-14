@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo } from 'react'
+import classnames from 'classnames'
 import Empty, { EmptyProps } from './empty'
 import FolderApp, { FolderAppProps, FolderDragData } from './folder-app'
 import { DragArea } from '@/components/dragging'
@@ -9,8 +10,17 @@ import { useDesktopContext } from '../../provider'
 export interface FolderProps {
   id: string
   emptyProps?: EmptyProps
+  showEmpty?: boolean
+  wrapperClassName?: string
+  className?: string
 }
-const Folder: React.FC<FolderProps> = ({ id, emptyProps }) => {
+const Folder: React.FC<FolderProps> = ({
+  id,
+  emptyProps,
+  showEmpty = true,
+  wrapperClassName,
+  className,
+}) => {
   const [{ appMap }, desktopMethods] = useDesktopContext()
   const folderApps = useMemo(() => {
     const currentFolder = appMap[id]
@@ -25,19 +35,23 @@ const Folder: React.FC<FolderProps> = ({ id, emptyProps }) => {
     },
     [desktopMethods]
   )
+  const folderWrapperClassName = classnames('w-full h-full', wrapperClassName)
   return (
-    <div className="w-full h-full flex flex-col bg-ub-cool-grey text-white select-none overflow-x-auto overflow-y-auto ub-scrollbar">
+    <div className={folderWrapperClassName}>
       <DragArea
         onDrop={(e) => {
           const data: FolderDragData = safeJsonParse(
             e.dataTransfer.getData('custom'),
             {}
           )
+          if (!data.app) {
+            return
+          }
           const app = appMap[data.app.id]
-          const domOffset: { left: number; top: number } = safeJsonParse(
-            e.dataTransfer.getData('domOffset'),
-            {}
-          )
+          const domOffset: {
+            left: number
+            top: number
+          } = safeJsonParse(e.dataTransfer.getData('domOffset'), {})
           const target = e.currentTarget as HTMLDivElement
           const { offsetLeft, offsetTop } = getOffsetWindow(target)
           const position =
@@ -57,9 +71,9 @@ const Folder: React.FC<FolderProps> = ({ id, emptyProps }) => {
           })
         }}
         preventDropAction
-        className="min-h-full flex-grow flex flex-wrap items-start content-start justify-start"
+        className={className}
       >
-        {folderApps.length > 0 ? (
+        {folderApps.length > 0 || !showEmpty ? (
           folderApps.map((app) => (
             <FolderApp
               onOpen={onAppOpen}

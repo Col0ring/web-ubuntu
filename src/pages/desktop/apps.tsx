@@ -55,6 +55,13 @@ const apps: UbuntuApp[] = [
       },
       {
         parentId: '/desktop',
+        id: '/desktop/application-shortcut',
+        title: 'Applications',
+        icon: './themes/Yaru/system/folder.png',
+        redirect: '/application',
+      },
+      {
+        parentId: '/desktop',
         id: '/desktop/firefox-shortcut',
         title: 'Firefox Browser',
         icon: './themes/Yaru/apps/firefox.svg',
@@ -62,7 +69,7 @@ const apps: UbuntuApp[] = [
       },
       {
         parentId: '/desktop',
-        id: '/application/todo-ist',
+        id: '/application/todo-ist-shortcut',
         title: 'Todoist',
         icon: './themes/Yaru/apps/todoist.png',
         redirect: '/application/todo-ist',
@@ -74,6 +81,7 @@ const apps: UbuntuApp[] = [
     folder: true,
     id: '/application',
     title: 'Application',
+    render: (id) => <Folder id={id} />,
     apps: [
       {
         parentId: '/application',
