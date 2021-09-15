@@ -9,6 +9,7 @@ import { useDesktopContext } from '../../provider'
 import { validMoveFolder } from '../../util'
 import { setFolderDragTarget } from './store'
 import FolderContextmenu from './folder-context-menu'
+import message from '@/components/message'
 
 export interface FolderProps {
   id: string
@@ -54,10 +55,16 @@ const Folder: React.FC<FolderProps> = ({
           )
           // no app
           if (!data.app) {
+            message.error({
+              content: 'invalid dragging element',
+            })
             return
           }
 
           if (!validMoveFolder(appMap, data.app.id, id)) {
+            message.error({
+              content: 'can not move itself or parent folder to the directory',
+            })
             return
           }
           // drag to its parent

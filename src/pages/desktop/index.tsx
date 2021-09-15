@@ -15,8 +15,9 @@ const Desktop: React.FC = () => {
   useEventListener(window, 'resize', () => {
     desktopMethods.resizeBrowserWindow(window.innerWidth, window.innerHeight)
   })
+
   return (
-    <>
+    <div className="w-full h-full relative left-0 top-0 overflow-hidden">
       <BackgroundImage src={desktopState.backgroundImage} />
       <DesktopFolder />
       <Navbar />
@@ -38,7 +39,7 @@ const Desktop: React.FC = () => {
       <LockScreen />
       {/* new-folder-modal */}
       {desktopState.newFolderModal && <NewFolderModal />}
-    </>
+    </div>
   )
 }
 export default withDesktopProvider(Desktop)

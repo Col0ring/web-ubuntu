@@ -27,20 +27,22 @@ export interface FolderDragData {
 }
 
 const FolderApp: React.FC<FolderAppProps> = (props) => {
-  const [isRender, setIsRender] = useState(() => {
-    return !!(
+  const renderRef = useRef(
+    !!(
       props.app.position &&
-      (props.app.position.left ?? props.app.position.top)
+      (props.app.position.left || props.app.position.top)
     )
-  })
+  )
   const [{ appMap }] = useDesktopContext()
   const [{ dragArea }] = useDragContext()
   const [load, setLoad] = useState(false)
 
   const [isFocus, setIsFocus] = useState(false)
   const isAbsolute = useMemo(
-    () => isRender || !!(props.app.position?.left || props.app.position?.top),
-    [isRender, props.app.position]
+    () =>
+      renderRef.current ||
+      !!(props.app.position?.left || props.app.position?.top),
+    [props.app.position]
   )
   const draggableRef = useRef<HTMLDivElement | null>(null)
   const draggableClassName = classnames('hover:z-20 focus:z-20 z-10', {
@@ -123,24 +125,22 @@ const FolderApp: React.FC<FolderAppProps> = (props) => {
 
   // only work once
   useUpdateEffect(() => {
-    if (draggableRef.current && load && !isRender) {
+    if (draggableRef.current && load && !renderRef.current) {
       const left = draggableRef.current.offsetLeft
       const top = draggableRef.current.offsetTop
       requestAnimationFrame(() => {
-        if (draggableRef.current) {
-          desktopMethods.updateFolderApp({
-            from: props.folderId,
-            to: props.folderId,
-            data: {
-              ...props.app,
-              position: {
-                left,
-                top,
-              },
+        renderRef.current = true
+        desktopMethods.updateFolderApp({
+          from: props.folderId,
+          to: props.folderId,
+          data: {
+            ...props.app,
+            position: {
+              left,
+              top,
             },
-          })
-          setIsRender(true)
-        }
+          },
+        })
       })
     }
   }, [load])
@@ -186,7 +186,7 @@ const FolderApp: React.FC<FolderAppProps> = (props) => {
       onPositionChange={onPositionChange}
       className={draggableClassName}
       data={dragData}
-      style={{ position: isAbsolute ? 'absolute' : 'relative' }}
+      style={{ position: isAbsolute ? 'absolute' : 'static' }}
       onValid={onValid}
     >
       <div data-target={dataTarget.folderApp}>
