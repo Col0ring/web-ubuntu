@@ -27,14 +27,10 @@ export interface FolderDragData {
 }
 
 const FolderApp: React.FC<FolderAppProps> = (props) => {
-  const [position, setPosition] = useState({
-    left: props.app.position?.left || 0,
-    top: props.app.position?.top || 0,
-  })
   const [isRender, setIsRender] = useState(() => {
     return !!(
       props.app.position &&
-      (props.app.position.left ?? props.app.position?.top)
+      (props.app.position.left ?? props.app.position.top)
     )
   })
   const [{ appMap }] = useDesktopContext()
@@ -84,19 +80,26 @@ const FolderApp: React.FC<FolderAppProps> = (props) => {
   const defaultPosition: {
     left: AppPositionValue
     top: AppPositionValue
-  } = useMemo(
-    () => ({
+  } = useMemo(() => {
+    const position = props.app.position || {
+      left: 0,
+      top: 0,
+    }
+    return {
       left:
-        typeof position.left === 'string'
+        dragArea.width === 0
+          ? position.left
+          : typeof position.left === 'string'
           ? position.left
           : `${(position.left / dragArea.width) * 100}%`,
       top:
-        typeof position.top === 'string'
+        dragArea.height === 0
+          ? position.top
+          : typeof position.top === 'string'
           ? position.top
           : `${(position.top / dragArea.height) * 100}%`,
-    }),
-    [position, dragArea]
-  )
+    }
+  }, [props.app.position, dragArea])
 
   const menus = useMemo(() => {
     return [
@@ -118,19 +121,25 @@ const FolderApp: React.FC<FolderAppProps> = (props) => {
     ] as ContextmenuProps['menus']
   }, [])
 
+  // only work once
   useUpdateEffect(() => {
     if (draggableRef.current && load && !isRender) {
       const left = draggableRef.current.offsetLeft
       const top = draggableRef.current.offsetTop
       requestAnimationFrame(() => {
         if (draggableRef.current) {
-          setPosition({
-            left,
-            top,
+          desktopMethods.updateFolderApp({
+            from: props.folderId,
+            to: props.folderId,
+            data: {
+              ...props.app,
+              position: {
+                left,
+                top,
+              },
+            },
           })
-          requestAnimationFrame(() => {
-            setIsRender(true)
-          })
+          setIsRender(true)
         }
       })
     }
@@ -149,11 +158,32 @@ const FolderApp: React.FC<FolderAppProps> = (props) => {
     setIsFocus(true)
   })
 
+  const onPositionChange: Required<DraggableProps>['onPositionChange'] =
+    useCallback(
+      (positionState) => {
+        if (
+          isAbsolute &&
+          props.app.position?.left !== positionState.left &&
+          props.app.position?.top !== positionState.top
+        ) {
+          desktopMethods.updateFolderApp({
+            from: props.folderId,
+            to: props.folderId,
+            data: {
+              ...props.app,
+              position: positionState,
+            },
+          })
+        }
+      },
+      [props.app, props.folderId, isAbsolute, desktopMethods]
+    )
   return (
     <Draggable
       onDragStart={onDragStart}
       nodeRef={draggableRef}
       defaultPosition={defaultPosition}
+      onPositionChange={onPositionChange}
       className={draggableClassName}
       data={dragData}
       style={{ position: isAbsolute ? 'absolute' : 'relative' }}

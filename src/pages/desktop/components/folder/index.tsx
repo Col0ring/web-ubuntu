@@ -8,6 +8,7 @@ import { isFolder } from '@/utils/app'
 import { useDesktopContext } from '../../provider'
 import { validMoveFolder } from '../../util'
 import { setFolderDragTarget } from './store'
+import FolderContextmenu from './folder-context-menu'
 
 export interface FolderProps {
   id: string
@@ -37,9 +38,10 @@ const Folder: React.FC<FolderProps> = ({
     },
     [desktopMethods]
   )
+
   const folderWrapperClassName = classnames('w-full h-full', wrapperClassName)
   return (
-    <div className={folderWrapperClassName}>
+    <FolderContextmenu folderId={id} className={folderWrapperClassName}>
       <DragArea
         onDragEnter={() => {
           setFolderDragTarget(id)
@@ -50,7 +52,7 @@ const Folder: React.FC<FolderProps> = ({
             e.dataTransfer.getData('custom'),
             {}
           )
-          // no app or drag app in itself
+          // no app
           if (!data.app) {
             return
           }
@@ -98,7 +100,7 @@ const Folder: React.FC<FolderProps> = ({
           <Empty title="Folder is Empty" {...emptyProps} />
         )}
       </DragArea>
-    </div>
+    </FolderContextmenu>
   )
 }
 

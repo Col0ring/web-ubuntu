@@ -39,7 +39,8 @@ const Draggable: React.ForwardRefRenderFunction<
 }) => {
   const [dragState] = useDragContext()
   const { dragArea } = dragState
-
+  const onPositionChangeRef = useRef(onPositionChange)
+  onPositionChangeRef.current = onPositionChange
   const draggableRef = useRef<HTMLDivElement | null>(null)
   const ref = nodeRef || draggableRef
 
@@ -127,8 +128,8 @@ const Draggable: React.ForwardRefRenderFunction<
   }, [style, position, dragArea.limitRange])
 
   useEffect(() => {
-    onPositionChange?.(position)
-  }, [position, onPositionChange])
+    onPositionChangeRef.current?.(position)
+  }, [position])
 
   useEffect(() => {
     defaultPosition && setPosition(defaultPosition)

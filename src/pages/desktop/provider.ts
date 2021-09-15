@@ -31,6 +31,10 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
           state.newFolderModal = visible
           return state
         },
+        setNewFolderModalFolderId(id: string) {
+          state.newFolderModalFolderId = id
+          return state
+        },
         setAllAppsScreen(visible: boolean) {
           state.allAppsScreen = visible
           return state
@@ -60,10 +64,14 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
           return state
         },
         // current desktop folder
-        addNewFolder(name: string, position: UbuntuApp['position']) {
-          const desktop = state.appMap[SpecialFolder.Desktop] as FolderConfig
-          const id = `${SpecialFolder.Desktop}/${name}`
-          if (desktop.apps.find((desktopApp) => desktopApp.id === id)) {
+        addNewFolder(
+          parentId: string,
+          name: string,
+          position: UbuntuApp['position']
+        ) {
+          const parentFolder = state.appMap[parentId] as FolderConfig
+          const id = `${parentId}/${name}`
+          if (parentFolder.apps.find((app) => app.id === id)) {
             message.error({
               content: 'Something Wrong',
               description: `The name ${name} is already in use. Please choose another name`,
@@ -74,7 +82,7 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
           const newFolder: FolderConfig = {
             id,
             title: name,
-            parentId: SpecialFolder.Desktop,
+            parentId,
             folder: true,
             icon: './themes/Yaru/system/folder.png',
             disabled: false,
@@ -87,7 +95,7 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
           }
           this.setNewFolderModal(false)
           // state.apps auto change
-          desktop.apps.push(newFolder)
+          parentFolder.apps.push(newFolder)
           state.appMap[id] = newFolder
           return state
         },
@@ -104,6 +112,21 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
           // 先改变原值
           state.appMap[data.id] = data
           if (from === to) {
+            const openedFromFolder = state.openedAppMap[from]
+            if (openedFromFolder) {
+              openedFromFolder.apps = openedFromFolder.apps!.map((app) => {
+                if (app.id === data.id) {
+                  return data
+                }
+                return app
+              })
+              state.openedApps = state.openedApps.map((app) => {
+                if (app.id === from) {
+                  return openedFromFolder
+                }
+                return app
+              })
+            }
             fromFolder.apps = fromFolder.apps.map((app) => {
               if (app.id === data.id) {
                 return data
@@ -171,7 +194,7 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
           state.focusAppId = state.focusAppId === id ? '' : state.focusAppId
           return state
         },
-        maximizeApp(id: string, app: AppConfig) {
+        maximizeApp(id: string, app: UbuntuApp) {
           if (state.maximizedApps[id]) {
             Reflect.deleteProperty(state.maximizedApps, id)
           } else {
@@ -200,6 +223,7 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
         clientY: 0,
       },
       newFolderModal: false,
+      newFolderModalFolderId: '',
       defaultAppWindow: {
         width: '85%',
         height: '80%',

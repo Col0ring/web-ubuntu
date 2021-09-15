@@ -1,6 +1,6 @@
 import React, { useMemo, useEffect, useRef, useState } from 'react'
 import classnames from 'classnames'
-import { getParentNode } from '@/utils/tool'
+import { getParentNode, percentage2Decimal } from '@/utils/tool'
 import Toolbar, { ToolbarProps } from './toolbar'
 import MainView from './main-view'
 import Transition from '@/components/transition'
@@ -14,7 +14,6 @@ import { Percentage } from '@/typings/tools'
 import useTimeoutValue from '@/hooks/common/useTimeoutValue'
 import { MoveContext } from '@/hooks/common/useDomMove'
 import './style.less'
-import useUpdateEffect from '@/hooks/common/useUpdateEffect'
 
 export interface AppWindowProps {
   app: OpenedAppConfig
@@ -123,13 +122,34 @@ const AppWindow: React.FC<AppWindowProps> = ({
       ? `${(position.top / window.innerHeight) * 100}%`
       : position.top
     const bottom = position.top ? undefined : '0%'
+    const windowWidth =
+      typeof width === 'string'
+        ? window.innerWidth * percentage2Decimal(width)
+        : width
+    const offsetX = (window.innerWidth - windowWidth) / 2
+    const windowHeight =
+      typeof height === 'string'
+        ? window.innerHeight * percentage2Decimal(height)
+        : height
+    const offsetY = (window.innerHeight - windowHeight) / 2
+    const windowPosition =
+      left === right && top === bottom
+        ? {
+            left: offsetX,
+            right: offsetX,
+            top: offsetY,
+            bottom: offsetY,
+          }
+        : {
+            left,
+            top,
+            right,
+            bottom,
+          }
     return {
       width,
       height,
-      left,
-      top,
-      right,
-      bottom,
+      ...windowPosition,
       minWidth: defaultAppWindow.minWidth,
       minHeight: defaultAppWindow.minHeight,
       // set the Resizable to be absolute
@@ -137,7 +157,7 @@ const AppWindow: React.FC<AppWindowProps> = ({
     }
   }, [position, isMaximized, rect, desktopMethods, defaultAppWindow])
 
-  useUpdateEffect(() => {
+  useEffect(() => {
     if (!isMaximized) {
       desktopMethods.updateOpenedApp(app.id, {
         ...app,

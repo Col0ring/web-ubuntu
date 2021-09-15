@@ -5,6 +5,7 @@ import {
   Key,
   MousePosition,
   ResolvePromise,
+  Percentage,
 } from '@/typings/tools'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -14,6 +15,11 @@ export function preventDefault(e: React.UIEvent) {
 }
 export function stopPropagation(e: React.UIEvent) {
   e.stopPropagation()
+}
+
+export function percentage2Decimal(percentage: Percentage) {
+  const n = +percentage.slice(0, percentage.length - 1)
+  return n / 100
 }
 
 export function getOffsetWindow(element: HTMLElement) {

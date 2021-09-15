@@ -1,5 +1,7 @@
 import useKeyPress from '@/hooks/common/useKeyPress'
+import { percentage2Decimal } from '@/utils/tool'
 import React, { useCallback, useRef, useState } from 'react'
+import { SpecialFolder } from '../constants'
 import { useDesktopContext } from '../provider'
 
 const NewFolderModal: React.FC = () => {
@@ -18,10 +20,33 @@ const NewFolderModal: React.FC = () => {
       if (!trimValue) {
         return
       }
+      if (desktopState.newFolderModalFolderId === SpecialFolder.Desktop) {
+        desktopMethods.addNewFolder(
+          desktopState.newFolderModalFolderId,
+          value,
+          {
+            left: desktopState.mousePosition.clientX,
+            top: desktopState.mousePosition.clientY,
+          }
+        )
+        return
+      }
+      const parentFolder =
+        desktopState.openedAppMap[desktopState.newFolderModalFolderId]
 
-      desktopMethods.addNewFolder(value, {
-        left: desktopState.mousePosition.clientX,
-        top: desktopState.mousePosition.clientY,
+      const offsetLeft =
+        typeof parentFolder.windowPosition.left === 'string'
+          ? window.innerWidth *
+            percentage2Decimal(parentFolder.windowPosition.left)
+          : parentFolder.windowPosition.left
+      const offsetTop =
+        typeof parentFolder.windowPosition.top === 'string'
+          ? window.innerWidth *
+            percentage2Decimal(parentFolder.windowPosition.top)
+          : parentFolder.windowPosition.top
+      desktopMethods.addNewFolder(desktopState.newFolderModalFolderId, value, {
+        left: desktopState.mousePosition.clientX - offsetLeft,
+        top: desktopState.mousePosition.clientY - offsetTop,
       })
     },
     [desktopMethods, desktopState]
@@ -45,7 +70,7 @@ const NewFolderModal: React.FC = () => {
     }
   )
   return (
-    <div className="absolute rounded-md top-1/2 left-1/2 text-center text-white font-light text-sm bg-ub-cool-grey transform -translate-y-1/2 -translate-x-1/2 sm:w-96 w-3/4 z-50">
+    <div className="absolute rounded-md top-1/2 left-1/2 text-center text-white font-light text-sm bg-ub-cool-grey transform -translate-y-1/2 -translate-x-1/2 sm:w-96 w-3/4 z-60">
       <div className="w-full flex flex-col justify-around items-start px-6 pb-8 pt-6">
         <span>New folder name</span>
         <input

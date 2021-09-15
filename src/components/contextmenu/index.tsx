@@ -3,6 +3,7 @@ import classnames from 'classnames'
 import useContextmenu, {
   useContextmenuOptions,
 } from '@/hooks/common/useContextmenu'
+import { getOffsetWindow } from '@/utils/tool'
 import Divider from './divider'
 import './style.less'
 
@@ -58,12 +59,11 @@ const Contextmenu: React.FC<ContextmenuProps> = ({
       : {
           onContextMenu(e) {
             setVisible(true)
-            const { left, top } = (
-              e.currentTarget as HTMLElement
-            ).getBoundingClientRect()
+            const target = e.currentTarget as HTMLElement
+            const { offsetLeft, offsetTop } = getOffsetWindow(target)
             setPosition({
-              left: e.clientX - left,
-              top: e.clientY - top,
+              left: e.clientX - offsetLeft,
+              top: e.clientY - offsetTop,
             })
           },
           onClickAway() {

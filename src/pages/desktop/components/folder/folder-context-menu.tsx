@@ -1,23 +1,37 @@
 import React, { useMemo, useState } from 'react'
+import classnames from 'classnames'
 import Contextmenu, { ContextmenuProps } from '@/components/contextmenu'
-import { getParentNode } from '@/utils/tool'
+import { getOffsetWindow, getParentNode } from '@/utils/tool'
 import { dataTarget } from '../../config'
 import { useDesktopContext } from '../../provider'
 import { SpecialFolder } from '../../constants'
 
-const FolderContextmenu: React.FC = ({ children }) => {
+export interface FolderContextmenuProps {
+  className?: string
+  folderId: string
+}
+const FolderContextmenu: React.FC<FolderContextmenuProps> = ({
+  children,
+  folderId,
+  className,
+}) => {
   const [{ appMap }, desktopMethods] = useDesktopContext()
   const [visible, setVisible] = useState(false)
   const [position, setPosition] = useState({
     left: 0,
     top: 0,
   })
+  const folderContextmenu = classnames(
+    className,
+    'h-full w-full flex flex-col justify-start content-start flex-wrap bg-transparent relative overflow-hidden overscroll-none'
+  )
   const menus = useMemo(() => {
     return [
       {
         key: 'New Folder',
         title: 'New Folder',
         onClick() {
+          desktopMethods.setNewFolderModalFolderId(folderId)
           desktopMethods.setNewFolderModal(true)
         },
       },
@@ -78,11 +92,10 @@ const FolderContextmenu: React.FC = ({ children }) => {
             clientX: e.clientX,
             clientY: e.clientY,
           })
-          const { left, top } = (
-            e.currentTarget as HTMLElement
-          ).getBoundingClientRect()
-          const leftPosition = e.clientX - left
-          const topPosition = e.clientY - top
+          const target = e.currentTarget as HTMLElement
+          const { offsetLeft, offsetTop } = getOffsetWindow(target)
+          const leftPosition = e.clientX - offsetLeft
+          const topPosition = e.clientY - offsetTop
           setPosition({
             left: leftPosition,
             top: topPosition,
@@ -101,7 +114,7 @@ const FolderContextmenu: React.FC = ({ children }) => {
       rewritePosition={position}
       rewriteVisible={visible}
       contextmenuOptionsRewrite={rewriteOptions}
-      className="h-full w-full flex flex-col justify-start content-start flex-wrap  pt-8 bg-transparent relative overflow-hidden overscroll-none"
+      className={folderContextmenu}
       menus={menus}
     >
       {children}

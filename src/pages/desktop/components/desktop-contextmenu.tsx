@@ -78,9 +78,9 @@ const DesktopContextmenu: React.FC = ({ children }) => {
             clientX: e.clientX,
             clientY: e.clientY,
           })
-          const { left, top } = (
-            e.currentTarget as HTMLElement
-          ).getBoundingClientRect()
+          const target = e.currentTarget as HTMLElement
+          const left = target.offsetLeft
+          const top = target.offsetTop
           const leftPosition = e.clientX - left
           const topPosition = e.clientY - top
           setPosition({

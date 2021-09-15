@@ -30,6 +30,8 @@ export interface DesktopContextValue {
     minHeight: number
   }
   newFolderModal: boolean
+  // current folder id when newFolderModal is visible
+  newFolderModalFolderId: string
   // all app screen is visible
   allAppsScreen: boolean
   // lok screen is visible

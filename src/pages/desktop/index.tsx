@@ -7,7 +7,6 @@ import Sidebar from './components/sidebar'
 import LockScreen from './screens/lock-screen'
 import AppWindow from './components/app-window'
 import useEventListener from '@/hooks/common/useEventListener'
-import DesktopContextmenu from './components/desktop-contextmenu'
 import NewFolderModal from './components/new-folder-modal'
 import DesktopFolder from './components/desktop-folder'
 
@@ -17,7 +16,7 @@ const Desktop: React.FC = () => {
     desktopMethods.resizeBrowserWindow(window.innerWidth, window.innerHeight)
   })
   return (
-    <DesktopContextmenu>
+    <>
       <BackgroundImage src={desktopState.backgroundImage} />
       <DesktopFolder />
       <Navbar />
@@ -39,7 +38,7 @@ const Desktop: React.FC = () => {
       <LockScreen />
       {/* new-folder-modal */}
       {desktopState.newFolderModal && <NewFolderModal />}
-    </DesktopContextmenu>
+    </>
   )
 }
 export default withDesktopProvider(Desktop)
