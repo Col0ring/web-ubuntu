@@ -112,16 +112,14 @@ const AppWindow: React.FC<AppWindowProps> = ({
     const height = isMaximized ? '100%' : rect.height || defaultAppWindow.height
     const left = isMaximized
       ? 0
-      : typeof position.left === 'number'
+      : position.left && typeof position.left === 'number'
       ? `${(position.left / window.innerWidth) * 100}%`
       : position.left
-    const right = position.left ? undefined : '0%'
     const top = isMaximized
       ? 0
-      : typeof position.top === 'number'
+      : position.top && typeof position.top === 'number'
       ? `${(position.top / window.innerHeight) * 100}%`
       : position.top
-    const bottom = position.top ? undefined : '0%'
     const windowWidth =
       typeof width === 'string'
         ? window.innerWidth * percentage2Decimal(width)
@@ -133,19 +131,16 @@ const AppWindow: React.FC<AppWindowProps> = ({
         : height
     const offsetY = (window.innerHeight - windowHeight) / 2
     const windowPosition =
-      left === right && top === bottom
+      left === 0 && top === 0
         ? {
             left: offsetX,
-            right: offsetX,
             top: offsetY,
-            bottom: offsetY,
           }
         : {
             left,
             top,
-            right,
-            bottom,
           }
+
     return {
       width,
       height,
