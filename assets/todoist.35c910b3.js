@@ -1,0 +1,1 @@
+import{R as o}from"./vendor.11d3daa3.js";const e=()=>o.createElement("iframe",{src:"https://todoist.com/users/showlogin?id=220474322",frameBorder:"0",title:"Todoist",className:"h-full w-full bg-ub-cool-grey"});export{e as default};
