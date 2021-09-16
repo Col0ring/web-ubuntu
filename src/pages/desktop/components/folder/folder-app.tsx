@@ -15,7 +15,7 @@ import Contextmenu, { ContextmenuProps } from '@/components/contextmenu'
 import { dataTarget } from '../../config'
 import useUpdateEffect from '@/hooks/common/useUpdateEffect'
 import { getFolderDragTarget, removeFolderDragTarget } from './store'
-import { validMoveFolder } from '../../util'
+import { isFolder, validMoveFolder } from '../../util'
 
 export interface FolderAppProps extends AppProps {
   folderId: string
@@ -33,7 +33,7 @@ const FolderApp: React.FC<FolderAppProps> = (props) => {
       (props.app.position.left || props.app.position.top)
     )
   )
-  const [{ appMap }] = useDesktopContext()
+  const [{ appMap, copiedAppId }] = useDesktopContext()
   const [{ dragArea }] = useDragContext()
   const [load, setLoad] = useState(false)
 
@@ -106,14 +106,24 @@ const FolderApp: React.FC<FolderAppProps> = (props) => {
   const menus = useMemo(() => {
     return [
       {
+        key: 'Open',
+        title: 'Open',
+        onClick: () => {
+          desktopMethods.openApp(props.app.id, props.app)
+        },
+      },
+      {
         key: 'Copy',
         title: 'Copy',
-        disabled: true,
+        onClick: () => props.onCopy?.(props.app.id, props.app),
       },
       {
         key: 'Paste',
         title: 'Paste',
-        disabled: true,
+        disabled:
+          !validMoveFolder(appMap, copiedAppId, props.app.id) ||
+          !isFolder(props.app),
+        onClick: () => props.onPaste?.(props.app.id, props.app),
       },
       // {
       //   key: 'Show Desktop in Files',
@@ -121,7 +131,14 @@ const FolderApp: React.FC<FolderAppProps> = (props) => {
       //   disabled: true,
       // },
     ] as ContextmenuProps['menus']
-  }, [])
+  }, [
+    props.app,
+    appMap,
+    props.onCopy,
+    copiedAppId,
+    props.onPaste,
+    desktopMethods,
+  ])
 
   // only work once
   useUpdateEffect(() => {

@@ -34,27 +34,25 @@ function useSize(ref: React.RefObject<Element>): UseSizeState {
       return
     }
 
-    const resizeObserver = new ResizeObserver(
-      (entries: ResizeObserverEntry[]) => {
-        const entry = entries[0]
-        if (!entry) {
-          return
-        }
-        const { x, y, width, height, top, left, bottom, right } =
-          entry.contentRect
-
-        setState({
-          x,
-          y,
-          width,
-          height,
-          top,
-          left,
-          bottom,
-          right,
-        })
+    const resizeObserver = new ResizeObserver((entries) => {
+      const entry = entries[0]
+      if (!entry) {
+        return
       }
-    )
+      const { x, y, width, height, top, left, bottom, right } =
+        entry.contentRect
+
+      setState({
+        x,
+        y,
+        width,
+        height,
+        top,
+        left,
+        bottom,
+        right,
+      })
+    })
 
     resizeObserver.observe(ref.current)
     return () => {

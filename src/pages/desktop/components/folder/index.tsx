@@ -4,7 +4,7 @@ import Empty, { EmptyProps } from './empty'
 import FolderApp, { FolderAppProps, FolderDragData } from './folder-app'
 import { DragArea } from '@/components/dragging'
 import { getOffsetWindow, safeJsonParse } from '@/utils/misc'
-import { isFolder, validMoveFolder } from '../../util'
+import { isFolder } from '../../util'
 import { useDesktopContext } from '../../provider'
 import { setFolderDragTarget } from './store'
 import FolderContextmenu from './folder-context-menu'
@@ -24,7 +24,7 @@ const Folder: React.FC<FolderProps> = ({
   wrapperClassName,
   className,
 }) => {
-  const [{ appMap }, desktopMethods] = useDesktopContext()
+  const [{ appMap, copiedAppId }, desktopMethods] = useDesktopContext()
   const folderApps = useMemo(() => {
     const currentFolder = appMap[id]
     if (isFolder(currentFolder)) {
@@ -37,6 +37,41 @@ const Folder: React.FC<FolderProps> = ({
       desktopMethods.openApp(appId, app)
     },
     [desktopMethods]
+  )
+
+  const onAppCopy: Required<FolderAppProps>['onCopy'] = useCallback(
+    (appId) => {
+      desktopMethods.setCopiedAppId(appId)
+    },
+    [desktopMethods]
+  )
+
+  const onAppPaste: Required<FolderAppProps>['onPaste'] = useCallback(
+    (appId) => {
+      const copiedApp = appMap[copiedAppId]
+      const currentApp = appMap[appId]
+      if (!copiedApp) {
+        return
+      }
+      if (!isFolder(currentApp)) {
+        message.error({
+          content: 'target app is not a folder',
+        })
+        return
+      }
+      desktopMethods.updateFolderApp({
+        from: copiedApp.parentId,
+        to: appId,
+        data: {
+          ...copiedApp,
+          position: {
+            left: 0,
+            top: 0,
+          },
+        },
+      })
+    },
+    [desktopMethods, copiedAppId, appMap]
   )
 
   const folderWrapperClassName = classnames('w-full h-full', wrapperClassName)
@@ -60,12 +95,6 @@ const Folder: React.FC<FolderProps> = ({
             return
           }
 
-          if (!validMoveFolder(appMap, data.app.id, id)) {
-            message.error({
-              content: 'can not move itself or parent folder to the directory',
-            })
-            return
-          }
           // drag to its parent
           const app = appMap[data.app.id]
           const domOffset: {
@@ -97,6 +126,8 @@ const Folder: React.FC<FolderProps> = ({
           folderApps.map((app) => (
             <FolderApp
               onOpen={onAppOpen}
+              onCopy={onAppCopy}
+              onPaste={onAppPaste}
               folderId={id}
               key={app.id}
               app={app}

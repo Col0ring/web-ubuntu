@@ -55,7 +55,7 @@ const AppWindow: React.FC<AppWindowProps> = ({
     isMaximized ? 'z-60 rounded-none' : 'rounded-lg rounded-b-none',
     {
       'not-focus': !isFocus,
-      'z-10 not-focus': !isFocus && !isMaximized,
+      'z-20 not-focus': !isFocus && !isMaximized,
       'z-30': isFocus && !isMaximized,
       // hidden: isMinimized
     }

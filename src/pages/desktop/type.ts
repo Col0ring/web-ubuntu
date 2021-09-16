@@ -38,6 +38,7 @@ export interface DesktopContextValue {
   lockScreen: boolean
   // current app
   focusAppId: string
+  copiedAppId: string
   // sort z-index
   openedApps: OpenedAppConfig[]
   openedAppMap: OpenedAppMap

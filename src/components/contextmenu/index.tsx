@@ -95,8 +95,10 @@ const Contextmenu: React.FC<ContextmenuProps> = ({
               <div
                 key={key}
                 onClick={(e) => {
-                  onClick?.(e)
-                  onItemClick?.(key, e)
+                  if (!disabled) {
+                    onClick?.(e)
+                    onItemClick?.(key, e)
+                  }
                 }}
               >
                 {render ? (

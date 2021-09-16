@@ -7,6 +7,9 @@ type KeyPredicate = (event: KeyboardEvent) => boolean
 // string | number
 type keyType = KeyboardEvent['keyCode'] | KeyboardEvent['key']
 
+/**
+ * .作为组合建的分隔符，比如 ctrl.c 代表 ctrl + c
+ */
 type KeyFilter = keyType | keyType[] | ((event: KeyboardEvent) => boolean)
 
 type KeyboardEventHandler = (event: KeyboardEvent) => void

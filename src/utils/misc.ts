@@ -8,6 +8,8 @@ import {
   Percentage,
 } from '@/typings/tools'
 
+export const isMac = /macintosh|mac os x/i.test(navigator.userAgent)
+
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 export function noop() {}
 export function preventDefault(e: React.UIEvent) {

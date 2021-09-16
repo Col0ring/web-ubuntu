@@ -16,6 +16,7 @@ import {
   appArr2Map,
   moveApp,
   setBackgroundImage,
+  validMoveFolder,
 } from './util'
 import message from '@/components/message'
 import { SpecialFolder } from './constants'
@@ -30,6 +31,10 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
         chooseBackgroundImage(image: string) {
           setBackgroundImage(image)
           state.backgroundImage = image
+          return state
+        },
+        setCopiedAppId(id: string) {
+          state.copiedAppId = id
           return state
         },
         setNewFolderModal(visible: boolean) {
@@ -113,6 +118,14 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
           to: string
           data: UbuntuApp
         }) {
+          if (!validMoveFolder(state.appMap, data.id, to)) {
+            message.error({
+              content: 'Something Wrong',
+              description:
+                'can not move itself or parent folder to the directory',
+            })
+            return state
+          }
           const fromFolder = state.appMap[from] as FolderConfig
           // 先改变原值
           state.appMap[data.id] = data
@@ -238,6 +251,7 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
       allAppsScreen: false,
       lockScreen: false,
       focusAppId: '',
+      copiedAppId: '',
       openedAppMap: {},
       openedApps: [],
       minimizedApps: {},
