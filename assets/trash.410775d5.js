@@ -1,0 +1,1 @@
+import{F as s,a}from"./index.ae619d17.js";import{R as t}from"./vendor.11d3daa3.js";const e=()=>t.createElement(s,{id:"/application/trash",emptyProps:{img:a("/themes/Yaru/status/user-trash-symbolic.svg"),title:"Trash is Empty"}});export{e as default};
