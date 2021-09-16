@@ -4,6 +4,7 @@ import reactRefresh from '@vitejs/plugin-react-refresh'
 import eslintPlugin from 'vite-plugin-eslint'
 import viteStylelint from '@amatlash/vite-plugin-stylelint'
 import viteMockPlugin from '@col0ring/vite-plugin-mock'
+import vitePluginCopy from './build/vite-plugin-copy'
 import { base } from './src/config'
 
 function resolve(relativePath: string) {
@@ -26,6 +27,9 @@ export default defineConfig({
     viteStylelint({
       include: /.*\.(less|css)/,
       exclude: ['node_modules', 'dist', 'dist-ssr'],
+    }),
+    vitePluginCopy({
+      [resolve('./dist/index.html')]: resolve('./dist/404.html'),
     }),
   ],
   css: {
