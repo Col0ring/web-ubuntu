@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react'
 import classnames from 'classnames'
+import { addBase } from '@/utils/prod'
 
 export interface SearchInputProps {
   placeholder?: string
@@ -30,7 +31,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
       <img
         className="w-5 h-5"
         alt="search icon"
-        src="/images/logos/search.png"
+        src={addBase('/images/logos/search.png')}
       />
       <input
         className="w-full p-1 bg-transparent focus:outline-none"

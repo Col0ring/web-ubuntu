@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react'
 import classnames from 'classnames'
 import Contextmenu, { ContextmenuProps } from '@/components/contextmenu'
-import { getOffsetWindow, getParentNode } from '@/utils/tool'
+import { getOffsetWindow, getParentNode } from '@/utils/misc'
 import { dataTarget } from '../../config'
 import { useDesktopContext } from '../../provider'
 import { SpecialFolder } from '../../constants'

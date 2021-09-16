@@ -1,3 +1,4 @@
+import { addBase } from '@/utils/prod'
 import classnames from 'classnames'
 import React from 'react'
 import Dot from './dot'
@@ -30,7 +31,7 @@ const Loading: React.FC<LoadingProps> = ({
         <div style={{ zIndex: 10000 }} className={currentLoadingClassName}>
           <img
             className="animate-spin w-20"
-            src="/themes/Yaru/status/process-working-symbolic.svg"
+            src={addBase('/themes/Yaru/status/process-working-symbolic.svg')}
             alt="Loading Spinner"
           />
           <p className="text-white">

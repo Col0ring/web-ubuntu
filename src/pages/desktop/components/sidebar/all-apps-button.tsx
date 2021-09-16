@@ -1,5 +1,6 @@
 import React from 'react'
 import Tooltip from '@/components/tooltip'
+import { addBase } from '@/utils/prod'
 
 export interface AllAppsButtonProps {
   onClick?: React.MouseEventHandler<HTMLDivElement>
@@ -15,7 +16,7 @@ const AllAppsButton: React.FC<AllAppsButtonProps> = ({ onClick }) => {
         >
           <img
             className="w-7"
-            src="/themes/Yaru/system/view-app-grid-symbolic.svg"
+            src={addBase('/themes/Yaru/system/view-app-grid-symbolic.svg')}
             alt="Ubuntu view app"
           />
         </div>

@@ -1,6 +1,7 @@
 import React from 'react'
 import Folder from './apps/folder'
 import { UbuntuApp } from '@/typings/app'
+import { addBase } from '@/utils/prod'
 
 const Todoist = React.lazy(() => import('./apps/todoist'))
 const Firefox = React.lazy(() => import('./apps/firefox'))
@@ -19,7 +20,7 @@ const apps: UbuntuApp[] = [
         parentId: '/desktop',
         id: '/desktop/Col0ring',
         title: 'Col0ring',
-        icon: './themes/Yaru/system/folder.png',
+        icon: addBase('/themes/Yaru/system/folder.png'),
         render: (id) => <Folder id={id} />,
         folder: true,
         position: {
@@ -30,14 +31,14 @@ const apps: UbuntuApp[] = [
           {
             parentId: '/desktop/Col0ring',
             id: '/desktop/Col0ring/index.php',
-            icon: './themes/filetypes/php.png',
+            icon: addBase('/themes/filetypes/php.png'),
             title: 'php',
           },
           {
             parentId: '/desktop/Col0ring',
             title: 'Angular.js',
             id: '/desktop/Col0ring/Angular.js',
-            icon: './themes/filetypes/js.png',
+            icon: addBase('/themes/filetypes/js.png'),
           },
         ],
       },
@@ -45,7 +46,7 @@ const apps: UbuntuApp[] = [
         parentId: '/desktop',
         id: '/desktop/222',
         title: '222',
-        icon: './themes/Yaru/system/folder.png',
+        icon: addBase('/themes/Yaru/system/folder.png'),
         render: (id) => <Folder id={id} />,
         folder: true,
         position: {
@@ -56,7 +57,7 @@ const apps: UbuntuApp[] = [
           {
             parentId: '/desktop/222',
             id: '/desktop/222/js',
-            icon: './themes/filetypes/php.png',
+            icon: addBase('/themes/filetypes/php.png'),
             title: 'js',
           },
         ],
@@ -69,7 +70,7 @@ const apps: UbuntuApp[] = [
           left: 0,
           top: 151,
         },
-        icon: './themes/Yaru/system/folder.png',
+        icon: addBase('/themes/Yaru/system/folder.png'),
         redirect: '/application',
       },
       {
@@ -80,7 +81,7 @@ const apps: UbuntuApp[] = [
           left: 0,
           top: 226,
         },
-        icon: './themes/Yaru/apps/firefox.svg',
+        icon: addBase('/themes/Yaru/apps/firefox.svg'),
         redirect: '/application/firefox',
       },
       {
@@ -91,7 +92,7 @@ const apps: UbuntuApp[] = [
           left: 0,
           top: 318,
         },
-        icon: './themes/Yaru/apps/todoist.png',
+        icon: addBase('/themes/Yaru/apps/todoist.png'),
         redirect: '/application/todo-ist',
       },
     ],
@@ -107,7 +108,7 @@ const apps: UbuntuApp[] = [
         parentId: '/application',
         id: '/application/firefox',
         title: 'Firefox Browser',
-        icon: './themes/Yaru/apps/firefox.svg',
+        icon: addBase('/themes/Yaru/apps/firefox.svg'),
         disabled: false,
         render: () => <Firefox />,
       },
@@ -115,7 +116,7 @@ const apps: UbuntuApp[] = [
         parentId: '/application',
         id: '/application/todo-ist',
         title: 'Todoist',
-        icon: './themes/Yaru/apps/todoist.png',
+        icon: addBase('/themes/Yaru/apps/todoist.png'),
         disabled: false,
         render: () => <Todoist />,
       },
@@ -123,14 +124,14 @@ const apps: UbuntuApp[] = [
         parentId: '/application',
         id: '/application/about-col0ring',
         title: 'About Col0ring',
-        icon: './themes/Yaru/system/user-home.png',
+        icon: addBase('/themes/Yaru/system/user-home.png'),
         disabled: false,
       },
       {
         parentId: '/application',
         id: '/application/vscode',
         title: 'Visual Studio Code',
-        icon: './themes/Yaru/apps/vscode.png',
+        icon: addBase('/themes/Yaru/apps/vscode.png'),
         disabled: false,
         render: () => <VsCode />,
       },
@@ -138,21 +139,21 @@ const apps: UbuntuApp[] = [
         parentId: '/application',
         id: '/application/terminal',
         title: 'Terminal',
-        icon: './themes/Yaru/apps/bash.png',
+        icon: addBase('/themes/Yaru/apps/bash.png'),
         disabled: false,
       },
       {
         parentId: '/application',
         id: '/application/music',
         title: 'Music',
-        icon: './themes/Yaru/apps/vue-aplayer-round.png',
+        icon: addBase('/themes/Yaru/apps/vue-aplayer-round.png'),
         disabled: false,
       },
       {
         parentId: '/application',
         id: '/application/settings',
         title: 'Settings',
-        icon: './themes/Yaru/apps/gnome-control-center.png',
+        icon: addBase('/themes/Yaru/apps/gnome-control-center.png'),
         disabled: false,
         render: () => <Settings />,
       },
@@ -160,7 +161,7 @@ const apps: UbuntuApp[] = [
         parentId: '/application',
         id: '/application/trash',
         title: 'Trash',
-        icon: './themes/Yaru/system/user-trash-full.png',
+        icon: addBase('/themes/Yaru/system/user-trash-full.png'),
         disabled: false,
         folder: true,
         render: () => <Trash />,
@@ -168,14 +169,14 @@ const apps: UbuntuApp[] = [
           {
             parentId: '/application/trash',
             id: '/application/trash/index.php',
-            icon: './themes/filetypes/php.png',
+            icon: addBase('/themes/filetypes/php.png'),
             title: 'php',
           },
           {
             parentId: '/application/trash',
             title: 'Angular.js',
             id: '/application/trash/Angular.js',
-            icon: './themes/filetypes/js.png',
+            icon: addBase('/themes/filetypes/js.png'),
           },
         ],
       },
@@ -183,7 +184,7 @@ const apps: UbuntuApp[] = [
         parentId: '/application',
         id: '/application/gedit',
         title: 'Send a Message',
-        icon: './themes/Yaru/apps/gedit.png',
+        icon: addBase('/themes/Yaru/apps/gedit.png'),
         disabled: false,
       },
     ],

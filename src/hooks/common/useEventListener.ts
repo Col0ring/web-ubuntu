@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { getDomElement } from '@/utils/tool'
+import { getDomElement } from '@/utils/misc'
 import { DomParam, NormalFunction } from '../../typings/tools'
 
 function useEventListener<K extends keyof HTMLElementEventMap>(

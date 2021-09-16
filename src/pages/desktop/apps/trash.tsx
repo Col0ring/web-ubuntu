@@ -1,3 +1,4 @@
+import { addBase } from '@/utils/prod'
 import React from 'react'
 import Folder from './folder'
 
@@ -7,7 +8,7 @@ const Trash: React.FC = () => {
     <Folder
       id={id}
       emptyProps={{
-        img: './themes/Yaru/status/user-trash-symbolic.svg',
+        img: addBase('/themes/Yaru/status/user-trash-symbolic.svg'),
         title: 'Trash is Empty',
       }}
     />

@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import Contextmenu, { ContextmenuProps } from '@/components/contextmenu'
-import { getParentNode } from '@/utils/tool'
+import { getParentNode } from '@/utils/misc'
 import { dataTarget } from '../config'
 import { useDesktopContext } from '../provider'
 import { SpecialFolder } from '../constants'

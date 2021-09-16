@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { DomElement, DomParam } from '@/typings/tools'
-import { getDomElement } from '@/utils/tool'
+import { getDomElement } from '@/utils/misc'
 
 type EventType = MouseEvent | TouchEvent
 

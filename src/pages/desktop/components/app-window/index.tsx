@@ -1,6 +1,6 @@
 import React, { useMemo, useEffect, useRef, useState } from 'react'
 import classnames from 'classnames'
-import { getParentNode, percentage2Decimal } from '@/utils/tool'
+import { getParentNode, percentage2Decimal } from '@/utils/misc'
 import Toolbar, { ToolbarProps } from './toolbar'
 import MainView from './main-view'
 import Transition from '@/components/transition'

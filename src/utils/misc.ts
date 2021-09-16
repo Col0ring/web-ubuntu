@@ -48,6 +48,11 @@ export function getMousePositionOfDom(
   }
 }
 
+export function preloadImage(url: string) {
+  const image = new Image()
+  image.src = url
+}
+
 export function isRef<T extends DomElement = DomElement>(
   value: DomParam<T>
 ): value is React.RefObject<T> {

@@ -4,12 +4,12 @@ import { matchRoutes, renderRoutes } from './util'
 import { useRouterContext } from './provider'
 import useSettingContext from '@/hooks/useSettingContext'
 import LazyLoad from '@/components/lazy-load'
-
 import Loading from '@/components/loading'
+import { base } from '@/config'
 
 const AppRouter: React.FC = ({ children }) => {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={base}>
       {children}
       <RouterHelper />
     </BrowserRouter>

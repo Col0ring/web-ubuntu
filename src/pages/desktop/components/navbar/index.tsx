@@ -10,6 +10,7 @@ import { StatusIconConfig, StatusMenuConfig } from '../../type'
 import { useAuthContext } from '@/auth/provider'
 import { useDesktopContext } from '../../provider'
 import { SpecialFolder } from '../../constants'
+import { addBase } from '@/utils/prod'
 
 const Navbar: React.FC = () => {
   const [statusMenuVisible, setStatusMenuVisible] = useState(false)
@@ -48,15 +49,17 @@ const Navbar: React.FC = () => {
   const statusIcon: StatusIconConfig[] = useMemo(
     () => [
       {
-        icon: '/themes/Yaru/status/network-wireless-signal-good-symbolic.svg',
+        icon: addBase(
+          '/themes/Yaru/status/network-wireless-signal-good-symbolic.svg'
+        ),
         name: 'ubuntu wifi',
       },
       {
-        icon: '/themes/Yaru/status/audio-volume-medium-symbolic.svg',
+        icon: addBase('/themes/Yaru/status/audio-volume-medium-symbolic.svg'),
         name: 'ubuntu sound',
       },
       {
-        icon: '/themes/Yaru/status/battery-good-symbolic.svg',
+        icon: addBase('/themes/Yaru/status/battery-good-symbolic.svg'),
         name: 'ubuntu battry',
       },
     ],
@@ -67,7 +70,7 @@ const Navbar: React.FC = () => {
     () => [
       [
         {
-          image: '/themes/Yaru/status/audio-headphones-symbolic.svg',
+          image: addBase('/themes/Yaru/status/audio-headphones-symbolic.svg'),
           imageAlt: 'ubuntu headphone',
           render: () => (
             <Slider
@@ -78,7 +81,7 @@ const Navbar: React.FC = () => {
           ),
         },
         {
-          image: '/themes/Yaru/status/display-brightness-symbolic.svg',
+          image: addBase('/themes/Yaru/status/display-brightness-symbolic.svg'),
           imageAlt: 'ubuntu brightness',
           render: () => (
             <Slider
@@ -91,8 +94,9 @@ const Navbar: React.FC = () => {
       ],
       [
         {
-          image:
-            '/themes/Yaru/status/network-wireless-signal-good-symbolic.svg',
+          image: addBase(
+            '/themes/Yaru/status/network-wireless-signal-good-symbolic.svg'
+          ),
           imageAlt: 'ubuntu wifi',
           render: () => (
             <div className="w-2/3 flex items-center justify-between text-gray-400">
@@ -102,7 +106,7 @@ const Navbar: React.FC = () => {
           ),
         },
         {
-          image: '/themes/Yaru/status/battery-good-symbolic.svg',
+          image: addBase('/themes/Yaru/status/battery-good-symbolic.svg'),
           imageAlt: 'ubuntu battery',
           render: () => (
             <div className="w-2/3 flex items-center justify-between text-gray-400">
@@ -112,7 +116,7 @@ const Navbar: React.FC = () => {
           ),
         },
         {
-          image: '/themes/Yaru/status/bluetooth-symbolic.svg',
+          image: addBase('/themes/Yaru/status/bluetooth-symbolic.svg'),
           imageAlt: 'ubuntu battery',
           render: () => (
             <div className="w-2/3 flex items-center justify-between text-gray-400">
@@ -124,7 +128,7 @@ const Navbar: React.FC = () => {
       ],
       [
         {
-          image: '/themes/Yaru/status/emblem-system-symbolic.svg',
+          image: addBase('/themes/Yaru/status/emblem-system-symbolic.svg'),
           imageAlt: 'ubuntu settings',
           name: 'Settings',
           onClick: () => {
@@ -135,7 +139,7 @@ const Navbar: React.FC = () => {
           },
         },
         {
-          image: '/themes/Yaru/status/changes-prevent-symbolic.svg',
+          image: addBase('/themes/Yaru/status/changes-prevent-symbolic.svg'),
           imageAlt: 'ubuntu lock',
           name: 'Lock',
           onClick: () => {
@@ -143,7 +147,7 @@ const Navbar: React.FC = () => {
           },
         },
         {
-          image: '/themes/Yaru/status/system-shutdown-symbolic.svg',
+          image: addBase('/themes/Yaru/status/system-shutdown-symbolic.svg'),
           imageAlt: 'ubuntu power',
           render: () => (
             <div className="w-2/3 flex items-center justify-between">

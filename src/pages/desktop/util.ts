@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
-import { FolderConfig, OpenedAppConfig } from '@/typings/app'
-import { isFolder } from '@/utils/app'
+import { produce } from 'immer'
+import { FolderConfig, UbuntuApp, OpenedAppConfig } from '@/typings/app'
 import { createLocalStorage } from '@/utils/local-storage'
 import { AppMap, OpenedAppMap } from './type'
 
@@ -83,4 +83,61 @@ export function validMoveFolder(
     return true
   }
   return true
+}
+
+export function isFolder(app: UbuntuApp): app is FolderConfig {
+  if (!app) {
+    return false
+  }
+  return (
+    Array.isArray((app as FolderConfig).apps) || !!(app as FolderConfig).folder
+  )
+}
+
+export function appArr2Map(apps: UbuntuApp[]): Record<string, UbuntuApp> {
+  const appMap: Record<string, UbuntuApp> = {}
+  apps.forEach((app) => {
+    appMap[app.id] = app
+    if (isFolder(app)) {
+      Object.assign(appMap, appArr2Map(app.apps || []))
+    }
+  })
+  return appMap
+}
+
+export function appMap2Arr(appMap: Record<string, UbuntuApp>): UbuntuApp[] {
+  function loop(
+    childrenMap: Record<string, Record<string, UbuntuApp>>,
+    parentId: string
+  ): UbuntuApp[] {
+    const apps: UbuntuApp[] = []
+    const map = childrenMap[parentId]
+    Object.values(map).forEach((app) => {
+      if (app.parentId === parentId) {
+        apps.push(app)
+      }
+    })
+
+    return apps.map((app) => {
+      if (isFolder(app)) {
+        return produce(app, (draft) => {
+          // eslint-disable-next-line no-param-reassign
+          draft.apps = loop(childrenMap, app.id) || []
+        })
+      }
+      return app
+    })
+  }
+
+  const childrenMap: Record<string, Record<string, UbuntuApp>> = {}
+  Object.values(appMap).forEach((app) => {
+    if (childrenMap[app.parentId]) {
+      childrenMap[app.parentId][app.id] = app
+    } else {
+      childrenMap[app.parentId] = {
+        [app.id]: app,
+      }
+    }
+  })
+  return loop(childrenMap, '/')
 }

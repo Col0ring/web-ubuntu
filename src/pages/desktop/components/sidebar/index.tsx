@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import classnames from 'classnames'
 import Transition from '@/components/transition'
-import { obj2arr } from '@/utils/tool'
+import { obj2arr } from '@/utils/misc'
 import { AppConfig } from '@/typings/app'
 import SidebarApp, { SidebarAppProps } from './sidebar-app'
 import { useDesktopContext } from '../../provider'

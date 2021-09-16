@@ -3,7 +3,7 @@ import classnames from 'classnames'
 import useContextmenu, {
   useContextmenuOptions,
 } from '@/hooks/common/useContextmenu'
-import { getOffsetWindow } from '@/utils/tool'
+import { getOffsetWindow } from '@/utils/misc'
 import Divider from './divider'
 import './style.less'
 

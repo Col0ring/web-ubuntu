@@ -1,37 +1,53 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import useKeyPress from '@/hooks/common/useKeyPress'
 import { validateUrl } from '@/utils/validator'
+import { addBase } from '@/utils/prod'
 
+const homeUrl = 'https://www.google.com/webhp?igu=1'
 interface ToolbarProps {
-  onChange?: (value: string) => void
-  onEnter?: (value: string) => void
+  onInputChange?: (value: string) => void
+  onInputEnter?: (value: string) => void
+  onRefreshBtnClick?: () => void
+  onHomeBtnClick?: () => void
   value?: string
 }
-const Toolbar: React.FC<ToolbarProps> = ({ onChange, onEnter, value }) => {
+const Toolbar: React.FC<ToolbarProps> = ({
+  onInputChange,
+  onInputEnter,
+  onRefreshBtnClick,
+  onHomeBtnClick,
+  value,
+}) => {
   const inputRef = useRef<HTMLInputElement | null>(null)
   useKeyPress(
     'enter',
     (e) => {
       const target = e.target as HTMLInputElement
-      onEnter?.(target.value.trim())
+      onInputEnter?.(target.value.trim())
     },
     {
       target: inputRef,
     }
   )
   return (
-    <div className="w-full pt-0.5 pb-1 flex justify-start items-center text-white text-sm border-b border-gray-900">
-      <div className=" ml-2 mr-1 flex justify-center items-center rounded-full bg-gray-50 bg-opacity-0 hover:bg-opacity-10">
+    <div className="select-none w-full pt-0.5 pb-1 flex justify-start items-center text-white text-sm border-b border-gray-900">
+      <div
+        onClick={onRefreshBtnClick}
+        className=" ml-2 mr-1 flex justify-center items-center rounded-full bg-gray-50 bg-opacity-0 hover:bg-opacity-10"
+      >
         <img
           className="w-5"
-          src="./themes/Yaru/status/chrome_refresh.svg"
+          src={addBase('/themes/Yaru/status/chrome_refresh.svg')}
           alt="Ubuntu Chrome Refresh"
         />
       </div>
-      <div className=" mr-2 ml-1 flex justify-center items-center rounded-full bg-gray-50 bg-opacity-0 hover:bg-opacity-10">
+      <div
+        onClick={onHomeBtnClick}
+        className=" mr-2 ml-1 flex justify-center items-center rounded-full bg-gray-50 bg-opacity-0 hover:bg-opacity-10"
+      >
         <img
           className="w-5"
-          src="./themes/Yaru/status/chrome_home.svg"
+          src={addBase('/themes/Yaru/status/chrome_home.svg')}
           alt="Ubuntu Chrome Home"
         />
       </div>
@@ -39,7 +55,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ onChange, onEnter, value }) => {
         value={value}
         ref={inputRef}
         onChange={(e) => {
-          onChange?.(e.target.value)
+          onInputChange?.(e.target.value)
         }}
         className="outline-none bg-ub-grey rounded-full pl-3 py-0.5 mr-3 flex-grow text-gray-300 focus:text-white"
         type="url"
@@ -50,35 +66,70 @@ const Toolbar: React.FC<ToolbarProps> = ({ onChange, onEnter, value }) => {
 }
 
 const Firefox: React.FC = () => {
-  const [url, setUrl] = useState('https://www.google.com/webhp?igu=1')
+  const [url, setUrl] = useState(homeUrl)
   const [displayUrl, setDisplayUrl] = useState(url)
 
-  const onChange: Required<ToolbarProps>['onChange'] = useCallback(
+  const iframeRef = useRef<HTMLIFrameElement | null>(null)
+  const onInputChange: Required<ToolbarProps>['onInputChange'] = useCallback(
     (value) => {
       setUrl(value)
     },
     [setUrl]
   )
-  const onEnter: Required<ToolbarProps>['onEnter'] = useCallback(
+  const onInputEnter: Required<ToolbarProps>['onInputEnter'] = useCallback(
     (value) => {
       if (!value) {
         return
       }
-      if (validateUrl(value)) {
-        setDisplayUrl(value)
-      } else {
-        setDisplayUrl(`http://${value}`)
-      }
+      setDisplayUrl((state) => {
+        if (state === value) {
+          if (iframeRef.current) {
+            iframeRef.current.src = `${iframeRef.current.src}`
+          }
+          return state
+        }
+        if (validateUrl(value)) {
+          return value
+        } else {
+          return `http://${value}`
+        }
+      })
     },
     [setDisplayUrl]
   )
+  const onRefreshBtnClick: Required<ToolbarProps>['onRefreshBtnClick'] =
+    useCallback(() => {
+      if (iframeRef.current) {
+        // eslint-disable-next-line no-self-assign
+        iframeRef.current.src = `${iframeRef.current.src}`
+      }
+      setUrl(displayUrl)
+    }, [setUrl, displayUrl])
+
+  const onHomeBtnClick: Required<ToolbarProps>['onHomeBtnClick'] =
+    useCallback(() => {
+      if (iframeRef.current) {
+        // eslint-disable-next-line no-self-assign
+        iframeRef.current.src = iframeRef.current.src
+      }
+      setDisplayUrl(homeUrl)
+      setUrl(homeUrl)
+    }, [setDisplayUrl])
+
   useEffect(() => {
     setUrl(displayUrl)
   }, [displayUrl, setUrl])
   return (
     <div className="h-full w-full flex flex-col bg-ub-cool-grey">
-      <Toolbar onChange={onChange} onEnter={onEnter} value={url} />
+      <Toolbar
+        onInputChange={onInputChange}
+        onInputEnter={onInputEnter}
+        onRefreshBtnClick={onRefreshBtnClick}
+        onHomeBtnClick={onHomeBtnClick}
+        value={url}
+      />
       <iframe
+        ref={iframeRef}
         src={displayUrl}
         className="flex-grow"
         id="firefox"

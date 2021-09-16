@@ -11,10 +11,15 @@ import {
 } from '@/typings/app'
 import { DesktopContextValue } from './type'
 import { defaultImages } from './config'
-import { getBackgroundImage, moveApp, setBackgroundImage } from './util'
+import {
+  getBackgroundImage,
+  appArr2Map,
+  moveApp,
+  setBackgroundImage,
+} from './util'
 import message from '@/components/message'
-import { appArr2Map } from '@/utils/app'
 import { SpecialFolder } from './constants'
+import { addBase } from '@/utils/prod'
 
 const Folder = React.lazy(() => import('@/pages/desktop/apps/folder'))
 const appMap = appArr2Map(apps)
@@ -84,7 +89,7 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
             title: name,
             parentId,
             folder: true,
-            icon: './themes/Yaru/system/folder.png',
+            icon: addBase('/themes/Yaru/system/folder.png'),
             disabled: false,
             position,
             apps: [],

@@ -3,6 +3,7 @@ import useAsyncFn from '@/hooks/common/useAsyncFn'
 import { reqLogin } from '@/services/user'
 import { useAuthContext } from '@/auth/provider'
 import LoginButton from './components/login-button'
+import { addBase } from '@/utils/prod'
 
 const Login: React.FC = () => {
   const [{ loading }, login] = useAsyncFn(reqLogin, [])
@@ -26,7 +27,7 @@ const Login: React.FC = () => {
     >
       <img
         className="md:w-1/4 w-1/2"
-        src="/themes/Yaru/status/cof_orange_hex.svg"
+        src={addBase('/themes/Yaru/status/cof_orange_hex.svg')}
         alt="Ubuntu Logo"
       />
 
@@ -34,7 +35,7 @@ const Login: React.FC = () => {
 
       <img
         className="md:w-1/5 w-1/2"
-        src="/themes/Yaru/status/ubuntu_white_hex.svg"
+        src={addBase('/themes/Yaru/status/ubuntu_white_hex.svg')}
         alt="Ubuntu Name"
       />
     </div>

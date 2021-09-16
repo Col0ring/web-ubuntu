@@ -1,5 +1,5 @@
 import useKeyPress from '@/hooks/common/useKeyPress'
-import { percentage2Decimal } from '@/utils/tool'
+import { percentage2Decimal } from '@/utils/misc'
 import React, { useCallback, useRef, useState } from 'react'
 import { SpecialFolder } from '../constants'
 import { useDesktopContext } from '../provider'

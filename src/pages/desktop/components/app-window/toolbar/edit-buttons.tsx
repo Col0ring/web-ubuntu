@@ -1,7 +1,8 @@
 import React, { useCallback } from 'react'
 import classnames from 'classnames'
 import { dataTarget } from '../../../../desktop/config'
-import { stopPropagation } from '@/utils/tool'
+import { stopPropagation } from '@/utils/misc'
+import { addBase } from '@/utils/prod'
 
 export interface EditButtonsProps {
   className?: string
@@ -43,7 +44,7 @@ const EditButtons: React.FC<EditButtonsProps> = ({
       >
         <img
           draggable={false}
-          src="./themes/Yaru/window/window-minimize-symbolic.svg"
+          src={addBase('/themes/Yaru/window/window-minimize-symbolic.svg')}
           alt="ubuntu window minimize"
         />
       </button>
@@ -54,13 +55,13 @@ const EditButtons: React.FC<EditButtonsProps> = ({
         {isMaximized ? (
           <img
             draggable={false}
-            src="./themes/Yaru/window/window-restore-symbolic.svg"
+            src={addBase('/themes/Yaru/window/window-restore-symbolic.svg')}
             alt="ubuntu window restore"
           />
         ) : (
           <img
             draggable={false}
-            src="./themes/Yaru/window/window-maximize-symbolic.svg"
+            src={addBase('/themes/Yaru/window/window-maximize-symbolic.svg')}
             alt="ubuntu window maximize"
           />
         )}
@@ -71,7 +72,7 @@ const EditButtons: React.FC<EditButtonsProps> = ({
       >
         <img
           draggable={false}
-          src="/themes/Yaru/window/window-close-symbolic.svg"
+          src={addBase('/themes/Yaru/window/window-close-symbolic.svg')}
           alt="ubuntu window close"
         />
       </button>

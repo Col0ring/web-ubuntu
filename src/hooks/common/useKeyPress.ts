@@ -1,5 +1,5 @@
 import { DomParam } from '@/typings/tools'
-import { noop } from '@/utils/tool'
+import { noop } from '@/utils/misc'
 import useEventListener from './useEventListener'
 
 // return true can emit the event

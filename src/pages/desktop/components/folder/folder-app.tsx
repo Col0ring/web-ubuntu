@@ -10,7 +10,7 @@ import {
 } from '@/components/dragging'
 import { AppPositionValue, UbuntuApp } from '@/typings/app'
 import { useDesktopContext } from '../../provider'
-import { getMousePositionOfDom } from '@/utils/tool'
+import { getMousePositionOfDom } from '@/utils/misc'
 import Contextmenu, { ContextmenuProps } from '@/components/contextmenu'
 import { dataTarget } from '../../config'
 import useUpdateEffect from '@/hooks/common/useUpdateEffect'

@@ -1,3 +1,4 @@
+import { addBase } from '@/utils/prod'
 import React from 'react'
 
 export interface EmptyProps {
@@ -12,7 +13,7 @@ const Empty: React.FC<EmptyProps> = ({ title, icon, img }) => {
         {icon || (
           <img
             className="w-full"
-            src={img || './themes/Yaru/status/empty-folder.svg'}
+            src={img || addBase('/themes/Yaru/status/empty-folder.svg')}
             alt="ubuntu-empty"
           />
         )}
