@@ -1,7 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import classnames from 'classnames'
 import Transition from '@/components/transition'
-import { obj2arr } from '@/utils/misc'
 import { AppConfig } from '@/typings/app'
 import SidebarApp, { SidebarAppProps } from './sidebar-app'
 import { useDesktopContext } from '../../provider'
@@ -12,7 +11,14 @@ import { defaultDesktop } from '../../config'
 
 const Sidebar: React.FC = () => {
   const [
-    { favoriteApps, openedAppMap, openedApps, minimizedApps, allAppsScreen },
+    {
+      favoriteApps,
+      appMap,
+      openedAppMap,
+      openedApps,
+      minimizedApps,
+      allAppsScreen,
+    },
     desktopMethods,
   ] = useDesktopContext()
   const [forceSidebarRender, setForceSidebarRender] = useState(false)
@@ -21,9 +27,12 @@ const Sidebar: React.FC = () => {
   )
   const noFavoriteMinimizedAppsArr = useMemo(
     () =>
-      obj2arr(minimizedApps).filter(
-        (app) => !favoriteApps.find((favoriteApp) => favoriteApp.id === app.id)
-      ),
+      Object.keys(minimizedApps)
+        .map((appId) => appMap[appId])
+        .filter(
+          (app) =>
+            !favoriteApps.find((favoriteApp) => favoriteApp.id === app.id)
+        ),
     [minimizedApps]
   ) as AppConfig[]
 

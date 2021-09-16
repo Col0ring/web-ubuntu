@@ -23,6 +23,7 @@ const Transition: React.FC<TransitionProps> = ({
   nodeRef,
 }) => {
   const [show, setShow] = useState(false)
+
   const { run, cancel } = useTimeoutFn((isVisible: boolean) => {
     setShow(isVisible)
   }, duration)

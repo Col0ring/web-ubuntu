@@ -102,6 +102,7 @@ const apps: UbuntuApp[] = [
     folder: true,
     id: '/application',
     title: 'Application',
+    icon: addBase('/themes/Yaru/system/folder.png'),
     render: (id) => <Folder id={id} />,
     apps: [
       {

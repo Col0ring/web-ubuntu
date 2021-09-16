@@ -14,6 +14,7 @@ import { Percentage } from '@/typings/tools'
 import useTimeoutValue from '@/hooks/common/useTimeoutValue'
 import { MoveContext } from '@/hooks/common/useDomMove'
 import './style.less'
+import useRafState from '@/hooks/common/useRafState'
 
 export interface AppWindowProps {
   app: OpenedAppConfig
@@ -33,14 +34,15 @@ const AppWindow: React.FC<AppWindowProps> = ({
   // prevent closure
   const defaultAppWindowRef = useRef(defaultAppWindow)
   defaultAppWindowRef.current = defaultAppWindow
-  const [position, setPosition] = useState({
+  // raf state
+  const [position, setPosition] = useRafState(() => ({
     left: app.windowPosition.left,
     top: app.windowPosition.top,
-  })
-  const [rect, setRect] = useState({
+  }))
+  const [rect, setRect] = useRafState(() => ({
     width: app.rect.width,
     height: app.rect.height,
-  })
+  }))
   const [visible, setVisible] = useState(true)
   const rectRef = useRef(rect)
   rectRef.current = rect
@@ -91,7 +93,6 @@ const AppWindow: React.FC<AppWindowProps> = ({
         // if (top > window.innerHeight - height) {
         //   top = window.innerHeight - height
         // }
-
         if (top < defaultDesktop.navbar) {
           // eslint-disable-next-line no-param-reassign
           top = defaultDesktop.navbar + 1
