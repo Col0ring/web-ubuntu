@@ -2,9 +2,14 @@ import React from 'react'
 import { Percentage } from './tools'
 
 export type AppPositionValue = number | Percentage
-
+export interface AppPosition {
+  left: AppPositionValue
+  top: AppPositionValue
+}
 export interface AppConfig {
   id: string
+  // file extension
+  ext?: string
   parentId: string
   title: string
   icon?: string

@@ -62,26 +62,22 @@ const Folder: React.FC<FolderProps> = ({
         })
         return
       }
-      if (appId === copiedApp.parentId) {
-        return
-      }
+
       const { x, y } = getMousePosition()
       const { offsetTop, offsetLeft } = getOffsetWindow(folderRef.current)
-      desktopMethods.updateFolderApp({
-        from: copiedApp.parentId,
-        to: appId,
-        data: {
-          ...copiedApp,
-          position: isInFolder
-            ? {
-                left: x - offsetLeft,
-                top: y - offsetTop,
-              }
-            : {
-                left: 0,
-                top: 0,
-              },
-        },
+
+      desktopMethods.pasteFolderApp({
+        parentId: appId,
+        copiedId: copiedAppId,
+        position: isInFolder
+          ? {
+              left: x - offsetLeft,
+              top: y - offsetTop,
+            }
+          : {
+              left: 0,
+              top: 0,
+            },
       })
     },
     [desktopMethods, copiedAppId, appMap]

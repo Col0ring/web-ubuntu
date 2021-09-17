@@ -5,6 +5,7 @@ import useImmerMethods from '@/hooks/common/useImmerMethods'
 import apps from './apps'
 import {
   AppConfig,
+  AppPosition,
   FolderConfig,
   OpenedAppConfig,
   UbuntuApp,
@@ -17,6 +18,7 @@ import {
   moveApp,
   setBackgroundImage,
   validMoveFolder,
+  pasteApp,
 } from './util'
 import message from '@/components/message'
 import { SpecialFolder } from './constants'
@@ -108,6 +110,33 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
           // state.apps auto change
           parentFolder.apps.push(newFolder)
           state.appMap[id] = newFolder
+          return state
+        },
+        // TODO
+        addFolderApp(app: UbuntuApp) {
+          state.appMap[app.id] = app
+          const parentFolder = state.appMap[app.parentId] as FolderConfig
+          parentFolder.apps.push(app)
+          return state
+        },
+        pasteFolderApp({
+          parentId,
+          position,
+          copiedId,
+        }: {
+          parentId: string
+          copiedId: string
+          position?: AppPosition
+        }) {
+          if (!validMoveFolder(state.appMap, copiedId, parentId)) {
+            message.error({
+              content: 'Something Wrong',
+              description:
+                'can not move itself or parent folder to the directory',
+            })
+            return state
+          }
+          pasteApp(state.appMap, copiedId, parentId, position)
           return state
         },
         updateFolderApp({

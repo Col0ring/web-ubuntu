@@ -1,6 +1,11 @@
 /* eslint-disable no-param-reassign */
 import { produce } from 'immer'
-import { FolderConfig, UbuntuApp, OpenedAppConfig } from '@/typings/app'
+import {
+  FolderConfig,
+  UbuntuApp,
+  OpenedAppConfig,
+  AppPosition,
+} from '@/typings/app'
 import { createLocalStorage } from '@/utils/local-storage'
 import { AppMap, OpenedAppMap } from './type'
 import { safeJsonParse } from '@/utils/misc'
@@ -45,6 +50,61 @@ interface ContextIds {
   parentId: string
   prevParentId: string
 }
+
+export function getPasteApp(
+  appMap: AppMap,
+  copyAppId: string,
+  copiedApp: UbuntuApp
+) {
+  let currentId = copyAppId
+  let currentTitle = copiedApp.title
+  while (appMap[currentId]) {
+    currentId = `${currentId} copy`
+    currentTitle = `${currentTitle} copy`
+  }
+  return {
+    ...copiedApp,
+    title: currentTitle,
+    id: currentId,
+  }
+}
+
+export function pasteApp(
+  appMap: AppMap,
+  copiedAppId: string,
+  parentId: string,
+  position?: AppPosition
+) {
+  const copiedApp = appMap[copiedAppId]
+  const parentApp = appMap[parentId] as FolderConfig
+  const ids = copiedApp.id.split('/')
+  const newApp = getPasteApp(
+    appMap,
+    `${parentId}/${ids[ids.length - 1]}`,
+    copiedApp
+  )
+  if (position) {
+    newApp.position = position
+  }
+  // 先加进来，好让后面能够递归
+  appMap[newApp.id] = newApp
+  parentApp.apps.push(newApp)
+
+  if (isFolder(newApp)) {
+    newApp.apps = [...newApp.apps]
+    newApp.apps = newApp.apps.map((app) => {
+      const childIds = app.id.split('/')
+      const currentAppId = `${newApp.id}/${childIds[childIds.length - 1]}`
+      pasteApp(appMap, app.id, newApp.id, app.position)
+      return {
+        ...app,
+        id: currentAppId,
+        parentId: newApp.id,
+      }
+    })
+  }
+}
+
 export function moveApp(
   // immer
   state: AppMaps,

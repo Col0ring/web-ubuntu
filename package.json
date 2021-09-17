@@ -51,6 +51,7 @@
   },
   "devDependencies": {
     "@amatlash/vite-plugin-stylelint": "^1.1.1",
+    "@col0ring/vite-plugin-copy": "^1.0.1",
     "@col0ring/vite-plugin-mock": "^1.0.3",
     "@commitlint/cli": "^13.1.0",
     "@commitlint/config-angular": "^13.1.0",
