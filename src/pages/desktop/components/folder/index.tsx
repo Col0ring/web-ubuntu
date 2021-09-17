@@ -1,13 +1,15 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useMemo, useRef } from 'react'
 import classnames from 'classnames'
 import Empty, { EmptyProps } from './empty'
 import FolderApp, { FolderAppProps, FolderDragData } from './folder-app'
 import { DragArea } from '@/components/dragging'
 import { getOffsetWindow, safeJsonParse } from '@/utils/misc'
-import { isFolder } from '../../util'
+import { getMousePosition, isFolder } from '../../util'
 import { useDesktopContext } from '../../provider'
 import { setFolderDragTarget } from './store'
-import FolderContextmenu from './folder-context-menu'
+import FolderContextmenu, {
+  FolderContextmenuProps,
+} from './folder-context-menu'
 import message from '@/components/message'
 
 export interface FolderProps {
@@ -25,6 +27,7 @@ const Folder: React.FC<FolderProps> = ({
   className,
 }) => {
   const [{ appMap, copiedAppId }, desktopMethods] = useDesktopContext()
+  const folderRef = useRef<HTMLDivElement>(null)
   const folderApps = useMemo(() => {
     const currentFolder = appMap[id]
     if (isFolder(currentFolder)) {
@@ -46,11 +49,11 @@ const Folder: React.FC<FolderProps> = ({
     [desktopMethods]
   )
 
-  const onAppPaste: Required<FolderAppProps>['onPaste'] = useCallback(
-    (appId) => {
+  const onAppPaste: Required<FolderContextmenuProps>['onPaste'] = useCallback(
+    (appId, app, isInFolder) => {
       const copiedApp = appMap[copiedAppId]
       const currentApp = appMap[appId]
-      if (!copiedApp) {
+      if (!copiedApp || !folderRef.current) {
         return
       }
       if (!isFolder(currentApp)) {
@@ -59,15 +62,25 @@ const Folder: React.FC<FolderProps> = ({
         })
         return
       }
+      if (appId === copiedApp.parentId) {
+        return
+      }
+      const { x, y } = getMousePosition()
+      const { offsetTop, offsetLeft } = getOffsetWindow(folderRef.current)
       desktopMethods.updateFolderApp({
         from: copiedApp.parentId,
         to: appId,
         data: {
           ...copiedApp,
-          position: {
-            left: 0,
-            top: 0,
-          },
+          position: isInFolder
+            ? {
+                left: x - offsetLeft,
+                top: y - offsetTop,
+              }
+            : {
+                left: 0,
+                top: 0,
+              },
         },
       })
     },
@@ -76,68 +89,78 @@ const Folder: React.FC<FolderProps> = ({
 
   const folderWrapperClassName = classnames('w-full h-full', wrapperClassName)
   return (
-    <FolderContextmenu folderId={id} className={folderWrapperClassName}>
-      <DragArea
-        onDragEnter={() => {
-          setFolderDragTarget(id)
-        }}
-        onDrop={(e) => {
-          e.stopPropagation()
-          const data: FolderDragData = safeJsonParse(
-            e.dataTransfer.getData('custom'),
-            {}
-          )
-          // no app
-          if (!data.app) {
-            message.error({
-              content: 'invalid dragging element',
+    <div
+      ref={folderRef}
+      tabIndex={0}
+      data-appid={id}
+      className={folderWrapperClassName}
+    >
+      <FolderContextmenu onPaste={onAppPaste} folderId={id}>
+        <DragArea
+          onDragEnter={() => {
+            setFolderDragTarget(id)
+          }}
+          onDrop={(e) => {
+            e.stopPropagation()
+            const data = safeJsonParse(
+              e.dataTransfer.getData('custom'),
+              {} as FolderDragData
+            )
+            // no app
+            if (!data.app) {
+              message.error({
+                content: 'invalid dragging element',
+              })
+              return
+            }
+
+            // drag to its parent
+            const app = appMap[data.app.id]
+            const domOffset = safeJsonParse(
+              e.dataTransfer.getData('domOffset'),
+              {} as {
+                left: number
+                top: number
+              }
+            )
+            const target = e.currentTarget as HTMLDivElement
+            const { offsetLeft, offsetTop } = getOffsetWindow(target)
+
+            const position =
+              data.from === id
+                ? app.position
+                : {
+                    left: e.clientX - offsetLeft - domOffset.left,
+                    top: e.clientY - offsetTop - domOffset.top,
+                  }
+            desktopMethods.updateFolderApp({
+              from: data.from,
+              to: id,
+              data: {
+                ...app,
+                position,
+              },
             })
-            return
-          }
-
-          // drag to its parent
-          const app = appMap[data.app.id]
-          const domOffset: {
-            left: number
-            top: number
-          } = safeJsonParse(e.dataTransfer.getData('domOffset'), {})
-          const target = e.currentTarget as HTMLDivElement
-          const { offsetLeft, offsetTop } = getOffsetWindow(target)
-
-          const position =
-            data.from === id
-              ? app.position
-              : {
-                  left: e.clientX - offsetLeft - domOffset.left,
-                  top: e.clientY - offsetTop - domOffset.top,
-                }
-          desktopMethods.updateFolderApp({
-            from: data.from,
-            to: id,
-            data: {
-              ...app,
-              position,
-            },
-          })
-        }}
-        className={className}
-      >
-        {folderApps.length > 0 || !showEmpty ? (
-          folderApps.map((app) => (
-            <FolderApp
-              onOpen={onAppOpen}
-              onCopy={onAppCopy}
-              onPaste={onAppPaste}
-              folderId={id}
-              key={app.id}
-              app={app}
-            />
-          ))
-        ) : (
-          <Empty title="Folder is Empty" {...emptyProps} />
-        )}
-      </DragArea>
-    </FolderContextmenu>
+          }}
+          className={className}
+        >
+          {folderApps.length > 0 || !showEmpty ? (
+            folderApps.map((app) => (
+              <FolderApp
+                onOpen={onAppOpen}
+                onCopy={onAppCopy}
+                onPaste={onAppPaste}
+                folderId={id}
+                key={app.id}
+                app={app}
+              />
+            ))
+          ) : (
+            <Empty title="Folder is Empty" {...emptyProps} />
+          )}
+        </DragArea>
+      </FolderContextmenu>
+    </div>
   )
 }
 

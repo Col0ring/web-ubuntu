@@ -195,6 +195,7 @@ const FolderApp: React.FC<FolderAppProps> = (props) => {
       },
       [props.app, props.folderId, isAbsolute, desktopMethods]
     )
+
   return (
     <Draggable
       onDragStart={onDragStart}

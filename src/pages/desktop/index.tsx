@@ -9,11 +9,21 @@ import AppWindow from './components/app-window'
 import useEventListener from '@/hooks/common/useEventListener'
 import NewFolderModal from './components/new-folder-modal'
 import DesktopFolder from './components/desktop-folder'
+import { setMousePosition } from './util'
 
 const Desktop: React.FC = () => {
   const [desktopState, desktopMethods] = useDesktopContext()
   useEventListener(window, 'resize', () => {
     desktopMethods.resizeBrowserWindow(window.innerWidth, window.innerHeight)
+  })
+
+  useEventListener(window, 'mousemove', (e) => {
+    setMousePosition(
+      JSON.stringify({
+        x: e.clientX,
+        y: e.clientY,
+      })
+    )
   })
 
   return (

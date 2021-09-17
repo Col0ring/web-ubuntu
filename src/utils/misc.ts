@@ -105,9 +105,9 @@ export function resolvePromise<T>(value: T) {
 }
 
 export function safeJsonParse<T extends Record<string | number | symbol, any>>(
-  jsonStr: string,
+  jsonStr: any,
   defaultValue: T
-) {
+): T {
   try {
     return JSON.parse(jsonStr)
   } catch (err) {

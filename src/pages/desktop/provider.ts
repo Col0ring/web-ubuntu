@@ -53,6 +53,7 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
           state.lockScreen = visible
           return state
         },
+        // setNewFolderModal 时的鼠标位置
         setMousePosition(position: DesktopContextValue['mousePosition']) {
           state.mousePosition = position
           return state

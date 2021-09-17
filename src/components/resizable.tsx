@@ -47,6 +47,7 @@ const Resizable: React.ForwardRefRenderFunction<
     onMoveEnd,
     onMoveStart,
     disabled = false,
+    ...props
   },
   ref
 ) => {
@@ -73,7 +74,12 @@ const Resizable: React.ForwardRefRenderFunction<
     onMoveEnd,
   })
   return (
-    <div ref={ref || nodeRef} className={resizableClassName} style={style}>
+    <div
+      ref={ref || nodeRef}
+      className={resizableClassName}
+      style={style}
+      {...props}
+    >
       {!disabled &&
         directionsClassLit.map(({ direction, className: itemClassName }) => {
           return (

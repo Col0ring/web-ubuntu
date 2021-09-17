@@ -18,6 +18,7 @@ export interface MenuItemOptions {
 
 export interface ContextmenuProps {
   className?: string
+  nodeRef?: React.RefObject<HTMLDivElement>
   menus: MenuItemOptions[]
   rewriteVisible?: boolean
   rewritePosition?: {
@@ -32,6 +33,7 @@ const Contextmenu: React.FC<ContextmenuProps> = ({
   children,
   className,
   menus,
+  nodeRef,
   onItemClick,
   contextmenuOptionsRewrite,
   rewriteVisible,
@@ -43,6 +45,7 @@ const Contextmenu: React.FC<ContextmenuProps> = ({
   })
   const [visible, setVisible] = useState(false)
   const contextmenuRef = useRef<HTMLDivElement | null>(null)
+  const ref = nodeRef || contextmenuRef
   const contextmenuClassName = classnames('relative', className)
   // note: level 2 events are triggered before level 0 events，we need to use level 0 event
   const { onClick: onRewriteClick, ...optionsRewrite } =
@@ -53,7 +56,7 @@ const Contextmenu: React.FC<ContextmenuProps> = ({
       setVisible(false)
     })
   useContextmenu(
-    contextmenuRef,
+    ref,
     contextmenuOptionsRewrite
       ? optionsRewrite
       : {
@@ -74,7 +77,7 @@ const Contextmenu: React.FC<ContextmenuProps> = ({
 
   return (
     <div
-      ref={contextmenuRef}
+      ref={ref}
       onClick={
         onMenuClick as unknown as React.MouseEventHandler<HTMLDivElement>
       }

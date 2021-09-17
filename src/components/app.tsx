@@ -41,7 +41,8 @@ const App: React.FC<AppProps> = ({
 
   useKeyPress(
     isMac ? 'meta.c' : 'ctrl.c',
-    () => {
+    (e) => {
+      e.stopPropagation()
       onCopy?.(app.id, app)
     },
     {
@@ -51,7 +52,8 @@ const App: React.FC<AppProps> = ({
 
   useKeyPress(
     isMac ? 'meta.v' : 'ctrl.v',
-    () => {
+    (e) => {
+      e.stopPropagation()
       onPaste?.(app.id, app)
     },
     {

@@ -1,7 +1,9 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 import classnames from 'classnames'
 import Contextmenu, { ContextmenuProps } from '@/components/contextmenu'
-import { getOffsetWindow, getParentNode } from '@/utils/misc'
+import { getOffsetWindow, getParentNode, isMac } from '@/utils/misc'
+import useKeyPress from '@/hooks/common/useKeyPress'
+import { AppProps } from '@/components/app'
 import { dataTarget } from '../../config'
 import { useDesktopContext } from '../../provider'
 import { SpecialFolder } from '../../constants'
@@ -9,13 +11,21 @@ import { SpecialFolder } from '../../constants'
 export interface FolderContextmenuProps {
   className?: string
   folderId: string
+  onPaste?: (
+    ...args: [
+      ...appArgs: Parameters<Required<AppProps>['onPaste']>,
+      isInFolder?: boolean
+    ]
+  ) => ReturnType<Required<AppProps>['onPaste']>
 }
 const FolderContextmenu: React.FC<FolderContextmenuProps> = ({
   children,
   folderId,
+  onPaste,
   className,
 }) => {
   const [{ appMap }, desktopMethods] = useDesktopContext()
+  const contextmenuRef = useRef<HTMLDivElement | null>(null)
   const [visible, setVisible] = useState(false)
   const [position, setPosition] = useState({
     left: 0,
@@ -109,8 +119,21 @@ const FolderContextmenu: React.FC<FolderContextmenuProps> = ({
         },
       }
     }, [setVisible, setPosition, desktopMethods])
+
+  useKeyPress(isMac ? 'meta.v' : 'ctrl.v', (e) => {
+    e.stopPropagation()
+    if (!onPaste) {
+      return
+    }
+    const target = e.target as HTMLElement
+    if (target.dataset.appid === folderId) {
+      onPaste(folderId, appMap[folderId], true)
+    }
+  })
+
   return (
     <Contextmenu
+      nodeRef={contextmenuRef}
       rewritePosition={position}
       rewriteVisible={visible}
       contextmenuOptionsRewrite={rewriteOptions}

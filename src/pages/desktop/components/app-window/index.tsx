@@ -351,6 +351,8 @@ const AppWindow: React.FC<AppWindowProps> = ({
       exist
     >
       <Resizable
+        tabIndex={0}
+        data-appid={app.id}
         disabled={isMaximized}
         className={appWindowClassName}
         ref={appWindowRef}

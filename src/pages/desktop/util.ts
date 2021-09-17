@@ -3,10 +3,32 @@ import { produce } from 'immer'
 import { FolderConfig, UbuntuApp, OpenedAppConfig } from '@/typings/app'
 import { createLocalStorage } from '@/utils/local-storage'
 import { AppMap, OpenedAppMap } from './type'
+import { safeJsonParse } from '@/utils/misc'
 
-const { setBackgroundImage, getBackgroundImage } =
-  createLocalStorage('backgroundImage')
+const { setBackgroundImage, getBackgroundImage } = createLocalStorage(
+  'backgroundImage',
+  {
+    defaultValue: '',
+  }
+)
 export { setBackgroundImage, getBackgroundImage }
+
+const { setMousePosition, getMousePosition } = createLocalStorage(
+  'mousePosition',
+  {
+    defaultValue: {
+      x: 0,
+      y: 0,
+    },
+    map(v) {
+      return safeJsonParse(v, {
+        x: 0,
+        y: 0,
+      })
+    },
+  }
+)
+export { setMousePosition, getMousePosition }
 
 interface AppMaps {
   // immer
