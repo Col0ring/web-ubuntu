@@ -10,6 +10,7 @@ export interface MessageOptions {
   direction?: `${YDirection} ${XDirection}`
   content?: React.ReactNode
   description?: React.ReactNode
+  getContainer?: HTMLElement | (() => HTMLElement)
 }
 
 export interface MessageMethods {

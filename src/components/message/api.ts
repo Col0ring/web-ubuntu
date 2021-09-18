@@ -20,13 +20,10 @@ const message: MessageInstance = ((options) => {
   const messageContainer = document.createElement('div')
   document.body.append(messageContainer)
   ReactDom.render(
-    ReactDom.createPortal(
-      React.createElement(Message, {
-        ref,
-        ...options,
-      }),
-      document.body
-    ),
+    React.createElement(Message, {
+      ref,
+      ...options,
+    }),
     messageContainer
   )
   document.body.removeChild(messageContainer)

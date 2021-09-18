@@ -3,8 +3,10 @@ import React, {
   useCallback,
   useEffect,
   useImperativeHandle,
+  useMemo,
   useState,
 } from 'react'
+import ReactDom from 'react-dom'
 import classnames from 'classnames'
 import Transition from '@/components/transition'
 import { MessageMethods, MessageOptions } from './type'
@@ -35,6 +37,7 @@ const Message: React.ForwardRefRenderFunction<MessageMethods, MessageProps> = (
     content,
     description,
     wrapperClassName,
+    getContainer,
   },
   ref
 ) => {
@@ -63,10 +66,15 @@ const Message: React.ForwardRefRenderFunction<MessageMethods, MessageProps> = (
     types[type],
     wrapperClassName
   )
+  const container = useMemo(() => {
+    return typeof getContainer === 'function'
+      ? getContainer()
+      : getContainer ?? document.body
+  }, [getContainer])
   useEffect(() => {
     run()
   }, [])
-  return (
+  return ReactDom.createPortal(
     <Transition
       visible={visible}
       duration={300}
@@ -77,7 +85,8 @@ const Message: React.ForwardRefRenderFunction<MessageMethods, MessageProps> = (
         <div className="text-white">{content}</div>
         <div className="text-xs mt-1 text-ubt-grey">{description}</div>
       </div>
-    </Transition>
+    </Transition>,
+    container
   )
 }
 
