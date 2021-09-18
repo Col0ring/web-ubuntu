@@ -17,8 +17,8 @@ import {
   appArr2Map,
   moveApp,
   setBackgroundImage,
-  validMoveFolder,
   pasteApp,
+  isValidFolder,
 } from './util'
 import message from '@/components/message'
 import { SpecialFolder } from './constants'
@@ -128,7 +128,7 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
           copiedId: string
           position?: AppPosition
         }) {
-          if (!validMoveFolder(state.appMap, copiedId, parentId)) {
+          if (!isValidFolder(state.appMap, copiedId, parentId)) {
             message.error({
               content: 'Something Wrong',
               description:
@@ -136,7 +136,7 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
             })
             return state
           }
-          pasteApp(state.appMap, copiedId, parentId, position)
+          pasteApp(state, copiedId, parentId, position)
           return state
         },
         updateFolderApp({
@@ -148,7 +148,7 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
           to: string
           data: UbuntuApp
         }) {
-          if (!validMoveFolder(state.appMap, data.id, to)) {
+          if (!isValidFolder(state.appMap, data.id, to)) {
             message.error({
               content: 'Something Wrong',
               description:

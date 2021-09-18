@@ -15,7 +15,7 @@ import Contextmenu, { ContextmenuProps } from '@/components/contextmenu'
 import { dataTarget } from '../../config'
 import useUpdateEffect from '@/hooks/common/useUpdateEffect'
 import { getFolderDragTarget, removeFolderDragTarget } from './store'
-import { isFolder, validMoveFolder } from '../../util'
+import { isFolder, isValidFolder } from '../../util'
 
 export interface FolderAppProps extends AppProps {
   folderId: string
@@ -76,7 +76,7 @@ const FolderApp: React.FC<FolderAppProps> = (props) => {
   const onValid: Required<DraggableProps>['onValid'] = useCallback(() => {
     const toFolderId = getFolderDragTarget()
     removeFolderDragTarget()
-    return validMoveFolder(appMap, props.app.id, toFolderId)
+    return isValidFolder(appMap, props.app.id, toFolderId)
   }, [props.app])
 
   const defaultPosition: {
@@ -121,7 +121,7 @@ const FolderApp: React.FC<FolderAppProps> = (props) => {
         key: 'Paste',
         title: 'Paste',
         disabled:
-          !validMoveFolder(appMap, copiedAppId, props.app.id) ||
+          !isValidFolder(appMap, copiedAppId, props.app.id) ||
           !isFolder(props.app),
         onClick: () => props.onPaste?.(props.app.id, props.app),
       },

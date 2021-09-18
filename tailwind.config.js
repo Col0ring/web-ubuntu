@@ -37,6 +37,16 @@ module.exports = {
         ...theme('colors'),
         'ubb-orange': '#E95420',
       }),
+      width: {
+        '1f': '1em',
+        '1.5f': '1.5em',
+        '2f': '2em',
+      },
+      height: {
+        '1f': '1em',
+        '1.5f': '1.5em',
+        '2f': '2em',
+      },
       minWidth: {
         0: '0',
         '1/4': '25%',
@@ -63,6 +73,8 @@ module.exports = {
   variants: {
     extend: {
       zIndex: ['hover'],
+      backgroundColor: ['active'],
+      borderColor: ['active'],
     },
   },
   plugins: [],

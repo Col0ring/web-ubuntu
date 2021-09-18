@@ -53,6 +53,7 @@ interface ContextIds {
 
 export function getPasteApp(
   appMap: AppMap,
+  parentId: string,
   copyAppId: string,
   copiedApp: UbuntuApp
 ) {
@@ -64,30 +65,37 @@ export function getPasteApp(
   }
   return {
     ...copiedApp,
+    parentId,
     title: currentTitle,
     id: currentId,
   }
 }
 
 export function pasteApp(
-  appMap: AppMap,
+  state: AppMaps,
   copiedAppId: string,
   parentId: string,
   position?: AppPosition
 ) {
-  const copiedApp = appMap[copiedAppId]
-  const parentApp = appMap[parentId] as FolderConfig
+  const copiedApp = state.appMap[copiedAppId]
+
+  const parentApp = state.appMap[parentId] as FolderConfig
   const ids = copiedApp.id.split('/')
-  const newApp = getPasteApp(
-    appMap,
-    `${parentId}/${ids[ids.length - 1]}`,
-    copiedApp
-  )
+  const currentId = `${parentId}/${ids[ids.length - 1]}`
+  if (parentId !== copiedApp.parentId && state.appMap[currentId]) {
+    alert('是否替换')
+    parentApp.apps = parentApp.apps.filter((app) => app.id !== currentId)
+    Reflect.deleteProperty(state.appMap, currentId)
+    Reflect.deleteProperty(state.openedAppMap, currentId)
+    Reflect.deleteProperty(state.maximizedApps, currentId)
+    Reflect.deleteProperty(state.minimizedApps, currentId)
+  }
+  const newApp = getPasteApp(state.appMap, parentId, currentId, copiedApp)
   if (position) {
     newApp.position = position
   }
   // 先加进来，好让后面能够递归
-  appMap[newApp.id] = newApp
+  state.appMap[newApp.id] = newApp
   parentApp.apps.push(newApp)
 
   if (isFolder(newApp)) {
@@ -95,7 +103,7 @@ export function pasteApp(
     newApp.apps = newApp.apps.map((app) => {
       const childIds = app.id.split('/')
       const currentAppId = `${newApp.id}/${childIds[childIds.length - 1]}`
-      pasteApp(appMap, app.id, newApp.id, app.position)
+      pasteApp(state, app.id, newApp.id, app.position)
       return {
         ...app,
         id: currentAppId,
@@ -116,6 +124,16 @@ export function moveApp(
 
   currentApp.parentId = parentId
   currentApp.id = currentId
+
+  if (parentId !== prevParentId && state.appMap[currentId]) {
+    alert('是否替换')
+    parentApp.apps = parentApp.apps.filter((app) => app.id !== currentId)
+    Reflect.deleteProperty(state.appMap, currentId)
+    Reflect.deleteProperty(state.openedAppMap, currentId)
+    Reflect.deleteProperty(state.maximizedApps, currentId)
+    Reflect.deleteProperty(state.minimizedApps, currentId)
+  }
+
   Reflect.deleteProperty(state.appMap, prevId)
   Reflect.deleteProperty(state.openedAppMap, prevId)
   Reflect.deleteProperty(state.maximizedApps, prevId)
@@ -145,11 +163,7 @@ export function moveApp(
   }
 }
 
-export function validMoveFolder(
-  appMap: AppMap,
-  id: string,
-  toFolderId: string
-) {
+export function isValidFolder(appMap: AppMap, id: string, toFolderId: string) {
   if (id === toFolderId) {
     return false
   }
