@@ -15,7 +15,7 @@ import Contextmenu, { ContextmenuProps } from '@/components/contextmenu'
 import { dataTarget } from '../../config'
 import useUpdateEffect from '@/hooks/common/useUpdateEffect'
 import { getFolderDragTarget, removeFolderDragTarget } from './store'
-import { isFolder, isValidFolder } from '../../util'
+import { isFolder, isReplaceFile, isValidFolder } from '../../util'
 
 export interface FolderAppProps extends AppProps {
   folderId: string
@@ -76,8 +76,13 @@ const FolderApp: React.FC<FolderAppProps> = (props) => {
   const onValid: Required<DraggableProps>['onValid'] = useCallback(() => {
     const toFolderId = getFolderDragTarget()
     removeFolderDragTarget()
-    return isValidFolder(appMap, props.app.id, toFolderId)
-  }, [props.app])
+    const ids = props.app.id.split('/')
+    const currentId = `${toFolderId}/${ids[ids.length - 1]}`
+    return (
+      isValidFolder(appMap, props.app.id, toFolderId) &&
+      !isReplaceFile(appMap, toFolderId, props.app.parentId, currentId)
+    )
+  }, [props.app, appMap])
 
   const defaultPosition: {
     left: AppPositionValue

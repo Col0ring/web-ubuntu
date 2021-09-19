@@ -23,6 +23,7 @@ import {
 import message from '@/components/message'
 import { SpecialFolder } from './constants'
 import { addBase } from '@/utils/prod'
+import { createDraft, finishDraft } from 'immer'
 
 const Folder = React.lazy(() => import('@/pages/desktop/apps/folder'))
 const appMap = appArr2Map(apps)
@@ -119,7 +120,7 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
           parentFolder.apps.push(app)
           return state
         },
-        pasteFolderApp({
+        async pasteFolderApp({
           parentId,
           position,
           copiedId,
@@ -136,10 +137,10 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
             })
             return state
           }
-          pasteApp(state, copiedId, parentId, position)
-          return state
+          const newState = await pasteApp(state, copiedId, parentId, position)
+          return newState
         },
-        updateFolderApp({
+        async updateFolderApp({
           from,
           to,
           data,
@@ -148,19 +149,22 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
           to: string
           data: UbuntuApp
         }) {
-          if (!isValidFolder(state.appMap, data.id, to)) {
+          const newState = createDraft(state)
+          if (!isValidFolder(newState.appMap, data.id, to)) {
             message.error({
               content: 'Something Wrong',
               description:
                 'can not move itself or parent folder to the directory',
             })
-            return state
+            return finishDraft(newState)
           }
-          const fromFolder = state.appMap[from] as FolderConfig
+          const fromFolder = newState.appMap[from] as FolderConfig
+          const prevPosition = newState.appMap[data.id].position
           // 先改变原值
-          state.appMap[data.id] = data
+          newState.appMap[data.id] = data
+
           if (from === to) {
-            const openedFromFolder = state.openedAppMap[from]
+            const openedFromFolder = newState.openedAppMap[from]
             if (openedFromFolder) {
               openedFromFolder.apps = openedFromFolder.apps!.map((app) => {
                 if (app.id === data.id) {
@@ -168,7 +172,7 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
                 }
                 return app
               })
-              state.openedApps = state.openedApps.map((app) => {
+              newState.openedApps = newState.openedApps.map((app) => {
                 if (app.id === from) {
                   return openedFromFolder
                 }
@@ -181,19 +185,21 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
               }
               return app
             })
-            return state
+            return finishDraft(newState)
           } else {
-            const toFolder = state.appMap[to] as FolderConfig
+            const toFolder = newState.appMap[to] as FolderConfig
             const ids = data.id.split('/')
             const id = `${toFolder.id}/${ids[ids.length - 1]}`
-            moveApp(state, {
+            const parentId = toFolder.id
+            const prevId = data.id
+            const prevParentId = fromFolder.id
+            return moveApp(newState, {
               currentId: id,
-              prevId: data.id,
-              parentId: toFolder.id,
-              prevParentId: fromFolder.id,
+              prevId,
+              parentId,
+              prevParentId,
+              prevPosition,
             })
-
-            return state
           }
         },
         openApp(currentId: string, app: UbuntuApp) {

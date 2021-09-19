@@ -1,14 +1,10 @@
 /* eslint-disable no-param-reassign */
-import { produce } from 'immer'
-import {
-  FolderConfig,
-  UbuntuApp,
-  OpenedAppConfig,
-  AppPosition,
-} from '@/typings/app'
+import { produce, createDraft, finishDraft } from 'immer'
+import { FolderConfig, UbuntuApp, AppPosition } from '@/typings/app'
 import { createLocalStorage } from '@/utils/local-storage'
-import { AppMap, OpenedAppMap } from './type'
+import { AppMap, DesktopContextValue } from './type'
 import { safeJsonParse } from '@/utils/misc'
+import { modal } from '@/components/modal'
 
 const { setBackgroundImage, getBackgroundImage } = createLocalStorage(
   'backgroundImage',
@@ -35,20 +31,12 @@ const { setMousePosition, getMousePosition } = createLocalStorage(
 )
 export { setMousePosition, getMousePosition }
 
-interface AppMaps {
-  // immer
-  appMap: AppMap
-  openedAppMap: OpenedAppMap
-  maximizedApps: AppMap
-  minimizedApps: AppMap
-  openedApps: OpenedAppConfig[]
-}
-
-interface ContextIds {
+interface ContextValue {
   currentId: string
   prevId: string
   parentId: string
   prevParentId: string
+  prevPosition?: AppPosition
 }
 
 export function getPasteApp(
@@ -71,68 +59,113 @@ export function getPasteApp(
   }
 }
 
-export function pasteApp(
-  state: AppMaps,
+export async function pasteApp(
+  oldState: DesktopContextValue,
   copiedAppId: string,
   parentId: string,
-  position?: AppPosition
+  position?: AppPosition,
+  // Do not pass in
+  isDraft = false
 ) {
+  const state = isDraft ? oldState : createDraft(oldState)
   const copiedApp = state.appMap[copiedAppId]
-
   const parentApp = state.appMap[parentId] as FolderConfig
   const ids = copiedApp.id.split('/')
   const currentId = `${parentId}/${ids[ids.length - 1]}`
-  if (parentId !== copiedApp.parentId && state.appMap[currentId]) {
-    alert('是否替换')
-    parentApp.apps = parentApp.apps.filter((app) => app.id !== currentId)
-    Reflect.deleteProperty(state.appMap, currentId)
-    Reflect.deleteProperty(state.openedAppMap, currentId)
-    Reflect.deleteProperty(state.maximizedApps, currentId)
-    Reflect.deleteProperty(state.minimizedApps, currentId)
+  if (isReplaceFile(state.appMap, parentId, copiedApp.parentId, currentId)) {
+    const res = await new Promise<boolean>((resolve) => {
+      modal.confirm({
+        title: 'Something Wrong',
+        content: `An older item with the name ${copiedApp.title} already exists at this location. Do you want to replace it with the new item you are moving?`,
+        onOk() {
+          parentApp.apps = parentApp.apps.filter((app) => app.id !== currentId)
+          Reflect.deleteProperty(state.appMap, currentId)
+          Reflect.deleteProperty(state.openedAppMap, currentId)
+          Reflect.deleteProperty(state.maximizedApps, currentId)
+          Reflect.deleteProperty(state.minimizedApps, currentId)
+          resolve(true)
+        },
+        onCancel() {
+          resolve(false)
+        },
+      })
+    })
+    if (!res) {
+      return finishDraft(state)
+    }
   }
+
   const newApp = getPasteApp(state.appMap, parentId, currentId, copiedApp)
   if (position) {
     newApp.position = position
   }
+
   // 先加进来，好让后面能够递归
   state.appMap[newApp.id] = newApp
-  parentApp.apps.push(newApp)
-
+  // 已经创建的新的 app
+  if (!isDraft) {
+    parentApp.apps.push(newApp)
+  }
   if (isFolder(newApp)) {
     newApp.apps = [...newApp.apps]
-    newApp.apps = newApp.apps.map((app) => {
+    const len = newApp.apps.length
+    for (let i = 0; i < len; i++) {
+      const app = newApp.apps[i]
       const childIds = app.id.split('/')
       const currentAppId = `${newApp.id}/${childIds[childIds.length - 1]}`
-      pasteApp(state, app.id, newApp.id, app.position)
-      return {
+      // eslint-disable-next-line no-await-in-loop
+      await pasteApp(state, app.id, newApp.id, app.position, true)
+
+      newApp.apps[i] = {
         ...app,
         id: currentAppId,
         parentId: newApp.id,
       }
-    })
+    }
   }
+
+  return isDraft ? state : finishDraft(state)
 }
 
-export function moveApp(
+export async function moveApp(
   // immer
-  state: AppMaps,
-  { currentId, prevId, parentId, prevParentId }: ContextIds
+  oldState: DesktopContextValue,
+  { currentId, prevId, parentId, prevParentId, prevPosition }: ContextValue,
+  // Do not pass in
+  isDraft = false
 ) {
+  const state = isDraft ? oldState : createDraft(oldState)
   const currentApp = state.appMap[prevId]
   const parentApp = state.appMap[parentId] as FolderConfig
   const prevParentApp = state.appMap[prevParentId] as FolderConfig
 
+  if (isReplaceFile(state.appMap, parentId, prevParentId, currentId)) {
+    const res = await new Promise<boolean>((resolve) => {
+      modal.confirm({
+        title: 'Something Wrong',
+        content: `An older item with the name ${state.appMap[currentId].title} already exists at this location. Do you want to replace it with the new item you are moving?`,
+        onOk() {
+          parentApp.apps = parentApp.apps.filter((app) => app.id !== currentId)
+          Reflect.deleteProperty(state.appMap, currentId)
+          Reflect.deleteProperty(state.openedAppMap, currentId)
+          Reflect.deleteProperty(state.maximizedApps, currentId)
+          Reflect.deleteProperty(state.minimizedApps, currentId)
+          resolve(true)
+        },
+        onCancel() {
+          currentApp.position = prevPosition
+          resolve(false)
+        },
+      })
+    })
+
+    if (!res) {
+      return finishDraft(state)
+    }
+  }
+
   currentApp.parentId = parentId
   currentApp.id = currentId
-
-  if (parentId !== prevParentId && state.appMap[currentId]) {
-    alert('是否替换')
-    parentApp.apps = parentApp.apps.filter((app) => app.id !== currentId)
-    Reflect.deleteProperty(state.appMap, currentId)
-    Reflect.deleteProperty(state.openedAppMap, currentId)
-    Reflect.deleteProperty(state.maximizedApps, currentId)
-    Reflect.deleteProperty(state.minimizedApps, currentId)
-  }
 
   Reflect.deleteProperty(state.appMap, prevId)
   Reflect.deleteProperty(state.openedAppMap, prevId)
@@ -144,23 +177,33 @@ export function moveApp(
   parentApp.apps.push(currentApp)
 
   if (isFolder(currentApp)) {
-    currentApp.apps = currentApp.apps.map((app) => {
+    const len = currentApp.apps.length
+    for (let i = 0; i < len; i++) {
+      const app = currentApp.apps[i]
       const prevAppId = app.id
       const ids = prevAppId.split('/')
       const currentAppId = `${currentId}/${ids[ids.length - 1]}`
-      moveApp(state, {
-        currentId: currentAppId,
-        prevId: prevAppId,
-        parentId: currentId,
-        prevParentId: currentId,
-      })
-      return {
+      // eslint-disable-next-line no-await-in-loop
+      await moveApp(
+        state,
+        {
+          currentId: currentAppId,
+          prevId: prevAppId,
+          parentId: currentId,
+          prevParentId: currentId,
+          prevPosition: app.position,
+        },
+        true
+      )
+      // eslint-disable-next-line require-atomic-updates
+      currentApp.apps[i] = {
         ...app,
         id: currentAppId,
         parentId: currentId,
       }
-    })
+    }
   }
+  return isDraft ? state : finishDraft(state)
 }
 
 export function isValidFolder(appMap: AppMap, id: string, toFolderId: string) {
@@ -179,6 +222,15 @@ export function isValidFolder(appMap: AppMap, id: string, toFolderId: string) {
     return true
   }
   return true
+}
+
+export function isReplaceFile(
+  appMap: AppMap,
+  toFolderId: string,
+  fromFolderId: string,
+  currentId: string
+) {
+  return toFolderId !== fromFolderId && appMap[currentId]
 }
 
 export function isFolder(app: UbuntuApp): app is FolderConfig {
