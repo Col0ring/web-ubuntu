@@ -1,11 +1,25 @@
 .modal-container {
-  position: fixed;
-  z-index: 9999;
+  position: absolute;
+  top: 30vh;
+  right: 0;
+  left: 0;
+  z-index: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin: 20px;
-  padding: 40px;
+  width: 40%;
+  min-width: 200px;
+  margin: auto;
+  padding: 10px 20px;
+  color: #fff;
+  @apply bg-ub-cool-grey;
   border-radius: 5px;
+  transform: scale(0);
+
+  &.modal-container-show {
+    transform: scale(1);
+  }
+
+  &.modal-container-leave {
+    transform: scale(0);
+  }
 }

@@ -45,21 +45,23 @@ const Button: React.FC<ButtonProps> = ({
 }) => {
   const buttonClassName = classnames(
     className,
-    'flex justify-center items-center text-white outline-none py-1 px-2 transition-colors border border-solid',
+    'text-white select-none flex-shrink-0 outline-none py-1 px-2 transition-colors border border-solid',
     buttonType[type],
     buttonSize[size],
     buttonShape[shape]
   )
   return (
     <button className={buttonClassName} onClick={onClick}>
-      {loading && (
-        <img
-          className="animate-spin mr-2 w-1.5f"
-          src={addBase('/themes/Yaru/status/process-working-symbolic.svg')}
-          alt="Loading Spinner"
-        />
-      )}
-      {children}
+      <span className="flex justify-center items-center">
+        {loading && (
+          <img
+            className="animate-spin mr-2 w-1.5f"
+            src={addBase('/themes/Yaru/status/process-working-symbolic.svg')}
+            alt="Loading Spinner"
+          />
+        )}
+        {children}
+      </span>
     </button>
   )
 }
