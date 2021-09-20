@@ -21,10 +21,7 @@ export interface DraggableProps<T = any> extends UseDragOptions<T> {
   onValid?: (data: T, e: React.DragEvent) => Promise<boolean> | boolean
 }
 
-const Draggable: React.ForwardRefRenderFunction<
-  HTMLDivElement,
-  DraggableProps
-> = ({
+const Draggable: React.FC<DraggableProps> = ({
   data,
   children,
   onDragEnd,
@@ -77,6 +74,7 @@ const Draggable: React.ForwardRefRenderFunction<
       if (!isValid) {
         return
       }
+      onDragEnd?.(dragData, e)
       if (left < x[0]) {
         left = 0
       }
@@ -97,14 +95,14 @@ const Draggable: React.ForwardRefRenderFunction<
         top,
       })
     },
-    [onDragEnd, setPosition, offset, dragArea.limitRange]
+    [offset.left, offset.top, dragArea.limitRange, ref, onValid, onDragEnd]
   )
 
   const onMoving: Required<DraggableProps>['onDrag'] = useCallback(
     (dragData, e) => {
       onDrag?.(dragData, e)
     },
-    [onDrag, setPosition, offset, dragArea.limitRange]
+    [onDrag]
   )
   const [, getProps] = useDrag({
     onDragStart: onStart,
@@ -133,6 +131,7 @@ const Draggable: React.ForwardRefRenderFunction<
 
   useEffect(() => {
     defaultPosition && setPosition(defaultPosition)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultPosition?.top, defaultPosition?.left])
 
   const dragData = useMemo(() => data, [data])

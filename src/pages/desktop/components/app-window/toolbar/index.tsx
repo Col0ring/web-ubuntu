@@ -21,7 +21,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
       (e) => {
         editButtonsProps.onMaximize?.(!editButtonsProps.isMaximized, e)
       },
-      [editButtonsProps.onMaximize, editButtonsProps.isMaximized]
+      [editButtonsProps]
     )
   return (
     <div

@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react'
 import { CacheStatus } from './constants'
 import { useCacheContext, withCacheProvider } from './provider'
-import { CacheItem } from './type'
 
 const KeepAliveProvider: React.FC = ({ children }) => {
   const [cacheState, cacheMethods] = useCacheContext()
@@ -9,7 +8,7 @@ const KeepAliveProvider: React.FC = ({ children }) => {
     () =>
       Object.values(cacheState).filter(
         (state) => state && state.status !== CacheStatus.DESTROY
-      ) as CacheItem[],
+      ),
     [cacheState]
   )
   return (

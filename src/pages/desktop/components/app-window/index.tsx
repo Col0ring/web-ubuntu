@@ -106,7 +106,7 @@ const AppWindow: React.FC<AppWindowProps> = ({
         desktopMethods.openApp(app.id, app)
       },
     }),
-    [setPosition, defaultDesktop, app, desktopMethods]
+    [setPosition, app, desktopMethods]
   )
   const appWindowStyle: React.CSSProperties = useMemo(() => {
     const width = isMaximized ? '100%' : rect.width || defaultAppWindow.width
@@ -151,7 +151,7 @@ const AppWindow: React.FC<AppWindowProps> = ({
       // set the Resizable to be absolute
       position: 'absolute',
     }
-  }, [position, isMaximized, rect, desktopMethods, defaultAppWindow])
+  }, [position, isMaximized, rect, defaultAppWindow])
 
   useEffect(() => {
     if (!isMaximized) {
@@ -167,7 +167,8 @@ const AppWindow: React.FC<AppWindowProps> = ({
         },
       })
     }
-  }, [appWindowStyle, isMaximized])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [appWindowStyle, desktopMethods, isMaximized])
 
   const ToolbarMethods: Pick<
     Required<ToolbarProps>,
@@ -296,7 +297,7 @@ const AppWindow: React.FC<AppWindowProps> = ({
         })
       },
     } as Record<Direction, (ctx: MoveContext) => void>
-  }, [setRect, rect, setPosition])
+  }, [setRect, setPosition])
 
   const resizableProps: ResizableProps = useMemo(
     () => ({
@@ -318,7 +319,7 @@ const AppWindow: React.FC<AppWindowProps> = ({
         resizeDirectionMethods[direction](ctx)
       },
     }),
-    [setRect, setPosition, resizeDirectionMethods]
+    [setPosition, resizeDirectionMethods]
   )
   useEffect(() => {
     if (isMinimized) {

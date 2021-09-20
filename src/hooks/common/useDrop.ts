@@ -120,7 +120,10 @@ function useDrop(options: DropAreaOptions = {}): [DropProps, DropAreaState] {
     [isMounted]
   )
 
-  const props: DropProps = useMemo(() => getProps(callback), [callback])
+  const props: DropProps = useMemo(
+    () => getProps(callback),
+    [callback, getProps]
+  )
 
   return [props, { isHovering }]
 }

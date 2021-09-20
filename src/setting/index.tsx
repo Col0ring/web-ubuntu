@@ -11,7 +11,7 @@ const Setting: React.FC = ({ children }) => {
 
   useEffect(() => {
     settingMethods.setUbuntuInstance(ubuntu)
-  }, [])
+  }, [settingMethods])
   useEffect(() => {
     // at least 0.25 brightness
     ubuntu.current!.style.filter = `brightness(${

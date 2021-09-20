@@ -34,7 +34,7 @@ const Folder: React.FC<FolderProps> = ({
       return currentFolder.apps.map((app) => appMap[app.id])
     }
     return []
-  }, [appMap])
+  }, [appMap, id])
   const onAppOpen: Required<FolderAppProps>['onOpen'] = useCallback(
     (appId, app) => {
       desktopMethods.openApp(appId, app)

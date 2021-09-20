@@ -67,7 +67,7 @@ export function renderRoutes(
               if (route.keepAlive) {
                 return (
                   <KeepAlive
-                    {...route.keepAlive!}
+                    {...route.keepAlive}
                     style={{ width: '100%', height: '100%' }}
                   >
                     {render()}
@@ -104,7 +104,7 @@ export function matchRoutes<
       ? matchPath(pathname, route)
       : branch.length
       ? branch[branch.length - 1].match // use parent match
-      : (Router as NormalObject).computeRootMatch(pathname) // use default "root" match
+      : (Router as Record<string, any>).computeRootMatch(pathname) // use default "root" match
 
     if (matched) {
       branch.push({ route, match: matched })

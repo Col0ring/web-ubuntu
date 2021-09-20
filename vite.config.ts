@@ -3,8 +3,8 @@ import { defineConfig } from 'vite'
 import reactRefresh from '@vitejs/plugin-react-refresh'
 import eslintPlugin from 'vite-plugin-eslint'
 import viteStylelint from '@amatlash/vite-plugin-stylelint'
-import viteMockPlugin from '@col0ring/vite-plugin-mock'
-import vitePluginCopy from '@col0ring/vite-plugin-copy'
+import { viteMockPlugin } from '@col0ring/vite-plugin-mock'
+import { vitePluginCopy } from '@col0ring/vite-plugin-copy'
 import { base } from './src/config'
 
 function resolve(relativePath: string) {

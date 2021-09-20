@@ -26,7 +26,7 @@ const render = () => {
   )
 }
 if (process.env.NODE_ENV !== 'development') {
-  import('./mock').then(() => render())
+  void import('./mock').then(() => render())
 } else {
   render()
 }

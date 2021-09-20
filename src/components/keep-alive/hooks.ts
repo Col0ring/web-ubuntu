@@ -20,7 +20,7 @@ export function useActivateEffect(
         }
       }
     })
-  }, [cacheState])
+  }, [cacheIds, cacheState, fn])
 }
 
 export function useDeactivateEffect(
@@ -36,5 +36,5 @@ export function useDeactivateEffect(
         }
       }
     })
-  }, [cacheState])
+  }, [cacheIds, cacheState, fn])
 }

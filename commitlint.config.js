@@ -15,11 +15,10 @@
 // yarn global add commitizen cz-conventional-changelog 全局安装，按照 commitizen 后使用 git cz 代替 git commit，cz-conventional-changelog 是用于 cz 的适配器
 // cz-conventional-changelog  可本地安装然后在 package.json 中指定
 // echo '{ "path": "cz-conventional-changelog" }' > ~/.czrc
-
 // commitlint 对 commit message 进行格式校验
 module.exports = {
-  // 标准
-  extends: ['@commitlint/config-conventional', '@commitlint/config-angular'],
+  // angular style
+  extends: ['@commitlint/config-angular'],
   rules: {
     'type-enum': [
       2,

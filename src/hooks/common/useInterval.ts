@@ -12,7 +12,7 @@ function useInterval<T extends NormalFunction>(
   const context = useIntervalFn(handler, ms)
   useEffect(() => {
     context.run(...args)
-  }, [ms])
+  }, [args, context, ms])
   return context
 }
 

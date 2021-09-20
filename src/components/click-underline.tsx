@@ -21,11 +21,11 @@ const ClickUnderline: React.FC<ClickUnderlineProps> = ({
     // div can focus if se tabIndex
     <div
       tabIndex={0}
+      onClick={onClick}
       style={{
         borderColor: color,
       }}
       className={clickUnderlineClassName}
-      onClick={onClick}
     >
       {children}
     </div>

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 // sync import
 
 // eslint-disable-next-line import/newline-after-import
-;(async () => {
+void (async () => {
   if (!window.ResizeObserver) {
     // eslint-disable-next-line require-atomic-updates
     window.ResizeObserver = (await import('resize-observer-polyfill')).default
@@ -58,7 +58,7 @@ function useSize(ref: React.RefObject<Element>): UseSizeState {
     return () => {
       resizeObserver.disconnect()
     }
-  }, [ref.current])
+  }, [ref])
 
   return state
 }

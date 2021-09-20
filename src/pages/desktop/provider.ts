@@ -3,7 +3,6 @@ import React from 'react'
 import { createDraft, finishDraft } from 'immer'
 import { createMethodsContext } from 'react-use-methods'
 import useImmerMethods from '@/hooks/common/useImmerMethods'
-import apps from './apps'
 import {
   AppConfig,
   AppPosition,
@@ -13,6 +12,7 @@ import {
 } from '@/typings/app'
 import { DesktopContextValue } from './type'
 import { defaultImages } from './config'
+import apps from './apps'
 import {
   getBackgroundImage,
   appArr2Map,

@@ -9,11 +9,12 @@ function useTitle(title: string, options?: UseTitleOptions) {
   document.title = title
   useEffect(() => {
     if (options && options.restoreOnUnmount) {
+      const prevTitle = prevTitleRef.current
       return () => {
-        document.title = prevTitleRef.current
+        document.title = prevTitle
       }
     }
-  }, [])
+  }, [options])
 }
 
 export default useTitle

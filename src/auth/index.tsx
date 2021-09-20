@@ -33,8 +33,7 @@ const Auth: React.FC = ({ children }) => {
 
   // 管理登录态
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-extra-semi
-    ;(async () => {
+    async function doAuth() {
       if (authState.isLogin && !authState.user) {
         const [, res] = await getUserInfo()
         if (res) {
@@ -42,7 +41,8 @@ const Auth: React.FC = ({ children }) => {
         }
         // 如果失败，拦截器自动清空了 token ，这里就先不管了
       }
-    })()
+    }
+    void doAuth()
   }, [authState, authMethods, getUserInfo])
 
   if (isLogin) {

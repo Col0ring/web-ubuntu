@@ -161,7 +161,15 @@ const Navbar: React.FC = () => {
         },
       ],
     ],
-    [sound, brightness, onSoundChange, onBrightnessChange, appMap, authMethods]
+    [
+      onSoundChange,
+      sound,
+      onBrightnessChange,
+      brightness,
+      desktopMethods,
+      appMap,
+      authMethods,
+    ]
   )
 
   return (

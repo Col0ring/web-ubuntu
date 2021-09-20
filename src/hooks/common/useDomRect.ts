@@ -38,6 +38,7 @@ function useDomRect(
       bottom,
       right,
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps)
 
   return state

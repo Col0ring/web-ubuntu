@@ -26,7 +26,7 @@ function useAsyncFn<P extends any[] = any[], R = any>(
       err: initialState.err || null,
       data: undefined,
     }),
-    []
+    [initialState.err, initialState.loading]
   )
   // fetch count
   const countRef = useRef(0)
@@ -68,6 +68,7 @@ function useAsyncFn<P extends any[] = any[], R = any>(
           }
         )
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     deps
   )
 

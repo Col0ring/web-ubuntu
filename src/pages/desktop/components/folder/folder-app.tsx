@@ -22,6 +22,7 @@ import {
 } from './store'
 import { isFolder, isReplaceFile, isValidFolder } from '../../util'
 import message from '@/components/message'
+import useRafState from '@/hooks/common/useRafState'
 
 export interface FolderAppProps extends AppProps {
   folderId: string
@@ -41,7 +42,7 @@ const FolderApp: React.FC<FolderAppProps> = (props) => {
   )
   const [{ appMap, copiedAppId }] = useDesktopContext()
   const [{ dragArea }] = useDragContext()
-  const [load, setLoad] = useState(false)
+  const [load, setLoad] = useRafState(false)
 
   const [isFocus, setIsFocus] = useState(false)
   const isAbsolute = useMemo(
@@ -142,14 +143,7 @@ const FolderApp: React.FC<FolderAppProps> = (props) => {
       //   disabled: true,
       // },
     ] as ContextmenuProps['menus']
-  }, [
-    props.app,
-    appMap,
-    props.onCopy,
-    copiedAppId,
-    props.onPaste,
-    desktopMethods,
-  ])
+  }, [appMap, copiedAppId, desktopMethods, props])
 
   // only work once
   useUpdateEffect(() => {
@@ -157,7 +151,6 @@ const FolderApp: React.FC<FolderAppProps> = (props) => {
       const left = draggableRef.current.offsetLeft
       const top = draggableRef.current.offsetTop
       requestAnimationFrame(() => {
-        renderRef.current = true
         desktopMethods.updateFolderApp({
           from: props.folderId,
           to: props.folderId,
@@ -169,13 +162,14 @@ const FolderApp: React.FC<FolderAppProps> = (props) => {
             },
           },
         })
+        renderRef.current = true
       })
     }
   }, [load])
 
   useEffect(() => {
     setLoad(true)
-  }, [])
+  }, [setLoad])
 
   useClickAway(draggableRef, () => {
     setIsFocus(false)

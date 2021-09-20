@@ -33,7 +33,7 @@ const Sidebar: React.FC = () => {
           (app) =>
             !favoriteApps.find((favoriteApp) => favoriteApp.id === app.id)
         ),
-    [minimizedApps]
+    [appMap, favoriteApps, minimizedApps]
   ) as AppConfig[]
 
   const onAppClick: Required<SidebarAppProps>['onClick'] = useCallback(
@@ -46,7 +46,7 @@ const Sidebar: React.FC = () => {
   const onAllAppButtonClick: Required<AllAppsButtonProps>['onClick'] =
     useCallback(() => {
       desktopMethods.setAllAppsScreen(!allAppsScreen)
-    }, [allAppsScreen])
+    }, [allAppsScreen, desktopMethods])
 
   const sidebarAreaMethods: Required<SidebarAreaProps> = useMemo(
     () => ({

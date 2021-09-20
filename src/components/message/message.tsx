@@ -73,7 +73,7 @@ const Message: React.ForwardRefRenderFunction<MessageMethods, MessageProps> = (
   }, [getContainer])
   useEffect(() => {
     run()
-  }, [])
+  }, [run])
   return ReactDom.createPortal(
     <Transition
       visible={visible}

@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import useAuthContext from '@/hooks/useAuthContext'
 import message from '@/components/message'
 
@@ -54,6 +54,7 @@ export function initService([authState, authMethods]: ReturnType<
         window.axiosPromiseArr = window.axiosPromiseArr || []
         window.axiosPromiseArr.push({ url: requestConfig.url, cancel })
       })
+
       requestConfig.headers.token = authState.token
       if (typeof requestConfig.headers.retryCount === 'number') {
         requestConfig.headers.retryCount++
@@ -73,11 +74,11 @@ export function initService([authState, authMethods]: ReturnType<
       const { data } = response
       return data
     },
-    (error) => {
+    (error: AxiosError) => {
       if (axios.isCancel(error)) {
         return Promise.reject(error)
       }
-      const { response } = error
+      const response = error.response!
       const { status, data } = response
       if (status === 400) {
         message.error({

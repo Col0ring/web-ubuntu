@@ -40,7 +40,7 @@ const Transition: React.FC<TransitionProps> = ({
     } else {
       run(visible)
     }
-  }, [visible, run])
+  }, [visible, run, cancel, ref])
 
   if (React.isValidElement(children)) {
     if (React.Children.only(children)) {
@@ -58,7 +58,7 @@ const Transition: React.FC<TransitionProps> = ({
               transitionProperty: duration
                 ? transitionProperty.join(',')
                 : undefined,
-              transitionDuration: `${duration}ms`,
+              transitionDuration: `${duration!}ms`,
             } as React.CSSProperties),
             className: transitionClassName,
           })
@@ -80,7 +80,7 @@ const Transition: React.FC<TransitionProps> = ({
                     transitionProperty: duration
                       ? transitionProperty.join(',')
                       : undefined,
-                    transitionDuration: `${duration}ms`,
+                    transitionDuration: `${duration!}ms`,
                   } as React.CSSProperties),
                   className: transitionClassName,
                 })

@@ -37,11 +37,12 @@ function useFullscreen(
     // 有 ref 才全屏
     if (screenfull.isEnabled && ref.current) {
       try {
-        screenfull.request(ref.current)
+        void screenfull.request(ref.current)
         // 动态订阅事件
         screenfull.on('change', onChange)
       } catch (error) {
         // log
+        // eslint-disable-next-line no-console
         console.error(error)
       }
     }
@@ -52,7 +53,7 @@ function useFullscreen(
       return
     }
     if (screenfull.isEnabled) {
-      screenfull.exit()
+      void screenfull.exit()
     }
   }, [state])
 

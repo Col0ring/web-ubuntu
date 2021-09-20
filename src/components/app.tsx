@@ -27,7 +27,7 @@ const App: React.FC<AppProps> = ({
   const onAppDoubleClick: React.MouseEventHandler<HTMLDivElement> =
     useCallback(() => {
       onOpen?.(app.id, app)
-    }, [onOpen, app.id, app])
+    }, [onOpen, app])
 
   useKeyPress(
     'enter',

@@ -54,7 +54,7 @@ const NewFolderModal: React.FC = () => {
 
   const onOK: React.MouseEventHandler<HTMLDivElement> = useCallback(() => {
     addNewFolder(inputValue)
-  }, [inputValue])
+  }, [addNewFolder, inputValue])
 
   const onCancel: React.MouseEventHandler<HTMLDivElement> = useCallback(() => {
     desktopMethods.setNewFolderModal(false)
@@ -81,6 +81,7 @@ const NewFolderModal: React.FC = () => {
           type="text"
           autoComplete="off"
           spellCheck="false"
+          // eslint-disable-next-line jsx-a11y/no-autofocus
           autoFocus
         />
       </div>

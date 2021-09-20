@@ -45,7 +45,7 @@ const KeepAlive: React.FC<KeepAliveProps> = ({
   useEffect(() => {
     cacheElement?.status === CacheStatus.DEACTIVATED &&
       cacheMethods.activate(cacheId)
-  }, [cacheStatus, cacheId, cacheMethods])
+  }, [cacheStatus, cacheId, cacheMethods, cacheElement?.status])
 
   useUnmount(() => {
     cacheMethods.deactivate(cacheId)

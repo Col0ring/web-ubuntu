@@ -9,7 +9,7 @@ function useTimeoutValue<T>(value: T, ms = 0): T {
   useEffect(() => {
     cancel()
     run(value)
-  }, [value])
+  }, [cancel, run, value])
   return state
 }
 

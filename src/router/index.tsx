@@ -42,7 +42,7 @@ const RouterHelper: React.FC = () => {
     routerMethods.setMatchedRoutes(matchedRoutes, currentRoute)
     const title = currentRoute?.title
     title && settingMethods.setTitle(title)
-  }, [pathname, routes, routerMethods])
+  }, [pathname, routes, routerMethods, settingMethods])
   return null
 }
 

@@ -13,13 +13,13 @@ function useAsync<P extends any[] = [], R = any>(
       loading: true,
       ...initialState,
     }),
-    []
+    [initialState]
   )
   const [state, callbackFn] = useAsyncFn(asyncFn, deps, defaultState)
 
   useEffect(() => {
-    callbackFn(...args)
-  }, [callbackFn])
+    void callbackFn(...args)
+  }, [args, callbackFn])
 
   return state
 }

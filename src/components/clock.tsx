@@ -59,7 +59,7 @@ const Clock: React.FC<ClockProps> = ({
       default:
         return `${week} ${month} ${day} ${hour}:${minute}${secondsFormat} ${meridiem}`
     }
-  }, [date, type])
+  }, [date, hour12, showSeconds, type])
   const clockClassName = classnames(className)
   useInterval(() => {
     setDate(new Date())

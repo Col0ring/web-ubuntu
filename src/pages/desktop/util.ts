@@ -269,7 +269,6 @@ export function appMap2Arr(appMap: Record<string, UbuntuApp>): UbuntuApp[] {
     return apps.map((app) => {
       if (isFolder(app)) {
         return produce(app, (draft) => {
-          // eslint-disable-next-line no-param-reassign
           draft.apps = loop(childrenMap, app.id) || []
         })
       }

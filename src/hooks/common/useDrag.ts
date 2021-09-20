@@ -47,7 +47,7 @@ function useDrag<T = any>(options?: UseDragOptions<T>): UseDragReturn<T> {
         },
       }
     },
-    [Object.values(options || {}), setIsDrag]
+    [options]
   )
 
   return [isDrag, getProps]

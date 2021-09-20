@@ -40,7 +40,7 @@ const SidebarApp: React.FC<SidebarAppProps> = ({
         cancelScale()
       }
       onClick?.(app.id, app)
-    }, [onClick, app.id, app, isMinimized, isOpen])
+    }, [isMinimized, isOpen, onClick, app, cancelScale])
 
   return (
     <Tooltip className="m-1" title={app.title} direction="left">

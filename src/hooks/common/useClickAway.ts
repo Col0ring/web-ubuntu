@@ -30,7 +30,7 @@ function useClickAway<E extends EventType = EventType>(
         document.removeEventListener(eventName, handler)
       }
     }
-  }, [...events, ref])
+  }, [events, ref])
 }
 export type { EventType }
 export default useClickAway
