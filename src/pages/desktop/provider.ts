@@ -129,16 +129,16 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
           copiedId: string
           position?: AppPosition
         }) {
-          if (!isValidFolder(state.appMap, copiedId, parentId)) {
+          const newState = createDraft(state)
+          if (!isValidFolder(newState.appMap, copiedId, parentId)) {
             message.error({
               content: 'Something Wrong',
               description:
                 'can not move itself or parent folder to the directory',
             })
-            return state
+            return finishDraft(newState)
           }
-          const newState = await pasteApp(state, copiedId, parentId, position)
-          return newState
+          return await pasteApp(newState, copiedId, parentId, position)
         },
         async updateFolderApp({
           from,

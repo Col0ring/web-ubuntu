@@ -48,7 +48,7 @@ const FolderContextmenu: React.FC<FolderContextmenuProps> = ({
       {
         key: 'Paste',
         title: 'Paste',
-        disabled: true,
+        onClick: () => onPaste?.(folderId, appMap[folderId], true),
       },
       {
         key: 'Show Desktop in Files',
@@ -62,7 +62,8 @@ const FolderContextmenu: React.FC<FolderContextmenuProps> = ({
       {
         key: 'Change Background...',
         title: 'Change Background...',
-        onClick() {
+        onClick(e) {
+          e.stopPropagation()
           const settings = appMap[SpecialFolder.Settings]
           settings && desktopMethods.openApp(settings.id, settings)
         },
@@ -75,13 +76,14 @@ const FolderContextmenu: React.FC<FolderContextmenuProps> = ({
       {
         key: 'Settings',
         title: 'Settings',
-        onClick() {
+        onClick(e) {
+          e.stopPropagation()
           const settings = appMap[SpecialFolder.Settings]
           settings && desktopMethods.openApp(settings.id, settings)
         },
       },
     ] as ContextmenuProps['menus']
-  }, [])
+  }, [appMap, folderId, onPaste, desktopMethods])
   const rewriteOptions: Required<ContextmenuProps>['contextmenuOptionsRewrite'] =
     useMemo(() => {
       return {
