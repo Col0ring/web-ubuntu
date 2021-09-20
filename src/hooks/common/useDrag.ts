@@ -7,6 +7,7 @@ type UseDragReturn<T> = [
     draggable: 'true'
     onDragStart: (e: React.DragEvent) => void
     onDragEnd: (e: React.DragEvent) => void
+    onDrag?: (e: React.DragEvent) => void
   }
 ]
 

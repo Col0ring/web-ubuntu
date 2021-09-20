@@ -4,18 +4,24 @@ import useClickAway from '@/hooks/common/useClickAway'
 import useEventListener from '@/hooks/common/useEventListener'
 import App, { AppProps } from '@/components/app'
 import {
+  DragArea,
   Draggable,
   DraggableProps,
   useDragContext,
 } from '@/components/dragging'
 import { AppPositionValue, UbuntuApp } from '@/typings/app'
 import { useDesktopContext } from '../../provider'
-import { getMousePositionOfDom } from '@/utils/misc'
+import { getMousePositionOfDom, safeJsonParse } from '@/utils/misc'
 import Contextmenu, { ContextmenuProps } from '@/components/contextmenu'
 import { dataTarget } from '../../config'
 import useUpdateEffect from '@/hooks/common/useUpdateEffect'
-import { getFolderDragTarget, removeFolderDragTarget } from './store'
+import {
+  getFolderDragTarget,
+  removeFolderDragTarget,
+  setFolderDragTarget,
+} from './store'
 import { isFolder, isReplaceFile, isValidFolder } from '../../util'
+import message from '@/components/message'
 
 export interface FolderAppProps extends AppProps {
   folderId: string
@@ -212,11 +218,50 @@ const FolderApp: React.FC<FolderAppProps> = (props) => {
       style={{ position: isAbsolute ? 'absolute' : 'static' }}
       onValid={onValid}
     >
-      <div data-target={dataTarget.folderApp}>
-        <Contextmenu menus={menus}>
-          <App {...props} />
-        </Contextmenu>
-      </div>
+      <DragArea
+        onDragOver={() => {
+          if (isFolder(props.app)) {
+            setFolderDragTarget(props.app.id)
+          }
+        }}
+        onDrop={(e) => {
+          if (!isFolder(props.app)) {
+            return
+          }
+          e.stopPropagation()
+          const data = safeJsonParse(
+            e.dataTransfer.getData('custom'),
+            {} as FolderDragData
+          )
+          // no app
+          if (!data.app) {
+            message.error({
+              content: 'invalid dragging element',
+            })
+            return
+          }
+
+          // drag to its parent
+          const app = appMap[data.app.id]
+          desktopMethods.updateFolderApp({
+            from: data.from,
+            to: props.app.id,
+            data: {
+              ...app,
+              position: {
+                left: 0,
+                top: 0,
+              },
+            },
+          })
+        }}
+      >
+        <div data-target={dataTarget.folderApp}>
+          <Contextmenu menus={menus}>
+            <App {...props} />
+          </Contextmenu>
+        </div>
+      </DragArea>
     </Draggable>
   )
 }

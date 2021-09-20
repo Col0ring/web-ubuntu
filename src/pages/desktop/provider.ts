@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 import React from 'react'
+import { createDraft, finishDraft } from 'immer'
 import { createMethodsContext } from 'react-use-methods'
 import useImmerMethods from '@/hooks/common/useImmerMethods'
 import apps from './apps'
@@ -23,7 +24,6 @@ import {
 import message from '@/components/message'
 import { SpecialFolder } from './constants'
 import { addBase } from '@/utils/prod'
-import { createDraft, finishDraft } from 'immer'
 
 const Folder = React.lazy(() => import('@/pages/desktop/apps/folder'))
 const appMap = appArr2Map(apps)
