@@ -75,7 +75,7 @@ const apps: UbuntuApp[] = [
       },
       {
         parentId: '/desktop',
-        id: '/desktop/firefox-shortcut',
+        id: '/desktop/application/Firefox Browser-shortcut',
         title: 'Firefox Browser',
         position: {
           left: 0,
@@ -107,7 +107,7 @@ const apps: UbuntuApp[] = [
     apps: [
       {
         parentId: '/application',
-        id: '/application/firefox',
+        id: '/application/Firefox Browser',
         title: 'Firefox Browser',
         icon: addBase('/themes/Yaru/apps/firefox.svg'),
         disabled: false,

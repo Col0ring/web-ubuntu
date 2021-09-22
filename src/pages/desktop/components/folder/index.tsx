@@ -141,7 +141,7 @@ const Folder: React.FC<FolderProps> = ({
           className={className}
         >
           {folderApps.length > 0 || !showEmpty ? (
-            folderApps.map((app) => (
+            folderApps.map((app, index) => (
               <FolderApp
                 onOpen={onAppOpen}
                 onCopy={onAppCopy}
@@ -149,6 +149,7 @@ const Folder: React.FC<FolderProps> = ({
                 folderId={id}
                 key={app.id}
                 app={app}
+                index={index}
               />
             ))
           ) : (

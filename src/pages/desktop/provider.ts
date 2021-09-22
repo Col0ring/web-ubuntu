@@ -11,7 +11,7 @@ import {
   UbuntuApp,
 } from '@/typings/app'
 import { DesktopContextValue } from './type'
-import { defaultImages } from './config'
+import { defaultImages, defaultWindowRect } from './config'
 import apps from './apps'
 import {
   getBackgroundImage,
@@ -278,12 +278,7 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
       },
       newFolderModal: false,
       newFolderModalFolderId: '',
-      defaultAppWindow: {
-        width: '85%',
-        height: '80%',
-        minWidth: window.innerWidth / 3,
-        minHeight: window.innerHeight / 3,
-      },
+      defaultAppWindow: defaultWindowRect,
       allAppsScreen: false,
       lockScreen: false,
       focusAppId: '',

@@ -1,6 +1,10 @@
 import React from 'react'
-import { UbuntuApp, AppConfig, OpenedAppConfig } from '@/typings/app'
-import { Percentage } from '@/typings/tools'
+import {
+  UbuntuApp,
+  AppConfig,
+  OpenedAppConfig,
+  AppPositionValue,
+} from '@/typings/app'
 import { StatusMenuItemProps } from './components/navbar/status-menu/status-menu-item'
 
 export interface StatusIconConfig {
@@ -24,10 +28,10 @@ export interface DesktopContextValue {
     clientY: number
   }
   defaultAppWindow: {
-    width: Percentage
-    height: Percentage
-    minWidth: number
-    minHeight: number
+    width: AppPositionValue
+    height: AppPositionValue
+    minWidth: AppPositionValue
+    minHeight: AppPositionValue
   }
   newFolderModal: boolean
   // current folder id when newFolderModal is visible

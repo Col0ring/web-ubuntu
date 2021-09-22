@@ -1,4 +1,4 @@
-import { Percentage } from '@/typings/tools'
+import { AppPositionValue } from '@/typings/app'
 import { addBase } from '@/utils/prod'
 
 export const defaultImages = {
@@ -12,11 +12,19 @@ export const defaultImages = {
   'wall-8': addBase('/images/wallpapers/wall-8.jpg'),
 }
 
+export const defaultAppRect: {
+  width: AppPositionValue
+  height: AppPositionValue
+} = {
+  width: 95,
+  height: 74,
+}
+
 export const defaultWindowRect: {
-  width: Percentage
-  height: Percentage
-  minWidth: number
-  minHeight: number
+  width: AppPositionValue
+  height: AppPositionValue
+  minWidth: AppPositionValue
+  minHeight: AppPositionValue
 } = {
   width: '85%',
   height: '80%',

@@ -13,7 +13,7 @@ import { AppPositionValue, UbuntuApp } from '@/typings/app'
 import { useDesktopContext } from '../../provider'
 import { getMousePositionOfDom, safeJsonParse } from '@/utils/misc'
 import Contextmenu, { ContextmenuProps } from '@/components/contextmenu'
-import { dataTarget } from '../../config'
+import { dataTarget, defaultAppRect } from '../../config'
 import useUpdateEffect from '@/hooks/common/useUpdateEffect'
 import {
   getFolderDragTarget,
@@ -26,6 +26,7 @@ import useRafState from '@/hooks/common/useRafState'
 
 export interface FolderAppProps extends AppProps {
   folderId: string
+  index: number
 }
 
 export interface FolderDragData {
@@ -209,7 +210,9 @@ const FolderApp: React.FC<FolderAppProps> = (props) => {
       onPositionChange={onPositionChange}
       className={draggableClassName}
       data={dragData}
-      style={{ position: isAbsolute ? 'absolute' : 'static' }}
+      style={{
+        position: isAbsolute ? 'absolute' : 'static',
+      }}
       onValid={onValid}
     >
       <DragArea
@@ -252,7 +255,14 @@ const FolderApp: React.FC<FolderAppProps> = (props) => {
       >
         <div data-target={dataTarget.folderApp}>
           <Contextmenu menus={menus}>
-            <App {...props} />
+            <App
+              style={{
+                width: defaultAppRect.width,
+                height: defaultAppRect.height,
+              }}
+              className="overflow-hidden"
+              {...props}
+            />
           </Contextmenu>
         </div>
       </DragArea>
