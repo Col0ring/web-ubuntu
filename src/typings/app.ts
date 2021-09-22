@@ -6,6 +6,11 @@ export interface AppPosition {
   left: AppPositionValue
   top: AppPositionValue
 }
+
+export interface AppRect {
+  width: AppPositionValue
+  height: AppPositionValue
+}
 export interface AppConfig {
   id: string
   // file extension

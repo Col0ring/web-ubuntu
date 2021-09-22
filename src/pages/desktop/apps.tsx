@@ -23,10 +23,6 @@ const apps: UbuntuApp[] = [
         icon: addBase('/themes/Yaru/system/folder.png'),
         render: (id) => <Folder id={id} />,
         folder: true,
-        position: {
-          left: 0,
-          top: 1,
-        },
         apps: [
           {
             parentId: '/desktop/Col0ring',
@@ -49,10 +45,6 @@ const apps: UbuntuApp[] = [
         icon: addBase('/themes/Yaru/system/folder.png'),
         render: (id) => <Folder id={id} />,
         folder: true,
-        position: {
-          left: 0,
-          top: 76,
-        },
         apps: [
           {
             parentId: '/desktop/222',
@@ -66,10 +58,6 @@ const apps: UbuntuApp[] = [
         parentId: '/desktop',
         id: '/desktop/application-shortcut',
         title: 'Applications',
-        position: {
-          left: 0,
-          top: 151,
-        },
         icon: addBase('/themes/Yaru/system/folder.png'),
         redirect: '/application',
       },
@@ -77,10 +65,6 @@ const apps: UbuntuApp[] = [
         parentId: '/desktop',
         id: '/desktop/application/Firefox Browser-shortcut',
         title: 'Firefox Browser',
-        position: {
-          left: 0,
-          top: 226,
-        },
         icon: addBase('/themes/Yaru/apps/firefox.svg'),
         redirect: '/application/firefox',
       },
@@ -88,10 +72,6 @@ const apps: UbuntuApp[] = [
         parentId: '/desktop',
         id: '/application/todo-ist-shortcut',
         title: 'Todoist',
-        position: {
-          left: 0,
-          top: 318,
-        },
         icon: addBase('/themes/Yaru/apps/todoist.png'),
         redirect: '/application/todo-ist',
       },

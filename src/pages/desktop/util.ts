@@ -1,9 +1,9 @@
 /* eslint-disable no-param-reassign */
 import { produce, createDraft, finishDraft } from 'immer'
-import { FolderConfig, UbuntuApp, AppPosition } from '@/typings/app'
+import { FolderConfig, UbuntuApp, AppPosition, AppRect } from '@/typings/app'
 import { createLocalStorage } from '@/utils/local-storage'
 import { AppMap, DesktopContextValue } from './type'
-import { safeJsonParse } from '@/utils/misc'
+import { percentage2Decimal, safeJsonParse } from '@/utils/misc'
 import { modal } from '@/components/modal'
 
 const { setBackgroundImage, getBackgroundImage } = createLocalStorage(
@@ -30,6 +30,45 @@ const { setMousePosition, getMousePosition } = createLocalStorage(
   }
 )
 export { setMousePosition, getMousePosition }
+
+export function getAppPosition(
+  app: AppRect,
+  area: { width: number; height: number },
+  index: number,
+  row = true
+): {
+  left: number
+  top: number
+} {
+  let left = 0
+  let top = 0
+  let appHeight = 0
+  let appWidth = 0
+  if (typeof app.height === 'string') {
+    appHeight = area.height * percentage2Decimal(app.height)
+  } else {
+    appHeight = app.height
+  }
+  if (typeof app.width === 'string') {
+    appWidth = area.width * percentage2Decimal(app.width)
+  } else {
+    appWidth = app.width
+  }
+  if (row) {
+    const rowCount = Math.floor(area.width / appWidth)
+    left = appWidth * (index % rowCount)
+    top = appHeight * Math.floor(index / rowCount)
+  } else {
+    const colCount = Math.floor(area.height / appHeight)
+    left = appWidth * Math.floor(index / colCount)
+    top = appHeight * (index % colCount)
+  }
+
+  return {
+    left,
+    top,
+  }
+}
 
 interface ContextValue {
   currentId: string

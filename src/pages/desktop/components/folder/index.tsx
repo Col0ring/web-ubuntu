@@ -18,6 +18,7 @@ export interface FolderProps {
   showEmpty?: boolean
   wrapperClassName?: string
   className?: string
+  row?: boolean
 }
 const Folder: React.FC<FolderProps> = ({
   id,
@@ -25,6 +26,7 @@ const Folder: React.FC<FolderProps> = ({
   showEmpty = true,
   wrapperClassName,
   className,
+  row,
 }) => {
   const [{ appMap, copiedAppId }, desktopMethods] = useDesktopContext()
   const folderRef = useRef<HTMLDivElement>(null)
@@ -150,6 +152,7 @@ const Folder: React.FC<FolderProps> = ({
                 key={app.id}
                 app={app}
                 index={index}
+                row={row}
               />
             ))
           ) : (

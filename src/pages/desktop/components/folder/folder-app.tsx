@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
 import classnames from 'classnames'
 import useClickAway from '@/hooks/common/useClickAway'
 import useEventListener from '@/hooks/common/useEventListener'
@@ -14,19 +14,23 @@ import { useDesktopContext } from '../../provider'
 import { getMousePositionOfDom, safeJsonParse } from '@/utils/misc'
 import Contextmenu, { ContextmenuProps } from '@/components/contextmenu'
 import { dataTarget, defaultAppRect } from '../../config'
-import useUpdateEffect from '@/hooks/common/useUpdateEffect'
 import {
   getFolderDragTarget,
   removeFolderDragTarget,
   setFolderDragTarget,
 } from './store'
-import { isFolder, isReplaceFile, isValidFolder } from '../../util'
+import {
+  isFolder,
+  isReplaceFile,
+  isValidFolder,
+  getAppPosition,
+} from '../../util'
 import message from '@/components/message'
-import useRafState from '@/hooks/common/useRafState'
 
 export interface FolderAppProps extends AppProps {
   folderId: string
   index: number
+  row?: boolean
 }
 
 export interface FolderDragData {
@@ -43,7 +47,7 @@ const FolderApp: React.FC<FolderAppProps> = (props) => {
   )
   const [{ appMap, copiedAppId }] = useDesktopContext()
   const [{ dragArea }] = useDragContext()
-  const [load, setLoad] = useRafState(false)
+  const renderIndex = useRef(props.index)
 
   const [isFocus, setIsFocus] = useState(false)
   const isAbsolute = useMemo(
@@ -53,7 +57,7 @@ const FolderApp: React.FC<FolderAppProps> = (props) => {
     [props.app.position]
   )
   const draggableRef = useRef<HTMLDivElement | null>(null)
-  const draggableClassName = classnames('hover:z-20 focus:z-20 z-10', {
+  const draggableClassName = classnames('hover:z-20 focus:z-20 z-10 absolute', {
     'z-20': isFocus,
   })
   const [, desktopMethods] = useDesktopContext()
@@ -96,10 +100,20 @@ const FolderApp: React.FC<FolderAppProps> = (props) => {
     left: AppPositionValue
     top: AppPositionValue
   } = useMemo(() => {
-    const position = props.app.position || {
+    const appPosition = props.app.position || {
       left: 0,
       top: 0,
     }
+    const position =
+      appPosition.left === 0 || appPosition.top === 0
+        ? getAppPosition(
+            defaultAppRect,
+            dragArea,
+            renderIndex.current,
+            props.row
+          )
+        : appPosition
+
     return {
       left:
         dragArea.width === 0
@@ -114,7 +128,7 @@ const FolderApp: React.FC<FolderAppProps> = (props) => {
           ? position.top
           : `${(position.top / dragArea.height) * 100}%`,
     }
-  }, [props.app.position, dragArea])
+  }, [props.app.position, props.row, dragArea])
 
   const menus = useMemo(() => {
     return [
@@ -145,32 +159,6 @@ const FolderApp: React.FC<FolderAppProps> = (props) => {
       // },
     ] as ContextmenuProps['menus']
   }, [appMap, copiedAppId, desktopMethods, props])
-
-  // only work once
-  useUpdateEffect(() => {
-    if (draggableRef.current && load && !renderRef.current) {
-      const left = draggableRef.current.offsetLeft
-      const top = draggableRef.current.offsetTop
-      requestAnimationFrame(() => {
-        desktopMethods.updateFolderApp({
-          from: props.folderId,
-          to: props.folderId,
-          data: {
-            ...props.app,
-            position: {
-              left,
-              top,
-            },
-          },
-        })
-        renderRef.current = true
-      })
-    }
-  }, [load])
-
-  useEffect(() => {
-    setLoad(true)
-  }, [setLoad])
 
   useClickAway(draggableRef, () => {
     setIsFocus(false)
@@ -210,9 +198,6 @@ const FolderApp: React.FC<FolderAppProps> = (props) => {
       onPositionChange={onPositionChange}
       className={draggableClassName}
       data={dragData}
-      style={{
-        position: isAbsolute ? 'absolute' : 'static',
-      }}
       onValid={onValid}
     >
       <DragArea
