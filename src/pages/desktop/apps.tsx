@@ -1,7 +1,8 @@
 import React from 'react'
-import Folder from './apps/folder'
 import { UbuntuApp } from '@/typings/app'
 import { addBase } from '@/utils/prod'
+import { Filetype } from './constants'
+import Folder from './apps/folder'
 
 const Todoist = React.lazy(() => import('./apps/todoist'))
 const Firefox = React.lazy(() => import('./apps/firefox'))
@@ -27,12 +28,14 @@ const apps: UbuntuApp[] = [
           {
             parentId: '/desktop/Col0ring',
             id: '/desktop/Col0ring/index.php',
+            filetype: Filetype.Php,
             icon: addBase('/themes/filetypes/php.png'),
             title: 'php',
           },
           {
             parentId: '/desktop/Col0ring',
             title: 'Angular.js',
+            filetype: Filetype.Js,
             id: '/desktop/Col0ring/Angular.js',
             icon: addBase('/themes/filetypes/js.png'),
           },
@@ -65,12 +68,13 @@ const apps: UbuntuApp[] = [
         parentId: '/desktop',
         id: '/desktop/application/Firefox Browser-shortcut',
         title: 'Firefox Browser',
+        filetype: 'link',
         icon: addBase('/themes/Yaru/apps/firefox.svg'),
-        redirect: '/application/firefox',
+        redirect: '/application/Firefox Browser',
       },
       {
         parentId: '/desktop',
-        id: '/application/todo-ist-shortcut',
+        id: '/desktop/todo-ist-shortcut',
         title: 'Todoist',
         icon: addBase('/themes/Yaru/apps/todoist.png'),
         redirect: '/application/todo-ist',

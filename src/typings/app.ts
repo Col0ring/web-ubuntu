@@ -13,8 +13,7 @@ export interface AppRect {
 }
 export interface AppConfig {
   id: string
-  // file extension
-  ext?: string
+  filetype?: string
   parentId: string
   title: string
   icon?: string

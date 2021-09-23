@@ -42,10 +42,11 @@ const Draggable: React.FC<DraggableProps> = ({
   const ref = nodeRef || draggableRef
 
   const [position, setPosition] = useState(
-    defaultPosition || {
-      left: 0,
-      top: 0,
-    }
+    () =>
+      defaultPosition || {
+        left: 0,
+        top: 0,
+      }
   )
 
   const [offset, setOffset] = useState({
@@ -90,6 +91,7 @@ const Draggable: React.FC<DraggableProps> = ({
       if (top < y[0]) {
         top = y[0]
       }
+
       setPosition({
         left,
         top,

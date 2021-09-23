@@ -39,23 +39,12 @@ export interface FolderDragData {
 }
 
 const FolderApp: React.FC<FolderAppProps> = (props) => {
-  const renderRef = useRef(
-    !!(
-      props.app.position &&
-      (props.app.position.left || props.app.position.top)
-    )
-  )
   const [{ appMap, copiedAppId }] = useDesktopContext()
   const [{ dragArea }] = useDragContext()
   const renderIndex = useRef(props.index)
-
+  const isMoved = useRef(false)
   const [isFocus, setIsFocus] = useState(false)
-  const isAbsolute = useMemo(
-    () =>
-      renderRef.current ||
-      !!(props.app.position?.left || props.app.position?.top),
-    [props.app.position]
-  )
+
   const draggableRef = useRef<HTMLDivElement | null>(null)
   const draggableClassName = classnames('hover:z-20 focus:z-20 z-10 absolute', {
     'z-20': isFocus,
@@ -71,6 +60,7 @@ const FolderApp: React.FC<FolderAppProps> = (props) => {
 
   const onDragStart: Required<DraggableProps>['onDragStart'] = useCallback(
     (_, e) => {
+      isMoved.current = true
       const target = e.currentTarget as HTMLDivElement
       e.dataTransfer.setData(
         'domOffset',
@@ -173,7 +163,7 @@ const FolderApp: React.FC<FolderAppProps> = (props) => {
     useCallback(
       (positionState) => {
         if (
-          isAbsolute &&
+          isMoved.current &&
           props.app.position?.left !== positionState.left &&
           props.app.position?.top !== positionState.top
         ) {
@@ -187,7 +177,7 @@ const FolderApp: React.FC<FolderAppProps> = (props) => {
           })
         }
       },
-      [props.app, props.folderId, isAbsolute, desktopMethods]
+      [props.app, props.folderId, desktopMethods]
     )
 
   return (

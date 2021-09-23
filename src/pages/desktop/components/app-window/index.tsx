@@ -66,6 +66,7 @@ const AppWindow: React.FC<AppWindowProps> = ({
       filterMoving: (e) => {
         const target = e.target as HTMLDivElement
         return (
+          !isMaximized &&
           !!getParentNode(target, (node) => {
             // match toolbar
             return (
@@ -106,11 +107,12 @@ const AppWindow: React.FC<AppWindowProps> = ({
         desktopMethods.openApp(app.id, app)
       },
     }),
-    [setPosition, app, desktopMethods]
+    [setPosition, isMaximized, app, desktopMethods]
   )
   const appWindowStyle: React.CSSProperties = useMemo(() => {
     const width = isMaximized ? '100%' : rect.width || defaultAppWindow.width
     const height = isMaximized ? '100%' : rect.height || defaultAppWindow.height
+
     const left = isMaximized
       ? 0
       : position.left && typeof position.left === 'number'
