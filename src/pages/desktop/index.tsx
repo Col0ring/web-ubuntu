@@ -7,9 +7,9 @@ import Navbar from './components/navbar'
 import Sidebar from './components/sidebar'
 import LockScreen from './screens/lock-screen'
 import AppWindow from './components/app-window'
-import NewFolderModal from './components/new-folder-modal'
 import DesktopFolder from './components/desktop-folder'
 import { setMousePosition } from './util'
+import NewAppModal from './components/new-app-modal'
 
 const Desktop: React.FC = () => {
   const [desktopState, desktopMethods] = useDesktopContext()
@@ -48,7 +48,8 @@ const Desktop: React.FC = () => {
       <AllAppsScreen />
       <LockScreen />
       {/* new-folder-modal */}
-      {desktopState.newFolderModal && <NewFolderModal />}
+      {desktopState.newFolderModal && <NewAppModal type="folder" />}
+      {desktopState.newFileModal && <NewAppModal type="file" />}
     </div>
   )
 }

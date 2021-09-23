@@ -20,9 +20,10 @@ import {
   setBackgroundImage,
   pasteApp,
   isValidFolder,
+  getAppId,
 } from './util'
 import message from '@/components/message'
-import { SpecialFolder } from './constants'
+import { fileIcon, SpecialFolder } from './constants'
 import { addBase } from '@/utils/prod'
 
 const Folder = React.lazy(() => import('@/pages/desktop/apps/folder'))
@@ -44,8 +45,12 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
           state.newFolderModal = visible
           return state
         },
-        setNewFolderModalFolderId(id: string) {
-          state.newFolderModalFolderId = id
+        setNewFileModal(visible: boolean) {
+          state.newFileModal = visible
+          return state
+        },
+        setNewAppModalFolderId(id: string) {
+          state.newAppModalFolderId = id
           return state
         },
         setAllAppsScreen(visible: boolean) {
@@ -113,11 +118,30 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
           state.appMap[id] = newFolder
           return state
         },
-        // TODO
-        addFolderApp(app: UbuntuApp) {
-          state.appMap[app.id] = app
-          const parentFolder = state.appMap[app.parentId] as FolderConfig
-          parentFolder.apps.push(app)
+        addNewFile(
+          parentId: string,
+          name: string,
+          position: UbuntuApp['position']
+        ) {
+          const parentFolder = state.appMap[parentId] as FolderConfig
+          const slices = name.split('.')
+          const filetype = slices.length >= 2 && slices[slices.length - 1]
+
+          const id = filetype
+            ? `${parentId}/${name}`
+            : getAppId(parentId, name, 'txt')
+          const newFile: AppConfig = {
+            parentId,
+            id,
+            filetype: filetype || 'txt',
+            disabled: false,
+            icon: fileIcon[filetype || 'txt'],
+            position,
+            title: name,
+          }
+          this.setNewFileModal(false)
+          parentFolder.apps.push(newFile)
+          state.appMap[id] = newFile
           return state
         },
         async pasteFolderApp({
@@ -277,7 +301,8 @@ const [useDesktopContext, DesktopProvider, withDesktopProvider] =
         clientY: 0,
       },
       newFolderModal: false,
-      newFolderModalFolderId: '',
+      newFileModal: false,
+      newAppModalFolderId: '',
       defaultAppWindow: defaultWindowRect,
       allAppsScreen: false,
       lockScreen: false,

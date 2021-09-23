@@ -38,10 +38,18 @@ const FolderContextmenu: React.FC<FolderContextmenuProps> = ({
   const menus = useMemo(() => {
     return [
       {
+        key: 'New File',
+        title: 'New File',
+        onClick() {
+          desktopMethods.setNewAppModalFolderId(folderId)
+          desktopMethods.setNewFileModal(true)
+        },
+      },
+      {
         key: 'New Folder',
         title: 'New Folder',
         onClick() {
-          desktopMethods.setNewFolderModalFolderId(folderId)
+          desktopMethods.setNewAppModalFolderId(folderId)
           desktopMethods.setNewFolderModal(true)
         },
       },

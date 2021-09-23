@@ -31,6 +31,10 @@ const { setMousePosition, getMousePosition } = createLocalStorage(
 )
 export { setMousePosition, getMousePosition }
 
+export function getAppId(parentId: string, title: string, filetype?: string) {
+  return `${parentId}/${title}${filetype ? '.' + filetype : ''}`
+}
+
 export function getAppPosition(
   app: AppRect,
   area: { width: number; height: number },
@@ -69,7 +73,6 @@ export function getAppPosition(
     top,
   }
 }
-
 interface ContextValue {
   currentId: string
   prevId: string
